@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #0F4C3A;
+    --color-primary-hover: #0B3A2C;
+    --color-accent: #3CA96B;
+    --color-accent-hover: #32955D;
+    --color-bg-surface: #F6F9F7;
+    --color-text-dark: #1B241F;
+  }
+
+  html {
+    font-family: 'Tajawal', 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-surface text-darktext antialiased selection:bg-medical-500 selection:text-white min-h-screen flex flex-col;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary-hover hover:shadow-lg transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-white font-bold rounded-xl shadow-md hover:bg-accent-hover hover:shadow-lg transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl shadow hover:bg-medical-50 transition-all duration-300 transform active:scale-95;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/60 shadow-soft rounded-2xl;
+  }
+
+  .medical-card {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-soft hover:shadow-card hover:-translate-y-1 transition-all duration-300 overflow-hidden;
+  }
+
+  .section-badge {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-medical-50 text-accent font-bold text-sm border border-medical-200/50 mb-3;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F6F9F7;
+}
+::-webkit-scrollbar-thumb {
+  background: #3CA96B;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0F4C3A;
+}
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-loading {
+  0% { background-color: #E1F3EC; }
+  50% { background-color: #F0F9F5; }
+  100% { background-color: #E1F3EC; }
+}
+.animate-skeleton {
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
