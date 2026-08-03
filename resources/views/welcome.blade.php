@@ -162,39 +162,39 @@
             @php
             $services = [
                 [
-                    'img' => 'nurse-care.png',
+                    'img' => 'service-care.png',
                     'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
                     'title' => 'الرعاية الصحية المنزلية',
                     'desc' => 'برامج مخصصة لكبار السن وأصحاب الأمراض المزمنة في بيئة منزلية دافئة وآمنة.',
                     'price' => 'تبدأ من 250 ر.س',
-                    'gradient' => 'from-emerald-900/80 via-primary/60 to-transparent'
+                    'gradient' => 'from-emerald-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'hero-doctor.png',
+                    'img' => 'service-doctor.png',
                     'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
                     'title' => 'الزيارات الطبية المنزلية',
                     'desc' => 'أطباء واستشاريون لمعاينة المريض، التشخيص الدقيق، ووصف العلاج في المنزل.',
                     'price' => 'تبدأ من 300 ر.س',
-                    'gradient' => 'from-teal-900/80 via-primary/60 to-transparent'
+                    'gradient' => 'from-teal-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'nurse-care.png',
+                    'img' => 'service-nursing.png',
                     'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
                     'title' => 'التمريض المنزلي 24/7',
                     'desc' => 'رعاية تمريضية متواصلة، متابعة العلامات الحيوية، العناية بالجروح والمغذيات.',
                     'price' => 'تغطية 12/24 ساعة',
-                    'gradient' => 'from-cyan-900/80 via-primary/60 to-transparent'
+                    'gradient' => 'from-cyan-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'physio-session.png',
+                    'img' => 'service-physio.png',
                     'icon' => 'M13 10V3L4 14h7v7l9-11h-7z',
                     'title' => 'العلاج الطبيعي والتأهيل',
                     'desc' => 'جلسات تأهيلية مخصصة لما بعد العمليات والجلطات وإصابات العظام والعضلات.',
                     'price' => 'جلسات فردية وباقات',
-                    'gradient' => 'from-green-900/80 via-primary/60 to-transparent'
+                    'gradient' => 'from-green-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'blood-sampling.png',
+                    'img' => 'service-sampling.png',
                     'icon' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
                     'title' => 'سحب العينات المنزلي',
                     'desc' => 'أخصائي سحب عينات يحضر لمنزلك بأدوات معقمة مع نتائج إلكترونية سريعة.',
@@ -202,7 +202,7 @@
                     'gradient' => 'from-emerald-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'blood-sampling.png',
+                    'img' => 'service-lab.png',
                     'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
                     'title' => 'الفحوصات المخبرية الشاملة',
                     'desc' => 'باقات فحوصات وقائية شاملة: الوظائف، الفيتامينات، الدهون، والسكر بنسب دقيقة.',
@@ -210,15 +210,15 @@
                     'gradient' => 'from-teal-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'medical-team.png',
+                    'img' => 'service-dna.png',
                     'icon' => 'M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457-.39-2.823-1.07-4',
                     'title' => 'الفحوصات الجينية والوراثية',
                     'desc' => 'تحاليل DNA وبصمة جينية وكشف مبكر عن الأمراض الوراثية بأعلى سرية.',
                     'price' => 'دقة فائقة وسرية',
-                    'gradient' => 'from-slate-900/80 via-primary/60 to-transparent'
+                    'gradient' => 'from-slate-950/85 via-primary/60 to-transparent'
                 ],
                 [
-                    'img' => 'hero-doctor.png',
+                    'img' => 'service-telehealth.png',
                     'icon' => 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
                     'title' => 'الاستشارات الطبية',
                     'desc' => 'استشارات طارئة ومرئية هاتفية مع استشاريين متميزين لمتابعة حالتك الصحّية.',

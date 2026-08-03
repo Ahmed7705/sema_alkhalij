@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="nursingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F4C3A" />
+      <stop offset="50%" stop-color="#145E49" />
+      <stop offset="100%" stop-color="#093327" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3CA96B" />
+      <stop offset="100%" stop-color="#6EE7B7" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="220" fill="url(#nursingGrad)" />
+  
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.05" stroke="#FFFFFF" stroke-width="1">
+    <path d="M0 40 H400 M0 80 H400 M0 120 H400 M0 160 H400 M0 200 H400" />
+    <path d="M40 0 V220 M80 0 V220 M120 0 V220 M160 0 V220 M200 0 V220 M240 0 V220 M280 0 V220 M320 0 V220 M360 0 V220" />
+  </g>
+
+  <!-- Heartbeat ECG Pulse Line -->
+  <path d="M 20 110 L 80 110 L 95 80 L 110 140 L 130 60 L 150 150 L 165 95 L 180 110 L 380 110" 
+        fill="none" stroke="url(#accentGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+
+  <!-- Glowing pulse dot -->
+  <circle cx="130" cy="60" r="4" fill="#6EE7B7" />
+  <circle cx="130" cy="60" r="8" fill="#6EE7B7" opacity="0.4" />
+
+  <!-- Medical Cross Shield -->
+  <g transform="translate(270, 45)">
+    <path d="M 35 0 L 70 15 V 45 C 70 70 35 90 35 90 C 35 90 0 70 0 45 V 15 Z" fill="#3CA96B" opacity="0.25" />
+    <path d="M 35 5 L 65 18 V 43 C 65 65 35 83 35 83 C 35 83 5 65 5 43 V 18 Z" fill="none" stroke="#3CA96B" stroke-width="2" opacity="0.6" />
+    <!-- White Cross inside Shield -->
+    <rect x="30" y="27" width="10" height="30" rx="3" fill="#FFFFFF" />
+    <rect x="20" y="37" width="30" height="10" rx="3" fill="#FFFFFF" />
+  </g>
+
+  <!-- 24/7 Care Badge -->
+  <g transform="translate(40, 45)">
+    <rect width="90" height="36" rx="18" fill="#3CA96B" opacity="0.3" />
+    <rect width="90" height="36" rx="18" fill="none" stroke="#3CA96B" stroke-width="1.5" />
+    <text x="45" y="23" font-family="sans-serif" font-weight="bold" font-size="15" fill="#6EE7B7" text-anchor="middle">24 / 7</text>
+  </g>
+</svg>
