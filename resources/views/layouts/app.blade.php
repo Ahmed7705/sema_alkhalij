@@ -25,15 +25,14 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>[x-cloak] { display: none !important; }</style>
 
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Alpine.js Collapse Plugin (for FAQ accordion) -->
+    <!-- Alpine.js Plugins (MUST be loaded BEFORE Alpine Core) -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Alpine.js Intersect Plugin (for scroll animations) -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Alpine.js Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @livewireStyles
 

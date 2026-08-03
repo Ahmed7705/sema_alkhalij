@@ -36,14 +36,14 @@
 
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4 min-h-[70px]">
                     <span x-show="slide === 1" x-transition.duration.700ms>ملتزمون برعايتكم</span>
-                    <span x-show="slide === 2" x-transition.duration.700ms>تمريض منزلي متواصل</span>
-                    <span x-show="slide === 3" x-transition.duration.700ms>تأهيل طبيعي متقدم</span>
+                    <span x-show="slide === 2" x-transition.duration.700ms x-cloak>تمريض منزلي متواصل</span>
+                    <span x-show="slide === 3" x-transition.duration.700ms x-cloak>تأهيل طبيعي متقدم</span>
                 </h1>
 
                 <p class="text-lg sm:text-xl text-accent font-bold mb-6 min-h-[30px]">
                     <span x-show="slide === 1" x-transition.duration.700ms>رعاية طبية متميزة تمتد إلى منزلك</span>
-                    <span x-show="slide === 2" x-transition.duration.700ms>فريق تمريضي متخصص على مدار 24 ساعة</span>
-                    <span x-show="slide === 3" x-transition.duration.700ms>جلسات تأهيل حركي متخصصة في المنزل</span>
+                    <span x-show="slide === 2" x-transition.duration.700ms x-cloak>فريق تمريضي متخصص على مدار 24 ساعة</span>
+                    <span x-show="slide === 3" x-transition.duration.700ms x-cloak>جلسات تأهيل حركي متخصصة في المنزل</span>
                 </p>
 
                 <div class="flex flex-wrap gap-3 mb-4">
