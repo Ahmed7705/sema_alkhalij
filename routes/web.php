@@ -96,12 +96,39 @@ use App\Http\Controllers\Admin\AuditLogController;
 
 use App\Http\Controllers\Admin\AnalyticsController;
 
+use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Company\CompanyPortalController;
+use App\Http\Controllers\MedicalReportController;
+
+// STAFF OPERATIONS ROUTES (Protected by Auth)
+Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
+    Route::get('dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
+    Route::post('visits/{booking}/status', [StaffDashboardController::class, 'updateStatus'])->name('visits.update-status');
+});
+
+// CORPORATE COMPANY PORTAL ROUTES (Protected by Auth)
+Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
+    Route::get('portal', [CompanyPortalController::class, 'dashboard'])->name('portal');
+    Route::post('requests', [CompanyPortalController::class, 'storeServiceRequest'])->name('requests.store');
+});
+
+// SECURE MEDICAL REPORT ROUTES (Protected by Auth)
+Route::middleware(['auth'])->group(function () {
+    Route::post('medical-reports/upload', [MedicalReportController::class, 'store'])->name('medical-reports.upload');
+    Route::get('medical-reports/{report}/download', [MedicalReportController::class, 'download'])->name('medical-reports.download');
+});
+
 // ADMIN CONTROL PANEL ROUTES (Protected by Auth & Admin Middleware)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     
     // Phase 13 Analytics & Reports
     Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
+    // Advanced Operations Search
+    Route::get('operations/search', function() {
+        return view('admin.operations.search');
+    })->name('operations.search');
 
     // Global Search
     Route::get('search', [SearchController::class, 'search'])->name('search');
