@@ -93,7 +93,7 @@
         </div>
 
         {{-- Footer Bottom Bar --}}
-        <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-medical-300">
+        <div class="pt-6 flex flex-col items-center justify-center text-center gap-3 text-xs text-medical-300">
             <div>
                 © {{ date('Y') }} <strong>شركة سيما الخليج للخدمات الطبية</strong>. جميع الحقوق محفوظة.
             </div>
