@@ -35,15 +35,17 @@
 
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1.5">نوع الخدمة المطلوبة</label>
-                    <select class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
+                    <select x-model="selectedService" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all cursor-pointer">
                         <option value="">اختر نوع الخدمة (اختياري)</option>
-                        <option value="nursing">تمريض منزلي</option>
-                        <option value="doctor">زيارة طبيب منزلية</option>
-                        <option value="physio">علاج طبيعي وتأهيل</option>
-                        <option value="labs">سحب عينات وفحوصات مخبرية</option>
-                        <option value="genetics">فحوصات جينية وتخصصية</option>
-                        <option value="corporate">خدمات شركات ورعاية كبار السن</option>
-                        <option value="other">استشارة عامة</option>
+                        <option value="الرعاية الصحية المنزلية">الرعاية الصحية المنزلية</option>
+                        <option value="الزيارات الطبية المنزلية">الزيارات الطبية المنزلية</option>
+                        <option value="التمريض المنزلي 24/7">التمريض المنزلي 24/7</option>
+                        <option value="العلاج الطبيعي والتأهيل">العلاج الطبيعي والتأهيل</option>
+                        <option value="سحب العينات المنزلي">سحب العينات المنزلي</option>
+                        <option value="الفحوصات المخبرية الشاملة">الفحوصات المخبرية الشاملة</option>
+                        <option value="الفحوصات الجينية والوراثية">الفحوصات الجينية والوراثية</option>
+                        <option value="الاستشارات الطبية">الاستشارات الطبية</option>
+                        <option value="خدمات الرعاية للشركات">خدمات الرعاية للشركات</option>
                     </select>
                 </div>
 

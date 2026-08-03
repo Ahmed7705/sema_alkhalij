@@ -67,7 +67,7 @@
 
     @stack('styles')
 </head>
-<body class="bg-surface text-darktext antialiased font-sans min-h-screen flex flex-col justify-between" x-data="{ callbackModalOpen: false, searchOpen: false }">
+<body class="bg-surface text-darktext antialiased font-sans min-h-screen flex flex-col justify-between" x-data="{ callbackModalOpen: false, searchOpen: false, selectedService: '' }">
 
     <!-- Navbar / Header -->
     <x-header />
