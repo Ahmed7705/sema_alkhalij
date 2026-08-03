@@ -12,6 +12,7 @@
 - **Phase 10: Unified Checkout & ZATCA e-Invoicing System:** 100% Completed
 - **Phase 11: Patient & Customer Portal Dashboard:** 100% Completed
 - **Phase 12: Comprehensive Admin Control Panel:** 100% Completed
+- **Phase 13: Analytics & Advanced Reporting Engine:** 100% Completed
 
 ## Active Routes:
 - `/` -> HomeController@index
@@ -22,9 +23,12 @@
 - `/checkout` -> Checkout Livewire View
 - `/profile` -> ProfileController@index
 - `/admin` -> DashboardController@index (Protected by AdminMiddleware)
+- `/admin/analytics` -> AnalyticsController@index
 - `/admin/services` -> ServiceManagerController
 - `/admin/products` -> ProductManagerController
 - `/admin/bookings` -> BookingManagerController
 - `/admin/orders` -> OrderManagerController
 - `/admin/settings` -> SettingsManagerController
 - `/admin/users` -> UserManagerController
+- `/admin/search` -> SearchController
+- `/admin/audit-logs` -> AuditLogController

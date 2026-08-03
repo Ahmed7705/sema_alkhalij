@@ -94,10 +94,15 @@ Route::get('/terms', function () {
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\AuditLogController;
 
+use App\Http\Controllers\Admin\AnalyticsController;
+
 // ADMIN CONTROL PANEL ROUTES (Protected by Auth & Admin Middleware)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     
+    // Phase 13 Analytics & Reports
+    Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
     // Global Search
     Route::get('search', [SearchController::class, 'search'])->name('search');
 

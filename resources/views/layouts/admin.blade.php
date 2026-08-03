@@ -80,7 +80,12 @@
         <nav class="p-4 space-y-1.5 flex-1 overflow-y-auto">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                <span>الرئيسية والتحليلات</span>
+                <span>الرئيسية ونظرة عامة</span>
+            </a>
+
+            <a href="{{ route('admin.analytics.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.analytics.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>مركز التحليلات والتقارير</span>
             </a>
 
             <a href="{{ route('admin.services.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.services.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
