@@ -1,64 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 🏥 منصة سيما الخليج للخدمات الطبية والمنصة الإلكترونية
+> **Sema Al-Khalij Medical Services & Home Healthcare E-Commerce Platform**
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-## About Laravel
+تطبيق ويب متكامل يجمع بين **الموقع التعريفي للرعاية الصحية المنزلية**، **كتالوج وحجز الزيارات الطبية**، و**المتجر الإلكتروني لبيع المستلزمات والأجهزة الطبية** بأسلوب تصميم عصري ومُبهر مستوحى من كبرى المجموعات الطبية العالمية (مثل مجموعة فقيه الطبية).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌟 أبرز مميزات المنصة
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- 🩺 **كتالوج الرعاية الصحية المنزلية الشاملة**:
+  - عرض 9 خدمات طبية متخصصة (زيارات أطباء، تمريض منزلي 24/7، علاج طبيعي وتأهيل، سحب عينات، فحوصات مخبرية وجينية، استشارات افتراضية، وخدمات الشركات).
+  - صور واقعية عالية الجودة 4K مخصصة لكل خدمة دون أي تكرار.
+  - تحديد وتعبئة اسم الخدمة تلقائياً داخل نافذة الحجز عند ضغط **"احجز الآن"**.
 
-## Learning Laravel
+- 🛒 **المتجر الإلكتروني وسلة التسوق التفاعلية (`/products`)**:
+  - عرض الأجهزة والمستلزمات الطبية المنزلية المعتمدة (أجهزة ضغط، أكسجين، نيبولايزر، سكر، كراسي متحركة، أسرة طبية).
+  - نافذة عرض تفاصيل المنتج السريعة (Quick View Modal) بالمواصفات ومحدد الكمية.
+  - **سلة تسوق مركزية تفاعلية** بـ Alpine.js تحسب المجموع وشريط التوصيل المجاني فورياً.
+  - نافذة إتمام الشراء والدفع متعدد الخيارات (الدفع عند الاستلام، مدى، Apple Pay).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- 👤 **لوحة تحكم المستخدم والبروفايل (`/profile`)**:
+  - لوحة تحكم تفاعلية لاستعراض سجل الزيارات المنزلية والمواعيد القادمة والمكتملة.
+  - جدول متابعة الطلبات الشحنات مع حالات التوصيل والمبالغ.
+  - قسم التقارير الطبية ونتائج التحاليل المعتمدة القابلة للتحميل.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- 📚 **المدونة والوعي الطبي (`/blog`)**:
+  - مقالات توعوية وإرشادية بنظام المجلات الطبية مع صور مخصصة وفلترة فورية ومربع اشتراك في النشرة البريدية.
 
-## Laravel Sponsors
+- 🎨 **هوية بصرية فاخرة وأيقونات متجهة (Zero Emojis)**:
+  - تصميم باللغة العربية RTL مبني على ألوان الهية الطبية الرسمية (الزمردي الداكن `#071f18` والذهبي والترميز الطبي).
+  - خلو الكود تماماً من الإيموجيز واستبدالها بأيقونات متجهة SVG عالية الدقة.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+---
 
-### Premium Partners
+## 🛠️ البنية التقنية (Tech Stack)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+| الطبقة | التقنية |
+|---|---|
+| **Back-End** | PHP 8.2+ / Laravel 11.x |
+| **Front-End** | Laravel Blade / Alpine.js 3.x / Tailwind CSS (Standalone CLI) |
+| **Database** | MySQL 8.0 / MariaDB |
+| **Icons & Media** | Custom Vector SVG Icons / 4K Realistic Medical Assets |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 تعليمات التشغيل المحلي (Local Setup)
 
-## Code of Conduct
+### 1. المتطلبات الأساسية
+- مثبت PHP (النسخة 8.2 أو أحدث).
+- مثبت Composer.
+- خادم MySQL أو XAMPP.
+- Node.js (لتشغيل Tailwind CLI).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. خطوات التثبيت والتشغيل
+```bash
+# 1. الاستنساخ والدخول لمجلد المشروع
+git clone https://github.com/Ahmed7705/sema_alkhalij.git
+cd sema_alkhalij
 
-## Security Vulnerabilities
+# 2. تثبيت اعتماديات Composer
+composer install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 3. إنشاء ملف البيئة وإنشاء مفتاح التطبيق
+cp .env.example .env
+php artisan key:generate
 
-## License
+# 4. ضبط قاعدة البيانات في ملف .env
+# DB_DATABASE=sema_alkhalij
+# DB_USERNAME=root
+# DB_PASSWORD=
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 5. تشغيل التهجيرات (Migrations)
+php artisan migrate
+
+# 6. بناء ملفات التنسيق Tailwind CSS
+npx tailwindcss -i ./resources/css/app.css -o ./public/css/app.css --minify
+
+# 7. تشغيل سيرفر التطوير المحلي
+php artisan serve
+```
+سيكون الموقع متاحاً على الرابط المحلي: `http://127.0.0.1:8000`
+
+---
+
+## 🌐 تعليمات النشر والرفع للاستضافة (Deployment Guide)
+
+### 1. ضغط الملفات للرفع (cPanel / Shared / VPS)
+- قم بضغط ملفات المشروع في ملف `project.zip` **باستثناء** مجلد `vendor` و`node_modules` وملف `.env` المحلي.
+
+### 2. إعداد السيرفر وقاعدة البيانات
+1. أنشئ قاعدة بيانات جديدة عبر **MySQL Database Wizard** في الاستضافة ورابطها بمستخدم ذو صلاحيات كاملة.
+2. ارفع `project.zip` وفك الضغط عنه داخل الاستضافة.
+
+### 3. إعداد ملف البيئة الإنتاجي (`.env`)
+```env
+APP_NAME="سيما الخليج للخدمات الطبية"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=اسم_قاعدة_البيانات
+DB_USERNAME=اسم_المستخدم
+DB_PASSWORD=كلمة_المرور
+```
+
+### 4. توجيه النطاق وأوامر تسريع الأداء (Caching)
+- وجه مسار المستند (Document Root) إلى مجلد `/public`.
+- تشغيل أوامر الكاش عبر SSH:
+```bash
+composer install --no-dev --optimize-autoloader
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+---
+
+## 📞 بيانات التواصل الرسمية
+
+- **اسم المنشأة**: شركة سيما الخليج للخدمات الطبية
+- **العنوان**: جدة، حي الرويس، طريق المدينة المنورة، المملكة العربية السعودية
+- **الهاتف والخط الساخن**: `+966 54 588 0082`
+- **البريد الإلكتروني**: c.care@s-sema.com
+- **المستودع الرسمي على GitHub**: [github.com/Ahmed7705/sema_alkhalij](https://github.com/Ahmed7705/sema_alkhalij)
+
+---
+
+حقوق النشر © 2026 **شركة سيما الخليج للخدمات الطبية**. جميع الحقوق محفوظة.
