@@ -161,38 +161,103 @@
 
             @php
             $services = [
-                ['img' => 'nurse-care.png', 'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', 'title' => 'الرعاية الصحية المنزلية', 'desc' => 'برامج مخصصة لكبار السن وأصحاب الأمراض المزمنة.', 'price' => 'تبدأ من 250 ر.س'],
-                ['img' => 'hero-doctor.png', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', 'title' => 'الزيارات الطبية المنزلية', 'desc' => 'أطباء واستشاريون لمعاينة المريض وتشخيص حالته.', 'price' => 'تبدأ من 300 ر.س'],
-                ['img' => 'nurse-care.png', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'التمريض المنزلي 24/7', 'desc' => 'رعاية تمريضية، مؤشرات حيوية، عناية بالجروح.', 'price' => 'تغطية 12/24 ساعة'],
-                ['img' => 'physio-session.png', 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'title' => 'العلاج الطبيعي والتأهيل', 'desc' => 'جلسات تأهيلية لما بعد العمليات والجلطات.', 'price' => 'جلسات فردية وباقات'],
-                ['img' => 'blood-sampling.png', 'icon' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z', 'title' => 'سحب العينات المنزلي', 'desc' => 'سحب عينات مع نتائج إلكترونية سريعة.', 'price' => 'نتائج سريعة'],
-                ['img' => 'blood-sampling.png', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', 'title' => 'الفحوصات المخبرية الشاملة', 'desc' => 'باقات وقائية: كلى، كبد، سكر، فيتامينات.', 'price' => 'باقات بخصم 30%'],
-                ['img' => 'blood-sampling.png', 'icon' => 'M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457-.39-2.823-1.07-4', 'title' => 'الفحوصات الجينية والوراثية', 'desc' => 'تحاليل DNA وبصمة جينية بأحدث التقنيات.', 'price' => 'دقة فائقة وسرية'],
-                ['img' => 'hero-doctor.png', 'icon' => 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z', 'title' => 'الاستشارات الطبية', 'desc' => 'استشارات مرئية وهاتفية مع استشاريين.', 'price' => 'مواعيد مرنة'],
-                ['img' => 'medical-team.png', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'title' => 'خدمات الرعاية للشركات', 'desc' => 'عيادات موقعية وفحوصات دورية للموظفين.', 'price' => 'عقود خاصة'],
+                [
+                    'img' => 'nurse-care.png',
+                    'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+                    'title' => 'الرعاية الصحية المنزلية',
+                    'desc' => 'برامج مخصصة لكبار السن وأصحاب الأمراض المزمنة في بيئة منزلية دافئة وآمنة.',
+                    'price' => 'تبدأ من 250 ر.س',
+                    'gradient' => 'from-emerald-900/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'hero-doctor.png',
+                    'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
+                    'title' => 'الزيارات الطبية المنزلية',
+                    'desc' => 'أطباء واستشاريون لمعاينة المريض، التشخيص الدقيق، ووصف العلاج في المنزل.',
+                    'price' => 'تبدأ من 300 ر.س',
+                    'gradient' => 'from-teal-900/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'nurse-care.png',
+                    'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+                    'title' => 'التمريض المنزلي 24/7',
+                    'desc' => 'رعاية تمريضية متواصلة، متابعة العلامات الحيوية، العناية بالجروح والمغذيات.',
+                    'price' => 'تغطية 12/24 ساعة',
+                    'gradient' => 'from-cyan-900/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'physio-session.png',
+                    'icon' => 'M13 10V3L4 14h7v7l9-11h-7z',
+                    'title' => 'العلاج الطبيعي والتأهيل',
+                    'desc' => 'جلسات تأهيلية مخصصة لما بعد العمليات والجلطات وإصابات العظام والعضلات.',
+                    'price' => 'جلسات فردية وباقات',
+                    'gradient' => 'from-green-900/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'blood-sampling.png',
+                    'icon' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
+                    'title' => 'سحب العينات المنزلي',
+                    'desc' => 'أخصائي سحب عينات يحضر لمنزلك بأدوات معقمة مع نتائج إلكترونية سريعة.',
+                    'price' => 'نتائج سريعة',
+                    'gradient' => 'from-emerald-950/85 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'blood-sampling.png',
+                    'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+                    'title' => 'الفحوصات المخبرية الشاملة',
+                    'desc' => 'باقات فحوصات وقائية شاملة: الوظائف، الفيتامينات، الدهون، والسكر بنسب دقيقة.',
+                    'price' => 'باقات بخصم 30%',
+                    'gradient' => 'from-teal-950/85 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'medical-team.png',
+                    'icon' => 'M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457-.39-2.823-1.07-4',
+                    'title' => 'الفحوصات الجينية والوراثية',
+                    'desc' => 'تحاليل DNA وبصمة جينية وكشف مبكر عن الأمراض الوراثية بأعلى سرية.',
+                    'price' => 'دقة فائقة وسرية',
+                    'gradient' => 'from-slate-900/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'hero-doctor.png',
+                    'icon' => 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
+                    'title' => 'الاستشارات الطبية',
+                    'desc' => 'استشارات طارئة ومرئية هاتفية مع استشاريين متميزين لمتابعة حالتك الصحّية.',
+                    'price' => 'مواعيد مرنة',
+                    'gradient' => 'from-cyan-950/80 via-primary/60 to-transparent'
+                ],
+                [
+                    'img' => 'medical-team.png',
+                    'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+                    'title' => 'خدمات الرعاية للشركات', 'desc' => 'تجهيز عيادات موقعية، فحوصات دورية للموظفين، وتغطية الفعاليات والمؤتمرات.',
+                    'price' => 'عقود خاصة',
+                    'gradient' => 'from-emerald-900/80 via-primary/60 to-transparent'
+                ],
             ];
             @endphp
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($services as $service)
-                <div class="medical-card group">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="{{ asset('images/' . $service['img']) }}" alt="{{ $service['title'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;">
-                        <div class="absolute inset-0 bg-gradient-to-t from-primary/75 to-transparent"></div>
-                        <span class="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 bg-accent text-white text-[10px] font-bold rounded-md shadow-sm">{{ $service['price'] }}</span>
-                    </div>
-                    <div class="p-4 space-y-2.5">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-medical-50 text-accent flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $service['icon'] }}"/></svg>
+                <div class="medical-card group border border-gray-100 hover:border-accent/40 shadow-soft hover:shadow-card transition-all duration-300 rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="{{ asset('images/' . $service['img']) }}" alt="{{ $service['title'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;">
+                            <div class="absolute inset-0 bg-gradient-to-t {{ $service['gradient'] }}"></div>
+                            <span class="absolute bottom-3 right-3 px-3 py-1 bg-accent text-white text-[11px] font-bold rounded-lg shadow-md border border-white/20">{{ $service['price'] }}</span>
+                            <div class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/90 backdrop-blur-md text-primary flex items-center justify-center shadow-sm">
+                                <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $service['icon'] }}"/></svg>
                             </div>
-                            <h3 class="font-bold text-primary text-sm group-hover:text-accent transition-colors">{{ $service['title'] }}</h3>
                         </div>
-                        <p class="text-xs text-gray-500 leading-relaxed">{{ $service['desc'] }}</p>
-                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                            <a href="{{ url('/services') }}" class="text-xs font-bold text-primary hover:text-accent transition-colors">تفاصيل</a>
-                            <button @click="selectedService = '{{ $service['title'] }}'; callbackModalOpen = true" class="btn-accent text-[11px] py-1.5 px-3.5 rounded-lg shadow-sm hover:shadow transition-all">احجز الآن</button>
+                        <div class="p-5 space-y-2.5">
+                            <h3 class="font-black text-primary text-base group-hover:text-accent transition-colors">{{ $service['title'] }}</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">{{ $service['desc'] }}</p>
                         </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-gray-50 mt-2">
+                        <a href="{{ url('/services') }}" class="text-xs font-bold text-primary hover:text-accent transition-colors flex items-center gap-1">
+                            <span>التفاصيل</span>
+                            <svg class="w-3 h-3 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                        </a>
+                        <button @click="selectedService = '{{ $service['title'] }}'; callbackModalOpen = true" class="btn-accent text-xs py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-all font-bold">احجز الآن</button>
                     </div>
                 </div>
                 @endforeach
