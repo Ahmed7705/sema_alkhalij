@@ -16,7 +16,17 @@ class SettingsManagerController extends Controller
 
     public function update(Request $request)
     {
-        $inputs = $request->except('_token');
+        // Handle logo upload if provided
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $file->move(public_path('images'), 'logo.png');
+            SiteSetting::updateOrCreate(
+                ['key' => 'site_logo'],
+                ['value' => 'images/logo.png']
+            );
+        }
+
+        $inputs = $request->except(['_token', 'logo']);
 
         foreach ($inputs as $key => $value) {
             SiteSetting::updateOrCreate(
@@ -25,6 +35,6 @@ class SettingsManagerController extends Controller
             );
         }
 
-        return back()->with('success', 'تم حفظ إعدادات الموقع ونصوص CMS بنجاح.');
+        return back()->with('success', 'تم حفظ وتحديث إعدادات الموقع والنظام فوراً.');
     }
 }

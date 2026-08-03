@@ -12,7 +12,7 @@
                             {{ Auth::check() ? mb_substr(Auth::user()->name, 0, 2) : 'ضيف' }}
                         </div>
                         <span class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center text-[10px] font-bold border-2 border-primary" title="حساب موثق">
-                            ✓
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                         </span>
                     </div>
                     
@@ -59,7 +59,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             <div class="p-4 rounded-2xl bg-emerald-50 text-emerald-700 font-bold text-xs border border-emerald-100 flex items-center justify-between">
                 <span>{{ session('success') }}</span>
-                <span class="font-black text-sm">✓</span>
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
             </div>
         </div>
     @endif
@@ -123,8 +123,8 @@
                         </div>
                     @else
                         <div class="text-center py-12 space-y-3">
-                            <div class="w-14 h-14 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto text-xl font-bold">
-                                📋
+                            <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto border border-teal-100">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </div>
                             <h4 class="text-sm font-black text-primary">لا توجد زيارات منزلية محجوزة حالياً</h4>
                             <p class="text-xs text-gray-500 max-w-sm mx-auto">يمكنك طلب زيارة كشف طبيب عام، تمريض منزلي، أو تحليل مخبري فوراً.</p>
@@ -173,8 +173,8 @@
                         </div>
                     @else
                         <div class="text-center py-12 space-y-3">
-                            <div class="w-14 h-14 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto text-xl font-bold">
-                                🛒
+                            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto border border-blue-100">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                             </div>
                             <h4 class="text-sm font-black text-primary">لا توجد طلبات سابقة بالمتجر</h4>
                             <p class="text-xs text-gray-500 max-w-sm mx-auto">تصفح الأجهزة والمستلزمات الطبية المعتمدة بخصومات وتوصيل سريع.</p>
@@ -205,8 +205,8 @@
                         </div>
                     @else
                         <div class="text-center py-12 space-y-3">
-                            <div class="w-14 h-14 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto text-xl font-bold">
-                                📍
+                            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto border border-amber-100">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
                             <h4 class="text-sm font-black text-primary">لم تقم بإضافة عناوين منزليّة بعد</h4>
                             <p class="text-xs text-gray-500 max-w-sm mx-auto">يتم حفظ عنوانك تلقائياً عند إجراء أول حجز زيارة منزلية أو طلب شراء.</p>

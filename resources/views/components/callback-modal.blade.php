@@ -12,9 +12,9 @@
             <!-- Header Banner -->
             <div class="bg-primary px-6 py-5 text-white flex items-center justify-between relative overflow-hidden">
                 <div class="relative z-10">
-                    <span class="inline-block text-xs font-bold text-accent bg-white/10 px-2.5 py-0.5 rounded-full mb-1">خدمة سريعة</span>
-                    <h3 class="text-xl font-bold">اطلب معاودة اتصال مجاني</h3>
-                    <p class="text-xs text-medical-200 mt-1">أدخل بياناتك وسيتواصل معك الفريق الطبي فورًا</p>
+                    <span class="inline-block text-xs font-bold text-accent bg-white/10 px-2.5 py-0.5 rounded-full mb-1">حجز سريع</span>
+                    <h3 class="text-xl font-bold">طلب خدمة طبية</h3>
+                    <p class="text-xs text-medical-200 mt-1">أدخل بياناتك وسيتواصل معك الفريق الطبي فوراً لتأكيد طلبك</p>
                 </div>
                 <button @click="callbackModalOpen = false" class="text-medical-200 hover:text-white transition-colors p-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -22,7 +22,7 @@
             </div>
 
             <!-- Form Content -->
-            <form action="#" method="POST" @submit.prevent="alert('تم استلام طلبك بنجاح! سيتواصل معك فريق سيما الخليج فورًا.'); callbackModalOpen = false;" class="p-6 space-y-4">
+            <form action="#" method="POST" @submit.prevent="alert('تم استلام طلب الخدمة بنجاح! سيتواصل معك فريق سيما الخليج فورًا.'); callbackModalOpen = false;" class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1.5">الاسم الكريم <span class="text-red-500">*</span></label>
                     <input type="text" required placeholder="مثال: عبد الله أحمد" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
@@ -50,14 +50,14 @@
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full btn-accent py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg">
-                        <span>إرسال الطلب الآن</span>
+                    <button type="submit" class="w-full btn-accent py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                        <span>إرسال طلب الخدمة الآن</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
                 </div>
 
                 <p class="text-[11px] text-gray-400 text-center">
-                    نلترم بالحفاظ على سرية وخصوصية كافة بياناتك الطبية والشخصية وفقًا لنظام PDPL.
+                    نلتزم بالحفاظ على سرية وخصوصية كافة بياناتك الطبية والشخصية وفقًا لنظام PDPL.
                 </p>
             </form>
 

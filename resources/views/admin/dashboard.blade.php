@@ -8,8 +8,8 @@
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-gray-500">إجمالي الإيرادات (خدمات + منتجات)</span>
-                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
-                    💰
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold border border-emerald-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </div>
             <div class="text-2xl font-black text-primary dir-ltr text-right">
@@ -26,8 +26,8 @@
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-gray-500">إجمالي الحجوزات والزيارات</span>
-                <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center font-bold">
-                    📋
+                <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold border border-teal-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
             </div>
             <div class="text-2xl font-black text-primary dir-ltr text-right">
@@ -42,8 +42,8 @@
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-gray-500">إجمالي طلبات المتجر</span>
-                <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
-                    🛒
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold border border-blue-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 </div>
             </div>
             <div class="text-2xl font-black text-primary dir-ltr text-right">
@@ -58,8 +58,8 @@
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-gray-500">المستخدمين المسجلين</span>
-                <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold">
-                    👥
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold border border-purple-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
             </div>
             <div class="text-2xl font-black text-primary dir-ltr text-right">
@@ -87,7 +87,10 @@
         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <h3 class="font-black text-sm text-primary">أحدث الحجوزات الطبية المنزلية</h3>
-                <a href="{{ route('admin.bookings.index') }}" class="text-xs font-bold text-accent hover:underline">عرض الكل ←</a>
+                <a href="{{ route('admin.bookings.index') }}" class="text-xs font-bold text-accent hover:underline flex items-center gap-1">
+                    <span>عرض الكل</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                </a>
             </div>
 
             <div class="space-y-3">
@@ -109,7 +112,10 @@
         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <h3 class="font-black text-sm text-primary">أحدث طلبات المتجر والمنتجات</h3>
-                <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-accent hover:underline">عرض الكل ←</a>
+                <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-accent hover:underline flex items-center gap-1">
+                    <span>عرض الكل</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                </a>
             </div>
 
             <div class="space-y-3">

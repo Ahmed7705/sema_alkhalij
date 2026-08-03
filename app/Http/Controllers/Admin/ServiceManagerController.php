@@ -76,7 +76,15 @@ class ServiceManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('image')) {
+        if ($request->has('remove_image')) {
+            if ($service->image && file_exists(public_path($service->image))) {
+                @unlink(public_path($service->image));
+            }
+            $validated['image'] = null;
+        } elseif ($request->hasFile('image')) {
+            if ($service->image && file_exists(public_path($service->image))) {
+                @unlink(public_path($service->image));
+            }
             $file = $request->file('image');
             $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images/services'), $filename);
@@ -91,6 +99,9 @@ class ServiceManagerController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
+        if ($service->image && file_exists(public_path($service->image))) {
+            @unlink(public_path($service->image));
+        }
         $service->delete();
 
         return redirect()->route('admin.services.index')->with('success', 'تم حذف الخدمة الطبية بنجاح.');

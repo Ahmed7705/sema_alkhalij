@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -18,12 +19,13 @@ class SearchController extends Controller
 
         if (empty($q)) {
             return view('admin.search', [
-                'query' => '',
+                'q' => '',
                 'users' => collect(),
                 'orders' => collect(),
                 'bookings' => collect(),
                 'products' => collect(),
                 'services' => collect(),
+                'articles' => collect(),
             ]);
         }
 
@@ -49,6 +51,10 @@ class SearchController extends Controller
         $services = Service::where('title', 'like', "%{$q}%")
             ->take(10)->get();
 
-        return view('admin.search', compact('q', 'users', 'orders', 'bookings', 'products', 'services'));
+        $articles = BlogPost::where('title', 'like', "%{$q}%")
+            ->orWhere('excerpt', 'like', "%{$q}%")
+            ->take(10)->get();
+
+        return view('admin.search', compact('q', 'users', 'orders', 'bookings', 'products', 'services', 'articles'));
     }
 }

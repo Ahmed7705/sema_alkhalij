@@ -1,16 +1,4 @@
 <div>
-    {{-- Floating Cart Trigger Button (Bottom Left) --}}
-    <button wire:click="openDrawer" 
-            class="fixed bottom-6 left-6 z-40 bg-primary hover:bg-accent text-white p-3.5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center group focus:outline-none">
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        
-        @if($cartCount > 0)
-            <span class="absolute -top-2 -right-2 bg-accent text-white text-[11px] font-black w-6 h-6 rounded-full border-2 border-white flex items-center justify-center shadow-md animate-pulse">
-                {{ $cartCount }}
-            </span>
-        @endif
-    </button>
-
     {{-- Centered Global Store Luxury Modal --}}
     @if($isOpen)
         <div class="fixed inset-0 z-50 overflow-y-auto bg-primary/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
@@ -103,8 +91,8 @@
                         @endforeach
                     @else
                         <div class="text-center py-16 space-y-4 my-auto">
-                            <div class="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto text-2xl font-bold">
-                                🛒
+                            <div class="w-16 h-16 rounded-2xl bg-medical-50 text-primary flex items-center justify-center mx-auto border border-primary/10">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                             </div>
                             <h4 class="text-base font-black text-primary">سلة التسوق فارغة حالياً</h4>
                             <p class="text-xs text-gray-500 max-w-xs mx-auto">تصفح الخدمات والمنتجات الطبية وأضف ما تحتاجه لسلتك بسهولة.</p>
@@ -134,7 +122,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <a href="{{ route('checkout') }}" class="btn-accent py-3 px-6 rounded-xl font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                                 <span>متابعة الشراء والدفع</span>
-                                <span>&larr;</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                             </a>
                             
                             <button wire:click="closeDrawer" class="py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs transition-all">

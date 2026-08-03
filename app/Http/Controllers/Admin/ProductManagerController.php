@@ -78,7 +78,15 @@ class ProductManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('image')) {
+        if ($request->has('remove_image')) {
+            if ($product->image && file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
+            $validated['image'] = null;
+        } elseif ($request->hasFile('image')) {
+            if ($product->image && file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
             $file = $request->file('image');
             $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images/products'), $filename);
@@ -93,6 +101,9 @@ class ProductManagerController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        if ($product->image && file_exists(public_path($product->image))) {
+            @unlink(public_path($product->image));
+        }
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'تم حذف المنتج الطبي بنجاح.');
