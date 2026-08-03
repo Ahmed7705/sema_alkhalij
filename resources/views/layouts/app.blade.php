@@ -127,6 +127,12 @@
     <!-- Request Callback Modal -->
     <x-callback-modal />
 
+    <!-- Livewire Service Booking Modal Wizard -->
+    @livewire('service-booking-modal')
+
+    <!-- Livewire Shopping Cart Drawer -->
+    @livewire('cart-drawer')
+
     <!-- Cookie Consent Banner -->
     <x-cookie-banner />
 

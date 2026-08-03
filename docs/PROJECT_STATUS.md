@@ -1,28 +1,30 @@
-# Project Status
+# Project Status — Sema Al-Khalij Medical Services
 
-## Completed
-- [x] Project Setup: Laravel 9.x created
-- [x] Document structure created (`/docs/`)
-- [x] `logo.png` copied to `public/images/logo.png`
-- [x] Livewire 2.x & NPM dependencies installation in progress
+- **Phase 1: Foundation & Core Services:** 100% Completed
+- **Phase 2: Authentication & Security:** 100% Completed
+- **Phase 3: Users & RBAC Permissions:** 100% Completed
+- **Phase 4: CMS & System Settings Engine:** 100% Completed
+- **Phase 5: Public Marketing Website Layout & Home Page:** 100% Completed
+- **Phase 6: Medical Services Catalog & Detail Pages:** 100% Completed
+- **Phase 7: Home-Visit Service Booking Wizard:** 100% Completed
+- **Phase 8: E-commerce Medical Products Store:** 100% Completed
+- **Phase 9: Dynamic Shopping Cart & Wishlist System:** 100% Completed
+- **Phase 10: Unified Checkout & ZATCA e-Invoicing System:** 100% Completed
+- **Phase 11: Patient & Customer Portal Dashboard:** 100% Completed
+- **Phase 12: Comprehensive Admin Control Panel:** 100% Completed
 
-## In Progress
-- [ ] Installing Tailwind CSS & Alpine.js & Lucide icons
-- [ ] Setting up Design Tokens & Master Blade Layout
-
-## Not Started
-- [ ] Public Marketing Pages (Home, About, Services, Products, Blog, Contact, FAQ, Legal)
-- [ ] Authentication (Email/Password + OTP, Apple/Google)
-- [ ] Customer Dashboard
-- [ ] Unified Cart & Wishlist (Livewire)
-- [ ] Checkout & Payment Strategies (mada, Visa/Mastercard, Apple Pay, Tabby, Tamara)
-- [ ] Admin Dashboard (CMS, Services, Products, Orders, Bookings, Analytics)
-
-## Known Issues
-- None
-
-## Current Task
-- Completing package installations (Livewire, Tailwind CSS, Alpine.js, Lucide Icons)
-
-## Exact Next Task
-- Configure Tailwind CSS with medical green color tokens, Tajawal font, and build standard layout structure.
+## Active Routes:
+- `/` -> HomeController@index
+- `/services` -> ServiceController@index
+- `/services/{slug}` -> ServiceController@show
+- `/products` -> ProductController@index
+- `/products/{slug}` -> ProductController@show
+- `/checkout` -> Checkout Livewire View
+- `/profile` -> ProfileController@index
+- `/admin` -> DashboardController@index (Protected by AdminMiddleware)
+- `/admin/services` -> ServiceManagerController
+- `/admin/products` -> ProductManagerController
+- `/admin/bookings` -> BookingManagerController
+- `/admin/orders` -> OrderManagerController
+- `/admin/settings` -> SettingsManagerController
+- `/admin/users` -> UserManagerController

@@ -12,33 +12,78 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'avatar',
+        'google_id',
+        'apple_id',
+        'verification_code',
+        'code_expires_at',
+        'email_verified_at',
         'password',
+        'role',
+        'is_active',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'code_expires_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(Address::class)->where('is_default', true);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function hasRole(string $roleSlug): bool
+    {
+        if ($this->role === $roleSlug || $this->role === 'admin') {
+            return true;
+        }
+
+        return $this->roles->pluck('slug')->contains($roleSlug);
+    }
+
+    public function hasPermission(string $permissionSlug): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        foreach ($this->roles as $role) {
+            if ($role->permissions->pluck('slug')->contains($permissionSlug)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin' || $this->hasRole('admin');
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer' || $this->role === null;
+    }
 }
