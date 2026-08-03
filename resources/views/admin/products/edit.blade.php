@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between border-b border-gray-100 pb-4">
             <div>
                 <h3 class="font-black text-lg text-primary">تعديل: {{ $product->title }}</h3>
-                <p class="text-xs text-gray-500">قم بتحديث الكميات المتوفرة بالرمز أو السعر أو حالة العرض</p>
+                <p class="text-xs text-gray-500">قم بتحديث الكميات المتوفرة والصورة أو السعر أو حالة العرض</p>
             </div>
             
             <a href="{{ route('admin.products.index') }}" class="btn-outline py-2 px-4 rounded-xl text-xs font-bold">
@@ -14,7 +14,7 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" class="space-y-5">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
 
@@ -56,6 +56,19 @@
                 </div>
             </div>
 
+            {{-- Image File Input & Preview --}}
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-gray-700">صورة المنتج الطبي</label>
+                @if($product->image)
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 w-fit">
+                        <img src="{{ asset($product->image) }}" alt="{{ $product->title }}" class="w-12 h-12 object-contain rounded-lg">
+                        <span class="text-xs font-bold text-gray-600">الصورة الحالية للمنتج</span>
+                    </div>
+                @endif
+                <input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-600 focus:outline-none cursor-pointer">
+                <span class="text-[10px] text-gray-400 block">اختر صورة جديدة إذا كنت ترغب في استبدال الصورة الحالية</span>
+            </div>
+
             <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1.5">الوصف المختصر <span class="text-red-500">*</span></label>
                 <input type="text" name="short_description" value="{{ old('short_description', $product->short_description) }}" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary">
@@ -80,7 +93,7 @@
 
             <div class="pt-4 border-t border-gray-100">
                 <button type="submit" class="w-full btn-accent py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg">
-                    حفظ التعديلات على المنتج الآن
+                    حفظ التعديلات والصورة الآن
                 </button>
             </div>
         </form>

@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between border-b border-gray-100 pb-4">
             <div>
                 <h3 class="font-black text-lg text-primary">نموذج إضافة خدمة جديدة</h3>
-                <p class="text-xs text-gray-500">أدخل بيانات وتفاصيل الخدمة الطبية لتظهر في الواجهة والحجوزات</p>
+                <p class="text-xs text-gray-500">أدخل بيانات وتفاصيل وصورة الخدمة الطبية لتظهر في الواجهة والحجوزات</p>
             </div>
             
             <a href="{{ route('admin.services.index') }}" class="btn-outline py-2 px-4 rounded-xl text-xs font-bold">
@@ -14,7 +14,7 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.services.store') }}" method="POST" class="space-y-5">
+        <form action="{{ route('admin.services.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -51,9 +51,16 @@
                 </div>
             </div>
 
+            {{-- Image File Input --}}
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1.5">صورة الخدمة الطبية</label>
+                <input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-600 focus:outline-none cursor-pointer">
+                <span class="text-[10px] text-gray-400 block mt-1">أنواع الملفات المسموحة: PNG, JPG, WEBP (حجم أقصى 4MB)</span>
+            </div>
+
             <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1.5">الوصف المختصر <span class="text-red-500">*</span></label>
-                <input type="text" name="short_description" required placeholder="وصف مقتضب يظهر في بطاقات الأجهزة والصفحة الرئيسية..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary">
+                <input type="text" name="short_description" required placeholder="وصف مقتضب يظهر في بطاقات الخدمات والصفحة الرئيسية..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary">
             </div>
 
             <div>

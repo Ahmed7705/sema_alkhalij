@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between border-b border-gray-100 pb-4">
             <div>
                 <h3 class="font-black text-lg text-primary">نموذج إضافة منتج طبي جديد</h3>
-                <p class="text-xs text-gray-500">أدخل تفاصيل الجهاز، رمز SKU، الكمية بالمخزون والأسعار</p>
+                <p class="text-xs text-gray-500">أدخل تفاصيل الجهاز، رمز SKU، الكمية بالمخزون، الصورة والأسعار</p>
             </div>
             
             <a href="{{ route('admin.products.index') }}" class="btn-outline py-2 px-4 rounded-xl text-xs font-bold">
@@ -14,7 +14,7 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.products.store') }}" method="POST" class="space-y-5">
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -54,6 +54,13 @@
                     <label class="block text-xs font-bold text-gray-700 mb-1.5">المخزون بالمستودع <span class="text-red-500">*</span></label>
                     <input type="number" name="stock" value="50" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary">
                 </div>
+            </div>
+
+            {{-- Image File Input --}}
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1.5">صورة المنتج الطبي</label>
+                <input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-600 focus:outline-none cursor-pointer">
+                <span class="text-[10px] text-gray-400 block mt-1">أنواع الملفات المسموحة: PNG, JPG, WEBP (حجم أقصى 4MB)</span>
             </div>
 
             <div>
