@@ -37,6 +37,19 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+// Auth & Profile Routes
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');
+
 // Legal Pages
 Route::get('/privacy-policy', function () {
     return view('legal.privacy');

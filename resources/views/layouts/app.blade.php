@@ -66,7 +66,46 @@
 
     @stack('styles')
 </head>
-<body class="bg-surface text-darktext antialiased font-sans min-h-screen flex flex-col justify-between" x-data="{ callbackModalOpen: false, searchOpen: false, selectedService: '' }">
+<body class="bg-surface text-darktext antialiased font-sans min-h-screen flex flex-col justify-between" 
+      x-data="{ 
+          callbackModalOpen: false, 
+          searchOpen: false, 
+          selectedService: '',
+          cartOpen: false,
+          checkoutOpen: false,
+          cart: [],
+          addToCart(product) {
+              let existing = this.cart.find(i => i.id === product.id);
+              if (existing) {
+                  existing.qty += (product.qty || 1);
+              } else {
+                  this.cart.push({
+                      id: product.id,
+                      title: product.title,
+                      price: product.price,
+                      img: product.img,
+                      qty: product.qty || 1
+                  });
+              }
+              this.cartOpen = true;
+          },
+          removeFromCart(id) {
+              this.cart = this.cart.filter(i => i.id !== id);
+          },
+          updateQty(id, delta) {
+              let item = this.cart.find(i => i.id === id);
+              if (item) {
+                  item.qty += delta;
+                  if (item.qty <= 0) this.removeFromCart(id);
+              }
+          },
+          get cartSubtotal() {
+              return this.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+          },
+          get cartCount() {
+              return this.cart.reduce((sum, item) => sum + item.qty, 0);
+          }
+      }">
 
     <!-- Navbar / Header -->
     <x-header />
@@ -75,6 +114,9 @@
     <main class="flex-grow">
         {{ $slot }}
     </main>
+
+    <!-- Shopping Cart Drawer & Checkout Component -->
+    @include('components.cart-drawer')
 
     <!-- Footer -->
     <x-footer />
