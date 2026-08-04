@@ -2,21 +2,20 @@
 
 All notable changes and phase releases are documented in this file.
 
-## Phase 3 Release — Customer / Patient Portal [2026-08-04]
+## Phase 3 Final Release — Customer / Patient Portal [2026-08-04]
 
 ### Added:
-- **`AddressController`**: Built complete address management controller (`store`, `update`, `destroy`, `setDefault`) with IDOR authorization (`user_id === Auth::id()`).
-- **Customer Booking & Order Detail Controllers/Views**:
-  - `ProfileController::showBooking()` & `resources/views/profile/booking-show.blade.php`: Visual 6-step workflow, lab sample tracking, and private medical report PDF download button.
-  - `ProfileController::showOrder()` & `resources/views/profile/order-show.blade.php`: Item breakdown, dynamic VAT rate from `SettingsService`, and payment status.
-- **Phase 3 Feature Test Suite** (`tests/Feature/Phase3CustomerPortalTest.php`): 11 feature tests for customer profile access, profile updates with identity fields, address CRUD IDOR protection, booking/order detail IDOR protection, and secure medical report PDF downloads.
+- **`WishlistController`**: Implemented `index()`, `toggle()`, and `destroy()` methods with server-side IDOR authorization (`user_id === Auth::id()`).
+- **Wishlist Routes**: Registered `GET /wishlist`, `POST /wishlist/toggle`, `DELETE /wishlist/{wishlistItem}` under `auth` middleware.
+- **7-Stage Lab Sample Workflow Tracker**: Added `assigned` step to render all 7 approved lab sample states (`registered` → `assigned` → `sample_collected` → `sent_to_lab` → `received_by_lab` → `processing` → `result_ready`).
+- **Password Security**: Validated current password with `Hash::check()` and updated hash via `Hash::make()`.
+- **Phase 3 Feature Test Suite**: Added 5 new tests in `tests/Feature/Phase3CustomerPortalTest.php` covering Wishlist CRUD & IDOR, Lab Sample 7-stage workflow, Password updates & validation, and Header customer isolation.
 
 ### Updated:
-- **`ProfileController`**: Expanded `index()` and `update()` methods to support tabbed dashboard views, identity type/number updates, lab sample tracking, and wishlist items.
-- **`resources/views/profile.blade.php`**: Redesigned tabbed Customer Portal UI (Overview, Bookings, Orders, Medical Reports, Lab Samples, Addresses, Wishlist, Profile Edit).
-- **`User` & `Booking` Models**: Added `$fillable` fields (`company_id`, `identification_type`, `identification_number`) and relationships (`assignedProvider`, `labSample`, `medicalReports`).
+- **`2026_08_03_000010_create_cart_and_wishlist_tables.php`**: Made `session_id` column nullable in `wishlist_items` migration table.
+- **`profile.blade.php`**: Rendered all 7 lab sample workflow steps in visual progress tracker.
 
 ### Verified:
-- `php artisan test`: **32 / 32 tests passed cleanly (18.49s)**.
-- `php artisan route:list`: **84 active routes**.
+- `php artisan test`: **37 / 37 tests passed cleanly (9.87s)** with 0 failures.
+- `php artisan route:list`: **87 active routes**.
 - Git repository unpushed as instructed.

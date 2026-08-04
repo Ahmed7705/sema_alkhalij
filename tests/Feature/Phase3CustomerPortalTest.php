@@ -313,7 +313,7 @@ class Phase3CustomerPortalTest extends TestCase
         // 2. Customer A views wishlist index
         $indexResponse = $this->actingAs($customerA)->getJson('/wishlist');
         $indexResponse->assertStatus(200);
-        $indexResponse->assertJsonFragment(['product_id' => $product->id]);
+        $indexResponse->assertJsonFragment(['product_id' => (string)$product->id]);
 
         $itemA = WishlistItem::where('user_id', $customerA->id)->first();
 

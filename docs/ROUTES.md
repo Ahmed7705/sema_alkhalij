@@ -30,6 +30,9 @@ This document lists all active and verified routes across the system.
 - `PUT /addresses/{address}` — Update Address (`addresses.update`)
 - `DELETE /addresses/{address}` — Delete Address (`addresses.destroy`)
 - `POST /addresses/{address}/set-default` — Set Default Address (`addresses.set-default`)
+- `GET /wishlist` — View Wishlist Items (`wishlist.index`)
+- `POST /wishlist/toggle` — Add/Remove Wishlist Item (`wishlist.toggle`)
+- `DELETE /wishlist/{wishlistItem}` — Delete Wishlist Item (`wishlist.destroy`)
 
 ## Staff Operations Portal Routes [Protected: `auth`, Role Check]
 - `GET /staff/dashboard` — Staff Provider Dashboard (`staff.dashboard`)
