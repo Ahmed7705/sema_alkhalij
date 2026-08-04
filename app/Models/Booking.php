@@ -36,7 +36,10 @@ class Booking extends Model
                 $model->uuid = (string) Str::uuid();
             }
             if (empty($model->booking_number)) {
-                $model->booking_number = 'BK-' . strtoupper(Str::random(6));
+                $year = date('Y');
+                $latestBooking = static::where('booking_number', 'LIKE', "BK-{$year}-%")->orderBy('id', 'desc')->first();
+                $seq = $latestBooking ? ((int) substr($latestBooking->booking_number, -5)) + 1 : 10001;
+                $model->booking_number = "BK-{$year}-{$seq}";
             }
         });
     }
@@ -49,5 +52,20 @@ class Booking extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function assignedProvider()
+    {
+        return $this->belongsTo(User::class, 'assigned_provider_id');
+    }
+
+    public function labSample()
+    {
+        return $this->hasOne(LabSample::class, 'booking_id');
+    }
+
+    public function medicalReports()
+    {
+        return $this->hasMany(MedicalReport::class, 'booking_id');
     }
 }

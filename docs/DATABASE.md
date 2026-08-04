@@ -1,58 +1,32 @@
-# Database Documentation — Sema Al-Khalij Medical Services
+# Database Schema & Models Documentation — Sema Al-Khalij Medical Services
 
-> **100% Complete Implementation** of Section 19 of `sema-alkhalij-full-prompt .md`.
+This document details the database tables, relationships, and model schemas implemented in MySQL.
 
-## Database Configuration
-- Engine: MySQL 8.0+
-- Database: `sema_alkhalij_db`
-- Character Set: `utf8mb4_unicode_ci`
+## Phase 3 Core Tables & Eloquent Models
 
----
+### 1. `users` Table (`App\Models\User`)
+- `id`, `name`, `email`, `phone`, `password`, `role`, `company_id`
+- `identification_type` (`saudi_id`, `iqama`, `border_no`, `gcc_id`)
+- `identification_number`
+- `avatar`, `is_active`
 
-## Complete Table Schema Listing (33 Tables)
+### 2. `addresses` Table (`App\Models\Address`)
+- `id`, `user_id` (foreign key to `users`), `label`, `city`, `district`, `street`, `building_no`, `additional_info`, `is_default`, `lat`, `lng`
 
-### 1. Users & RBAC Permissions
-- **`users`**: User accounts (customer & admin), social login IDs (Google/Apple), email OTP code, phone, avatar.
-- **`roles`**: System roles (Admin, Doctor, Customer, Nurse).
-- **`permissions`**: Fine-grained access permissions.
-- **`role_permission`**: Pivot table connecting roles & permissions.
-- **`role_user`**: Pivot table connecting users & roles.
-- **`addresses`**: User delivery & home visit addresses (`label`, `city`, `district`, `street`, `building_no`, `additional_info`, `lat`, `lng`, `is_default`).
+### 3. `bookings` Table (`App\Models\Booking`)
+- `id`, `uuid`, `booking_number`, `user_id`, `service_id`, `booking_date`, `booking_time`, `city`, `address`, `phone`, `total_price`, `status`, `payment_status`, `payment_method`, `assigned_provider_id`, `assigned_by`, `assigned_at`, `accepted_at`, `started_at`, `completed_at`, `verified_at`
+- Relationships: `belongsTo(User)`, `belongsTo(Service)`, `belongsTo(User, 'assigned_provider_id')`, `hasOne(LabSample)`, `hasMany(MedicalReport)`
 
-### 2. Categories, Services, Products & Cities
-- **`categories`**: General categories for services & products.
-- **`services`**: Home medical visit services, nursing, lab screening, physiotherapy.
-- **`products`**: Medical devices, glucometers, blood pressure monitors, wheelchairs.
-- **`product_images`**: Product gallery images with alt text.
-- **`cities`**: Available delivery & service cities in Saudi Arabia.
+### 4. `orders` Table (`App\Models\Order`)
+- `id`, `uuid`, `order_number`, `user_id`, `subtotal`, `total_price`, `total_amount`, `shipping_address`, `phone`, `status`, `payment_status`, `payment_method`
+- Relationships: `belongsTo(User)`, `hasMany(OrderItem)`
 
-### 3. Cart & Wishlist (Polymorphic)
-- **`cart_items`**: Polymorphic cart supporting services & products (`scheduled_date`, `scheduled_time`).
-- **`wishlist_items`**: Polymorphic user favorites.
+### 5. `lab_samples` Table (`App\Models\LabSample`)
+- `id`, `visit_code` (Unique `VIS-2026-XXXXXX`), `booking_id`, `patient_id`, `company_id`, `sample_status` (`registered`, `assigned`, `sample_collected`, `sent_to_lab`, `received_by_lab`, `processing`, `result_ready`)
 
-### 4. Orders & Bookings
-- **`orders`**: Product ecommerce orders with shipping address & status tracking.
-- **`order_items`**: Line items inside each order.
-- **`bookings`**: Medical home-visit bookings with date, time, status, address.
+### 6. `medical_reports` Table (`App\Models\MedicalReport`)
+- `id`, `lab_sample_id`, `patient_id`, `booking_id`, `company_id`, `visit_code`, `file_path`, `file_name`, `file_size`, `mime_type`, `uploaded_by`
 
-### 5. Payments, Refunds & Coupons
-- **`coupons`**: Discount coupons (percentage/fixed).
-- **`payments`**: Polymorphic payment records (mada, visa, mastercard, applepay, tabby, tamara).
-- **`refunds`**: Payment refund records.
-
-### 6. Marketing & Blog Content
-- **`blog_categories`**: Medical blog categories.
-- **`blog_posts`**: Medical blog articles with SEO metadata.
-- **`faqs`**: Frequently asked questions grouped by category.
-- **`reviews`**: Polymorphic user ratings & comments.
-- **`certifications`**: Medical accreditations logos.
-- **`partners`**: Corporate & medical partners logos.
-- **`site_stats`**: Dynamic homepage counter statistics.
-
-### 7. System, Support & Analytics
-- **`contact_submissions`**: Contact Us form messages.
-- **`callback_requests`**: Quick callback requests ("اطلب معاودة اتصال").
-- **`newsletter_subscribers`**: Email newsletter subscriptions.
-- **`audit_logs`**: System audit trail logs.
-- **`page_views`**: Analytics visitor page view logs.
-- **`site_settings`**: Global dynamic site settings.
+### 7. `wishlist_items` Table (`App\Models\WishlistItem`)
+- `id`, `user_id`, `product_id`
+- Relationships: `belongsTo(User)`, `belongsTo(Product)`

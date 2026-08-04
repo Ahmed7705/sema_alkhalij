@@ -26,7 +26,10 @@ class Contract extends Model
 
         static::creating(function ($model) {
             if (empty($model->contract_number)) {
-                $model->contract_number = 'CNT-' . date('Y') . '-' . strtoupper(Str::random(5));
+                $year = date('Y');
+                $latestContract = static::where('contract_number', 'LIKE', "CNT-{$year}-%")->orderBy('id', 'desc')->first();
+                $seq = $latestContract ? ((int) substr($latestContract->contract_number, -4)) + 1 : 1001;
+                $model->contract_number = "CNT-{$year}-{$seq}";
             }
         });
     }

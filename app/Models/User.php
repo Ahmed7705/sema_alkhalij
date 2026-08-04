@@ -24,6 +24,9 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'role',
+        'company_id',
+        'identification_type',
+        'identification_number',
         'is_active',
     ];
 
@@ -58,8 +61,12 @@ class User extends Authenticatable
         if ($this->role === $roleSlug || $this->role === 'admin') {
             return true;
         }
-
         return $this->roles->pluck('slug')->contains($roleSlug);
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'admin' || $this->role === 'super_admin';
     }
 
     public function hasPermission(string $permissionSlug): bool

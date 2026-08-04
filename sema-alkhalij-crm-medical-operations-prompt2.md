@@ -61,9 +61,8 @@ E:\Saudi\Jazan\Other projects\Sema-Alkhalij\code\sema-alkhalij-crm-medical-opera
 تواصل معنا
 
 ثم عناصر الإجراءات:
-- واتساب
-- رقم الهاتف
-- تسجيل الدخول / أيقونة الحساب
+- تسجيل الدخول  
+ أيقونة الحساب
 - السلة
 - طلب خدمة
 

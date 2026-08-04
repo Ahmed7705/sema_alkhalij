@@ -38,7 +38,10 @@ class Order extends Model
                 $model->uuid = (string) Str::uuid();
             }
             if (empty($model->order_number)) {
-                $model->order_number = 'ORD-' . rand(10000, 99999);
+                $year = date('Y');
+                $latestOrder = static::where('order_number', 'LIKE', "ORD-{$year}-%")->orderBy('id', 'desc')->first();
+                $seq = $latestOrder ? ((int) substr($latestOrder->order_number, -5)) + 1 : 10001;
+                $model->order_number = "ORD-{$year}-{$seq}";
             }
         });
     }

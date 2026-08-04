@@ -118,7 +118,7 @@ class SocialAuthController extends Controller
             $user = User::create([
                 'name' => $name,
                 'email' => $email,
-                'phone' => '05' . rand(10000000, 99999999),
+                'phone' => null,
                 'avatar' => $avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($name),
                 'email_verified_at' => now(),
                 'password' => bcrypt(Str::random(16)),
@@ -130,7 +130,7 @@ class SocialAuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('profile')->with('success', "تم تسجيل دخولك بنجاح باستخدام حساب Google!");
+        return redirect()->route('home')->with('success', "تم تسجيل دخولك بنجاح باستخدام حساب Google!");
     }
 
     protected function loginDemoUser(string $provider)
@@ -140,7 +140,7 @@ class SocialAuthController extends Controller
             ['email' => $demoEmail],
             [
                 'name' => 'مستخدم ' . ucfirst($provider),
-                'phone' => '0500000000',
+                'phone' => null,
                 'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode(ucfirst($provider)),
                 'email_verified_at' => now(),
                 'password' => bcrypt(Str::random(16)),
@@ -152,6 +152,6 @@ class SocialAuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('profile')->with('success', "تم تسجيل الدخول بنجاح عبر $provider!");
+        return redirect()->route('home')->with('success', "تم تسجيل الدخول بنجاح عبر $provider!");
     }
 }

@@ -21,8 +21,7 @@ class DatabaseSeeder extends Seeder
         SiteSetting::set('address', 'الرياض - المملكة العربية السعودية');
         SiteSetting::set('vat_rate', '15');
 
-        // 2. Create Users
-        User::updateOrCreate(
+        $adminUser = User::updateOrCreate(
             ['email' => 'admin@sema-alkhalij.com'],
             [
                 'name' => 'مدير النظام',
@@ -494,11 +493,13 @@ class DatabaseSeeder extends Seeder
                 'content_ar' => 'الفحص الطبي الدوري يمثل خط الدفاع الأول للوقاية من الأمراض المزمنة واكتشاف أي نقص في الفيتامينات والمعادن مبكراً...',
                 'excerpt_ar' => 'تعرف على أهم الفحوصات الطبية الدورية التي يمكنك إجراؤها من منزلك بضغطة زر.',
                 'category_id' => $blogCat->id,
-                'author_id' => 1,
+                'author_id' => $adminUser->id,
                 'views_count' => 340,
                 'is_published' => true,
                 'published_at' => now(),
             ]
         );
+
+        $this->call(TestAccountsSeeder::class);
     }
 }

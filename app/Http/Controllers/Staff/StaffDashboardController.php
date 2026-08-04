@@ -20,7 +20,12 @@ class StaffDashboardController extends Controller
 
     public function index()
     {
-        $staffId = Auth::id();
+        $user = Auth::user();
+        if (!in_array($user->role, ['doctor', 'nurse', 'physio', 'lab_tech', 'admin', 'manager', 'customer_service', 'super_admin'])) {
+            abort(403, 'عذراً، هذه البوابة مخصصة للكادر الطبي والتشغيلي فقط.');
+        }
+
+        $staffId = $user->id;
 
         $assignedVisits = Booking::where('assigned_provider_id', $staffId)
             ->with(['service', 'user'])

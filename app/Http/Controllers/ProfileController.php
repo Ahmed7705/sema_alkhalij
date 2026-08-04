@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Booking;
+use App\Models\LabSample;
+use App\Models\MedicalReport;
 use App\Models\Order;
+use App\Models\WishlistItem;
+use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,10 +21,14 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $userPhone = $user ? $user->phone : null;
-        $userId = $user ? $user->id : null;
+        if (!$user) {
+            return redirect()->route('login');
+        }
 
-        $bookings = Booking::with('service')
+        $userPhone = $user->phone;
+        $userId = $user->id;
+
+        $bookings = Booking::with(['service', 'assignedProvider', 'labSample', 'medicalReports'])
             ->where(function ($q) use ($userId, $userPhone) {
                 if ($userId) $q->where('user_id', $userId);
                 if ($userPhone) $q->orWhere('phone', $userPhone);
@@ -28,7 +36,9 @@ class ProfileController extends Controller
             ->latest()
             ->get();
 
-        $orders = Order::with('items')
+        $bookingIds = $bookings->pluck('id')->toArray();
+
+        $orders = Order::with('items.product')
             ->where(function ($q) use ($userId, $userPhone) {
                 if ($userId) $q->where('user_id', $userId);
                 if ($userPhone) $q->orWhere('phone', $userPhone);
@@ -36,9 +46,32 @@ class ProfileController extends Controller
             ->latest()
             ->get();
 
-        $addresses = $userId ? Address::where('user_id', $userId)->get() : collect();
+        $addresses = Address::where('user_id', $userId)->get();
 
-        return view('profile', compact('bookings', 'orders', 'addresses'));
+        $medicalReports = MedicalReport::where('patient_id', $userId)
+            ->orWhereIn('booking_id', $bookingIds)
+            ->latest()
+            ->get();
+
+        $labSamples = LabSample::whereIn('booking_id', $bookingIds)
+            ->orWhere('patient_id', $userId)
+            ->latest()
+            ->get();
+
+        $wishlistItems = WishlistItem::where('user_id', $userId)->with('product')->get();
+
+        $vatRate = SettingsService::getVatRate();
+
+        return view('profile', compact(
+            'user',
+            'bookings',
+            'orders',
+            'addresses',
+            'medicalReports',
+            'labSamples',
+            'wishlistItems',
+            'vatRate'
+        ));
     }
 
     /**
@@ -55,15 +88,18 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'identification_type' => 'nullable|string|in:saudi_id,iqama,border_no,gcc_id',
+            'identification_number' => 'nullable|string|max:50',
         ], [
             'name.required' => 'الاسم مطلوب.',
             'email.required' => 'البريد الإلكتروني مطلوب.',
             'email.unique' => 'البريد الإلكتروني مستخدم بالفعل.',
+            'identification_type.in' => 'نوع الهوية المختار غير صحيح.',
         ]);
 
         $user->update($validated);
 
-        return back()->with('success', 'تم تحديث البيانات الشخصية بنجاح.');
+        return back()->with('success', 'تم تحديث بيانات الملف الشخصي بنجاح.');
     }
 
     /**
@@ -95,5 +131,40 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'تم تغيير كلمة المرور بنجاح.');
+    }
+
+    /**
+     * Display single Booking details with IDOR Protection.
+     */
+    public function showBooking(Booking $booking)
+    {
+        $user = Auth::user();
+        
+        // IDOR Check
+        if ($booking->user_id !== $user->id && $booking->phone !== $user->phone) {
+            abort(403, 'غير مصرح لك باستعراض تفاصيل هذا الحجز.');
+        }
+
+        $booking->load(['service', 'assignedProvider', 'labSample', 'medicalReports']);
+
+        return view('profile.booking-show', compact('booking'));
+    }
+
+    /**
+     * Display single Order details with IDOR Protection & Dynamic VAT.
+     */
+    public function showOrder(Order $order)
+    {
+        $user = Auth::user();
+
+        // IDOR Check
+        if ($order->user_id !== $user->id && $order->phone !== $user->phone) {
+            abort(403, 'غير مصرح لك باستعراض تفاصيل هذا الطلب.');
+        }
+
+        $order->load(['items.product']);
+        $vatRate = SettingsService::getVatRate();
+
+        return view('profile.order-show', compact('order', 'vatRate'));
     }
 }

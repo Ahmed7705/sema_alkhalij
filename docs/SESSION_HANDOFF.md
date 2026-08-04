@@ -1,25 +1,21 @@
-# Session Handoff Document — Sema Al-Khalij Medical Services & Operations
+# Session Handoff — Sema Al-Khalij Medical Services & Operations
 
-## Completed Implementation Overview:
-All requirements from `sema-alkhalij-crm-medical-operations-prompt.md` have been fully built and integrated into the project with **100% Real MySQL Data**, strict Server-Side Authorization, Audit Logging, and zero hardcoded/mock implementations.
+## Current Phase Status: Phase 3 COMPLETE ✅ (Phase 4 NOT STARTED 🛑)
 
-### Built Components & Features:
-1. **Migrations Executed**:
-   - `2026_08_04_000001_create_crm_operations_tables.php`
-   - `2026_08_04_000002_create_corporate_crm_tables.php`
-   - `2026_08_04_000003_create_laboratory_tables.php`
-2. **Eloquent Models**:
-   - `StaffProfile`, `Company`, `ContractRequest`, `Contract`, `ContractPrice`, `ContractBeneficiary`, `LabSample`, `MedicalReport`.
-3. **Services & Business Logic**:
-   - `ServiceAssignmentService`: State machine transition logic (`requested` → `assigned` → `accepted` → `in_progress` → `completed` → `verified`) with audit trail.
-   - `VisitCodeGeneratorService`: Concurrency-locked DB generator for unique visit codes (`VIS-YYYY-XXXXXX`).
-4. **Controllers & Livewire**:
-   - `StaffDashboardController` & `resources/views/staff/dashboard.blade.php`: Medical staff portal for visit acceptance and execution.
-   - `CompanyPortalController` & `resources/views/company/portal.blade.php`: Corporate portal for contract services and beneficiary request submission with server-side contract pricing.
-   - `MedicalReportController`: Private PDF storage (`storage/app/private/medical_reports`) and authorized streaming download route with audit logging.
-   - `AdvancedOperationsSearch` Livewire component & `/admin/operations/search`: Composite operational search by request number, visit code, ID, company, staff, status, and dates.
-5. **Security & Policies**:
-   - `CompanyPolicy` for IDOR protection and strict company data isolation.
+### Completed Phases:
+- **Phase 1**: System Audit & Requirement Matrix ✅
+- **Phase 2**: Public Website + Header + Corporate Entry ✅
+- **Phase 3**: Customer / Patient Portal ✅
 
-## Exact Next Task:
-- System is 100% production-ready. Proceed with user acceptance testing, staging deployment, or feature verification.
+### Phase 3 Deliverables Summary:
+1. **Customer Dashboard & Profile**: `/profile` tabbed interface for patient overview, bookings, store orders, medical report downloads, lab sample tracking, saved addresses, and wishlist.
+2. **Address Management**: `AddressController` handling store, update, delete, and set-default actions with server-side IDOR checks.
+3. **Detail Views & Workflows**:
+   - Booking detail (`/profile/bookings/{booking}`) with 6-step status workflow and lab sample tracking.
+   - Order detail (`/profile/orders/{order}`) with dynamic VAT calculations via `SettingsService`.
+4. **Secure Medical PDF Downloads**: `/medical-reports/{id}/download` with strict IDOR verification.
+5. **Automated Test Results**: **32 / 32 tests passed (18.49s)**.
+
+### Handoff Notes for Phase 4:
+- Do NOT push to git repository until explicitly requested by the user.
+- Do NOT start Phase 4 until explicit instruction is received.

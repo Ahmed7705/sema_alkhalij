@@ -54,15 +54,7 @@ class MedicalReportController extends Controller
             ]);
         }
 
-        AuditLog::create([
-            'user_id' => Auth::id(),
-            'event' => 'medical_report_uploaded',
-            'auditable_type' => MedicalReport::class,
-            'auditable_id' => $report->id,
-            'new_values' => json_encode(['patient_id' => $report->patient_id, 'file_name' => $fileName]),
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-        ]);
+        AuditLog::log('medical_report_uploaded', $report, [], ['patient_id' => $report->patient_id, 'file_name' => $fileName]);
 
         return redirect()->back()->with('success', 'تم رفع تقرير النتائج الطبية وحفظه بأمان.');
     }
@@ -78,7 +70,7 @@ class MedicalReportController extends Controller
         $authorized = false;
         if (in_array($user->role, ['admin', 'super_admin', 'doctor', 'nurse', 'lab_tech'])) {
             $authorized = true;
-        } elseif ($user->id === $report->patient_id) {
+        } elseif ((int)$user->id === (int)$report->patient_id) {
             $authorized = true;
         } elseif ($user->company_id && $user->company_id === $report->company_id) {
             $authorized = true;
@@ -92,15 +84,7 @@ class MedicalReportController extends Controller
             abort(404, 'الملف غير موجود بالسيرفر.');
         }
 
-        // Audit download activity
-        AuditLog::create([
-            'user_id' => $user->id,
-            'event' => 'medical_report_downloaded',
-            'auditable_type' => MedicalReport::class,
-            'auditable_id' => $report->id,
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-        ]);
+        AuditLog::log('medical_report_downloaded', $report);
 
         return Storage::download($report->file_path, $report->file_name);
     }

@@ -26,12 +26,17 @@ use App\Http\Controllers\Admin\UserManagerController;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\CorporateServicesController;
+
 // Public Marketing Pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
     return view('about');
 })->name('about');
+
+Route::get('/corporate-services', [CorporateServicesController::class, 'index'])->name('corporate-services');
+Route::post('/corporate-services', [CorporateServicesController::class, 'storeContractRequest'])->name('corporate-services.store');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
@@ -77,10 +82,22 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name(
 Route::get('/auth/{provider}', [SocialAuthController::class, 'redirectToProvider'])->name('social.redirect');
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback'])->name('social.callback');
 
-// Customer Profile Route
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+use App\Http\Controllers\AddressController;
+
+// Customer Profile & Portal Routes (Protected by Auth)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/bookings/{booking}', [ProfileController::class, 'showBooking'])->name('profile.booking-show');
+    Route::get('/profile/orders/{order}', [ProfileController::class, 'showOrder'])->name('profile.order-show');
+
+    // Customer Address Management Routes
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('/addresses/{address}/set-default', [AddressController::class, 'setDefault'])->name('addresses.set-default');
+});
 
 // Legal Pages
 Route::get('/privacy-policy', function () {
