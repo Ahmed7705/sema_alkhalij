@@ -52,6 +52,13 @@
                                     @csrf
                                     <select name="role" onchange="this.form.submit()" class="px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-800">
                                         <option value="customer" {{ $u->role === 'customer' ? 'selected' : '' }}>عميل / مريض</option>
+                                        <option value="doctor" {{ $u->role === 'doctor' ? 'selected' : '' }}>طبيب زائر (Doctor)</option>
+                                        <option value="nurse" {{ $u->role === 'nurse' ? 'selected' : '' }}>ممرض منزلي (Nurse)</option>
+                                        <option value="physio" {{ $u->role === 'physio' ? 'selected' : '' }}>أخصائي علاج طبيعي (Physio)</option>
+                                        <option value="lab_tech" {{ $u->role === 'lab_tech' ? 'selected' : '' }}>فني مختبر وعينات (Lab Tech)</option>
+                                        <option value="customer_service" {{ $u->role === 'customer_service' ? 'selected' : '' }}>خدمة العملاء (CS)</option>
+                                        <option value="manager" {{ $u->role === 'manager' ? 'selected' : '' }}>مدير تشغيلي (Manager)</option>
+                                        <option value="company_admin" {{ $u->role === 'company_admin' ? 'selected' : '' }}>مدير شركة متعاقدة (Company Admin)</option>
                                         <option value="editor" {{ $u->role === 'editor' ? 'selected' : '' }}>محرر محتوى</option>
                                         <option value="admin" {{ $u->role === 'admin' ? 'selected' : '' }}>مدير نظام (Admin)</option>
                                     </select>

@@ -17,7 +17,9 @@ class UserManagerController extends Controller
     public function updateRole(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $request->validate(['role' => 'required|string|in:admin,customer,editor']);
+        $request->validate([
+            'role' => 'required|string|in:admin,customer,doctor,nurse,physio,lab_tech,customer_service,manager,company_admin,editor'
+        ]);
 
         $user->update(['role' => $request->role]);
 
