@@ -141,7 +141,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         
         // IDOR Check
-        if ($booking->user_id !== $user->id && $booking->phone !== $user->phone) {
+        if ((int)$booking->user_id !== (int)$user->id && $booking->phone !== $user->phone) {
             abort(403, 'غير مصرح لك باستعراض تفاصيل هذا الحجز.');
         }
 
@@ -158,7 +158,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         // IDOR Check
-        if ($order->user_id !== $user->id && $order->phone !== $user->phone) {
+        if ((int)$order->user_id !== (int)$user->id && $order->phone !== $user->phone) {
             abort(403, 'غير مصرح لك باستعراض تفاصيل هذا الطلب.');
         }
 

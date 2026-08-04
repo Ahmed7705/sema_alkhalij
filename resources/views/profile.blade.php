@@ -299,17 +299,18 @@
                             @php
                                 $sampleSteps = [
                                     'registered' => 'تسجيل العينة',
+                                    'assigned' => 'إسناد الفني',
                                     'sample_collected' => 'تم سحب العينة',
                                     'sent_to_lab' => 'إرسال للمختبر',
                                     'received_by_lab' => 'استلام المختبر',
                                     'processing' => 'جاري الفحص',
                                     'result_ready' => 'النتيجة جاهزة'
                                 ];
-                                $sampleLevels = ['registered' => 1, 'assigned' => 1, 'sample_collected' => 2, 'sent_to_lab' => 3, 'received_by_lab' => 4, 'processing' => 5, 'result_ready' => 6];
+                                $sampleLevels = ['registered' => 1, 'assigned' => 2, 'sample_collected' => 3, 'sent_to_lab' => 4, 'received_by_lab' => 5, 'processing' => 6, 'result_ready' => 7];
                                 $currSampleLevel = $sampleLevels[$sample->sample_status] ?? 1;
                             @endphp
 
-                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center pt-2">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center pt-2">
                                 @foreach($sampleSteps as $sKey => $sLabel)
                                     @php $sLvl = $sampleLevels[$sKey]; @endphp
                                     <div class="p-2.5 rounded-xl border text-[11px] font-bold space-y-1
