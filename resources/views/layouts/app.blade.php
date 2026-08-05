@@ -27,40 +27,30 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>[x-cloak] { display: none !important; }</style>
 
-    {{-- ✦ GLOBAL DIRECTION RESET ✦
-         When locale is English (LTR): override any inherited RTL alignment.
-         font-family switches to Inter for clean Latin text.
-    --}}
+    {{-- ✦ GLOBAL DIRECTION RESET ✦ --}}
     @if(app()->getLocale() == 'en')
     <style>
-        /* LTR baseline: reset text alignment for all elements */
-        *, *::before, *::after {
-            text-align: unset;
+        html, body {
+            direction: ltr !important;
+            text-align: left !important;
+            font-family: 'Inter', 'Tajawal', sans-serif !important;
         }
-        body, p, h1, h2, h3, h4, h5, h6, li, span, div {
-            text-align: inherit;
-        }
-        /* Default left-aligned text in LTR mode */
-        body {
-            text-align: left;
-            font-family: 'Inter', 'Tajawal', sans-serif;
-        }
-        /* Keep center-aligned classes working */
         .text-center { text-align: center !important; }
-        /* Ensure Tailwind text-right still works when explicitly used */
-        .text-right { text-align: right !important; }
-        .text-left  { text-align: left  !important; }
-        /* Fix flex direction for LTR: section badges inline-flex */
-        .section-badge { flex-direction: row; }
-        /* Dir-ltr helper */
-        .dir-ltr { direction: ltr; text-align: left; }
+        .text-right  { text-align: right !important; }
+        .text-left   { text-align: left !important; }
+        .dir-ltr     { direction: ltr; text-align: left; }
     </style>
     @else
     <style>
-        body {
-            font-family: 'Tajawal', 'Inter', sans-serif;
+        html, body {
+            direction: rtl !important;
+            text-align: right !important;
+            font-family: 'Tajawal', 'Inter', sans-serif !important;
         }
-        .dir-ltr { direction: ltr; text-align: left; }
+        .text-center { text-align: center !important; }
+        .text-right  { text-align: right !important; }
+        .text-left   { text-align: left !important; }
+        .dir-ltr     { direction: ltr; text-align: left; }
     </style>
     @endif
 

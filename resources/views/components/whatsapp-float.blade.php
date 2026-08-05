@@ -1,5 +1,6 @@
 {{-- WhatsApp Floating Button - RTL/LTR Aware --}}
-<div class="fixed bottom-8 z-40 {{ app()->getLocale() == 'en' ? 'right-8' : 'left-8' }}"
+<div class="fixed bottom-8 sm:bottom-10 z-40"
+     style="{{ app()->getLocale() == 'en' ? 'right: 32px;' : 'left: 32px;' }}"
      x-data="{ tooltip: false }">
     <a href="https://wa.me/966545880082?text={{ urlencode(app()->getLocale() == 'en' ? 'Hello, I would like to inquire about Sema Al-Khalij home medical services.' : 'السلام عليكم، أود الاستفسار عن خدمات سيما الخليج الطبية المنزلية') }}"
        target="_blank"
@@ -20,8 +21,8 @@
 
     {{-- Tooltip --}}
     <div x-show="tooltip" x-transition.duration.200ms
-         class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-gray-900 text-white text-xs font-bold py-2 px-4 rounded-xl whitespace-nowrap shadow-lg pointer-events-none">
-        {{ app()->getLocale() == 'en' ? 'Chat with us on WhatsApp 💬' : 'تحدث معنا على الواتساب 💬' }}
-        <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45 -mt-1"></div>
+         class="absolute bottom-full mb-3 bg-gray-900 text-white text-xs font-bold py-2 px-3.5 rounded-xl whitespace-nowrap shadow-lg pointer-events-none {{ app()->getLocale() == 'en' ? 'right-0' : 'left-0' }}">
+        {{ app()->getLocale() == 'en' ? 'WhatsApp 💬' : 'تحدث معنا على الواتساب 💬' }}
+        <div class="absolute top-full w-2 h-2 bg-gray-900 rotate-45 -mt-1 {{ app()->getLocale() == 'en' ? 'right-6' : 'left-6' }}"></div>
     </div>
 </div>

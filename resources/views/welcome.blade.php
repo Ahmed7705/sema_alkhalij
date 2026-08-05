@@ -277,15 +277,15 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach([
-                    ['text'=>'خدمة ممتازة جداً! تم طلب زيارة تمريضية لوالدي بعد العملية، وصل الممرض في الوقت المحدد وكان على قدر كبير من الاحترافية.','name'=>'أحمد الغامدي','loc'=>'جدة - حي الشاطئ','avatar'=>'أ'],
-                    ['text'=>'تجربة سحب عينات الدم في المنزل كانت مريحة للغاية. نتائج التحاليل أُرسلت بسرعة فائقة ودقة عالية.','name'=>'سارة الشهري','loc'=>'جدة - حي الرويس','avatar'=>'س'],
-                    ['text'=>'جلسات العلاج الطبيعي أحدثت فرقاً كبيراً في تحسن حركة والدي. التزام بالمواعيد ومعاملة راقية.','name'=>'د. خالد المطيري','loc'=>'جدة - حي النعيم','avatar'=>'خ'],
+                    ['text'=>__('testimonials.t1_text'),'name'=>__('testimonials.t1_name'),'loc'=>__('testimonials.t1_loc'),'avatar'=>__('testimonials.t1_avatar')],
+                    ['text'=>__('testimonials.t2_text'),'name'=>__('testimonials.t2_name'),'loc'=>__('testimonials.t2_loc'),'avatar'=>__('testimonials.t2_avatar')],
+                    ['text'=>__('testimonials.t3_text'),'name'=>__('testimonials.t3_name'),'loc'=>__('testimonials.t3_loc'),'avatar'=>__('testimonials.t3_avatar')],
                 ] as $t)
                 <div class="p-5 rounded-2xl bg-white border border-gray-100 shadow-soft space-y-4 hover:shadow-card transition-all duration-300">
                     <div class="flex text-amber-400 gap-0.5 text-sm">★★★★★</div>
                     <p class="text-xs text-gray-600 leading-[1.8]">"{{ $t['text'] }}"</p>
                     <div class="pt-3 border-t border-gray-100 flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">{{ $t['avatar'] }}</div>
+                        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0">{{ $t['avatar'] }}</div>
                         <div>
                             <span class="block font-bold text-primary text-xs">{{ $t['name'] }}</span>
                             <span class="text-[10px] text-gray-400">{{ $t['loc'] }}</span>

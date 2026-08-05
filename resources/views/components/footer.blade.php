@@ -95,7 +95,7 @@
         {{-- Footer Bottom Bar --}}
         <div class="pt-6 flex flex-col items-center justify-center text-center gap-3 text-xs text-medical-300">
             <div>
-                © {{ date('Y') }} <strong>{{ $siteSettings['site_title'] ?? 'شركة سيما الخليج للخدمات الطبية' }}</strong>. {{ __('footer.copyright') }}
+                © {{ date('Y') }} <strong>{{ app()->getLocale() == 'en' ? 'Sema Al-Khalij Medical Services' : ($siteSettings['site_title'] ?? 'شركة سيما الخليج للخدمات الطبية') }}</strong>. {{ __('footer.copyright') }}
             </div>
 
             {{-- Social Icons --}}

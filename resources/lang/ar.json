@@ -135,6 +135,18 @@
 
     "testimonials.badge": "شهادات العملاء",
     "testimonials.heading": "ماذا يقول عملاؤنا عن خدماتنا؟",
+    "testimonials.t1_text": "خدمة ممتازة جداً! تم طلب زيارة تمريضية لوالدي بعد العملية، وصل الممرض في الوقت المحدد وكان على قدر كبير من الاحترافية.",
+    "testimonials.t1_name": "أحمد الغامدي",
+    "testimonials.t1_loc": "جدة - حي الشاطئ",
+    "testimonials.t1_avatar": "أ",
+    "testimonials.t2_text": "تجربة سحب عينات الدم في المنزل كانت مريحة للغاية. نتائج التحاليل أُرسلت بسرعة فائقة ودقة عالية.",
+    "testimonials.t2_name": "سارة الشهري",
+    "testimonials.t2_loc": "جدة - حي الرويس",
+    "testimonials.t2_avatar": "س",
+    "testimonials.t3_text": "جلسات العلاج الطبيعي أحدثت فرقاً كبيراً في تحسن حركة والدي. التزام بالمواعيد ومعاملة راقية.",
+    "testimonials.t3_name": "د. خالد المطيري",
+    "testimonials.t3_loc": "جدة - حي النعيم",
+    "testimonials.t3_avatar": "خ",
 
     "faq.badge": "أسئلة شائعة",
     "faq.heading": "إجابات على أبرز تساؤلاتكم",
