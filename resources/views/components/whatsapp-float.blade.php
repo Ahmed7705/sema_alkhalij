@@ -1,12 +1,13 @@
-{{-- WhatsApp Floating Button - Official Style --}}
-<div class="fixed bottom-8 left-8 z-40" x-data="{ tooltip: false }">
-    <a href="https://wa.me/966545880082?text={{ urlencode('السلام عليكم، أود الاستفسار عن خدمات سيما الخليج الطبية المنزلية') }}"
+{{-- WhatsApp Floating Button - RTL/LTR Aware --}}
+<div class="fixed bottom-8 z-40 {{ app()->getLocale() == 'en' ? 'right-8' : 'left-8' }}"
+     x-data="{ tooltip: false }">
+    <a href="https://wa.me/966545880082?text={{ urlencode(app()->getLocale() == 'en' ? 'Hello, I would like to inquire about Sema Al-Khalij home medical services.' : 'السلام عليكم، أود الاستفسار عن خدمات سيما الخليج الطبية المنزلية') }}"
        target="_blank"
        rel="noopener noreferrer"
        @mouseenter="tooltip = true"
        @mouseleave="tooltip = false"
        class="block w-[60px] h-[60px] bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_6px_24px_rgba(37,211,102,0.45)] hover:shadow-[0_8px_32px_rgba(37,211,102,0.6)] hover:scale-110 transition-all duration-300 relative"
-       title="تواصل عبر الواتساب">
+       title="{{ app()->getLocale() == 'en' ? 'Chat on WhatsApp' : 'تواصل عبر الواتساب' }}">
 
         {{-- Official WhatsApp SVG Icon --}}
         <svg class="w-[34px] h-[34px]" viewBox="0 0 32 32" fill="white">
@@ -20,7 +21,7 @@
     {{-- Tooltip --}}
     <div x-show="tooltip" x-transition.duration.200ms
          class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-gray-900 text-white text-xs font-bold py-2 px-4 rounded-xl whitespace-nowrap shadow-lg pointer-events-none">
-        تحدث معنا على الواتساب 💬
+        {{ app()->getLocale() == 'en' ? 'Chat with us on WhatsApp 💬' : 'تحدث معنا على الواتساب 💬' }}
         <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45 -mt-1"></div>
     </div>
 </div>

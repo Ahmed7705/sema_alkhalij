@@ -427,8 +427,12 @@ class Phase3CustomerPortalTest extends TestCase
     {
         $customer = User::factory()->create(['role' => 'customer']);
 
+        // Set locale to Arabic so translations render correctly
+        app()->setLocale('ar');
+
         $view = $this->actingAs($customer)->blade('<x-header />');
 
+        // With Arabic locale, 'nav.my_account' key renders as 'حسابي'
         $view->assertSee('حسابي');
         $view->assertDontSee('لوحة تحكم الأدمن');
         $view->assertDontSee('بوابة الكادر الطبي');

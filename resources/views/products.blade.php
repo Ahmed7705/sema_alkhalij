@@ -1,4 +1,4 @@
-<x-app-layout title="متجر الأجهزة والمستلزمات الطبية | سيما الخليج">
+<x-app-layout title="{{ app()->getLocale()=='en' ? 'Medical Devices & Supplies | Sema Al-Khalij' : 'متجر الأجهزة والمستلزمات الطبية | سيما الخليج' }}">
 
     {{-- =================== HERO STORE BANNER =================== --}}
     <section class="relative py-16 sm:py-20 bg-gradient-to-br from-[#071f18] via-primary to-[#0a3428] text-white overflow-hidden">
@@ -10,15 +10,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-bold text-medical-100">
                 <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                <span>متجر سيما الخليج الطبي المعتمد</span>
+                <span>{{ __('products.badge') }}</span>
             </div>
 
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                الأجهزة والمستلزمات الطبية <span class="text-accent">المنزلية المعتمدة</span>
+                الأجهزة والمستلزمات الطبية <span class="text-accent">{{ __('products.heading') }}</span>
             </h1>
 
             <p class="text-medical-200 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                تصفح أفضل الأجهزة والمستلزمات الطبية المنزلية المعتمدة بأسعار تنافسية وضمان رسمي مع توصيل سريع لجميع مدن المملكة.
+                {{ __('products.text') }}
             </p>
         </div>
     </section>
@@ -34,7 +34,7 @@
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                     <a href="{{ route('products', array_filter(['search' => request('search'), 'sort' => request('sort')])) }}" 
                        class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all {{ empty($selectedCategory) || $selectedCategory === 'all' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200' }}">
-                        جميع المنتجات
+                        {{ __('products.all') }}
                     </a>
 
                     @foreach($categories as $cat)
@@ -48,7 +48,7 @@
                 {{-- Search Box & Sort --}}
                 <div class="flex items-center gap-3 w-full md:w-auto">
                     <div class="relative w-full md:w-64">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="ابحث عن جهاز أو مستلزم..." 
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('products.search_placeholder') }}" 
                                class="w-full pr-10 pl-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 font-medium focus:outline-none focus:border-primary focus:bg-white transition-all">
                         <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -56,9 +56,9 @@
                     </div>
 
                     <select name="sort" onchange="this.form.submit()" class="h-10 px-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 font-bold focus:outline-none focus:border-primary">
-                        <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>الأحدث</option>
-                        <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>الأقل سعراً</option>
-                        <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>الأعلى سعراً</option>
+                        <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>{{ __('products.sort_newest') }}</option>
+                        <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>{{ __('products.sort_price_asc') }}</option>
+                        <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>{{ __('products.sort_price_desc') }}</option>
                     </select>
                 </div>
 
@@ -86,7 +86,7 @@
                         <div class="bg-white rounded-3xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
                             
                             {{-- Clickable Card Container: Image & Information --}}
-                            <a href="{{ route('products.show', $p->slug) }}" class="block p-4 space-y-3 text-right">
+                            <a href="{{ route('products.show', $p->slug) }}" class="block p-4 space-y-3 {{ app()->getLocale()=='en' ? 'text-left' : 'text-right' }}">
                                 {{-- Product Image Header --}}
                                 <div class="relative h-48 overflow-hidden bg-gray-50 flex items-center justify-center p-3 rounded-2xl">
                                     <img src="{{ asset('images/' . $imgName) }}" alt="{{ $p->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl">
@@ -102,7 +102,7 @@
                                             $discountPct = round((($p->price - $p->discount_price) / $p->price) * 100);
                                         @endphp
                                         <span class="absolute top-3 left-3 px-2.5 py-1 bg-red-500 text-white font-extrabold text-[10px] rounded-lg shadow-xs">
-                                            خصم {{ $discountPct }}%
+                                            {{ __('products.discount') }} {{ $discountPct }}%
                                         </span>
                                     @endif
                                 </div>
@@ -110,9 +110,9 @@
                                 {{-- Details --}}
                                 <div class="space-y-2">
                                     <div class="flex items-center justify-between text-[11px] text-gray-400 font-bold">
-                                        <span>رمز المنتج: {{ $p->sku }}</span>
+                                        <span>{{ __('products.code') }}: {{ $p->sku }}</span>
                                         <span class="{{ $p->stock > 0 ? 'text-emerald-600' : 'text-red-500' }}">
-                                            {{ $p->stock > 0 ? 'متوفر بالمخزون' : 'غير متوفر' }}
+                                            {{ $p->stock > 0 ? __('products.in_stock') : __('products.out_of_stock') }}
                                         </span>
                                     </div>
 
@@ -133,21 +133,21 @@
                                         onclick="emitLivewire('addToCart', 'product', {{ $p->id }}, 1)" 
                                         class="flex-shrink-0 btn-accent text-xs py-2.5 px-3.5 rounded-xl shadow-md hover:shadow-lg transition-all font-bold flex items-center gap-1.5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                    <span>أضف للسلة</span>
+                                    <span>{{ __('products.add_to_cart') }}</span>
                                 </button>
 
                                 {{-- 2. Price on the Left (شمال/يسار) with Arabic RTL Alignment --}}
                                 <div class="whitespace-nowrap flex-1 text-left">
                                     @if($p->discount_price && $p->discount_price < $p->price)
                                         <div class="text-[11px] text-gray-400 line-through font-bold">
-                                            {{ number_format($p->price, 0) }} ر.س
+                                            {{ number_format($p->price, 0) }} {{ __('products.sar') }}
                                         </div>
                                         <div class="text-base sm:text-lg font-black text-accent">
-                                            {{ number_format($p->discount_price, 0) }} <span class="text-xs font-bold">ر.س</span>
+                                            {{ number_format($p->discount_price, 0) }} <span class="text-xs font-bold">{{ __('products.sar') }}</span>
                                         </div>
                                     @else
                                         <div class="text-base sm:text-lg font-black text-primary">
-                                            {{ number_format($p->price, 0) }} <span class="text-xs font-bold">ر.س</span>
+                                            {{ number_format($p->price, 0) }} <span class="text-xs font-bold">{{ __('products.sar') }}</span>
                                         </div>
                                     @endif
                                 </div>
@@ -166,10 +166,10 @@
                     <div class="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto text-2xl font-bold">
                         🔍
                     </div>
-                    <h3 class="text-lg font-black text-primary">لم نجد أي منتجات تطابق بحثك</h3>
-                    <p class="text-xs text-gray-500 max-w-sm mx-auto">جرب البحث بكلمات أخرى أو تصفح باقي التصنيفات الطبية المتاحة.</p>
+                    <h3 class="text-lg font-black text-primary">{{ __('products.no_results') }}</h3>
+                    <p class="text-xs text-gray-500 max-w-sm mx-auto">{{ __('products.no_results_text') }}</p>
                     <a href="{{ route('products') }}" class="inline-block btn-accent px-6 py-2.5 rounded-xl text-xs font-bold shadow-md">
-                        عرض جميع المنتجات
+                        {{ __('products.all') }}
                     </a>
                 </div>
             @endif

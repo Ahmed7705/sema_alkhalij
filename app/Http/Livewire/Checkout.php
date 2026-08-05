@@ -41,10 +41,17 @@ class Checkout extends Component
         $sessionId = $this->getSessionId();
         $userId = auth()->id();
 
+        if ($userId) {
+            CartItem::where('session_id', $sessionId)
+                ->whereNull('user_id')
+                ->update(['user_id' => $userId]);
+        }
+
         return CartItem::where(function ($q) use ($sessionId, $userId) {
-            $q->where('session_id', $sessionId);
             if ($userId) {
-                $q->orWhere('user_id', $userId);
+                $q->where('user_id', $userId);
+            } else {
+                $q->where('session_id', $sessionId);
             }
         })->with(['product', 'service'])->get();
     }

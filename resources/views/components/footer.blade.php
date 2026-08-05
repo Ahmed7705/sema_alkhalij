@@ -13,12 +13,12 @@
                         <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-black text-xl">S</div>
                         <div>
                             <h3 class="font-bold text-lg text-white">سيما الخليج</h3>
-                            <p class="text-[11px] text-medical-300">للخدمات الطبية المنزلية</p>
+                            <p class="text-[11px] text-medical-300">{{ __('footer.medical_services') }}</p>
                         </div>
                     </div>
                 </a>
                 <p class="text-medical-200 text-xs sm:text-sm leading-relaxed max-w-md">
-                    شركة سيما الخليج للخدمات الطبية تُقدّم منظومة رعاية صحية منزلية متكاملة وفق أرفع معايير الجودة والنظافة والسلامة، بفرُق طبية وتمريضية مؤهلة لتلبية احتياجاتك في راحتك وبأحدث التقنيات.
+                    {{ __('footer.bio') }}
                 </p>
                 <div class="space-y-2 pt-1 text-xs sm:text-sm">
                     <a href="tel:+966545880082" class="flex items-center gap-2.5 text-medical-100 hover:text-accent transition-colors">
@@ -37,55 +37,55 @@
                         <div class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-accent shrink-0">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                         </div>
-                        <span>جدة، حي الرويس، طريق المدينة المنورة</span>
+                        <span>{{ __('footer.address') }}</span>
                     </div>
                 </div>
             </div>
 
             {{-- Column 2: Company Links --}}
             <div class="space-y-3">
-                <h4 class="text-sm font-bold text-white border-r-3 border-accent pr-2.5">روابط الشركة</h4>
+                <h4 class="text-sm font-bold text-white {{ app()->getLocale()=='en' ? 'border-l-4 pl-2.5' : 'border-r-4 pr-2.5' }} border-accent">{{ __('footer.company_links') }}</h4>
                 <ul class="space-y-2 text-xs sm:text-sm text-medical-200">
-                    <li><a href="{{ url('/') }}" class="hover:text-accent transition-colors">الرئيسية</a></li>
-                    <li><a href="{{ url('/about') }}" class="hover:text-accent transition-colors">من نحن</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">الخدمات الطبية</a></li>
-                    <li><a href="{{ url('/products') }}" class="hover:text-accent transition-colors">المتجر والمستلزمات</a></li>
-                    <li><a href="{{ url('/blog') }}" class="hover:text-accent transition-colors">المدونة الطبية</a></li>
-                    <li><a href="{{ url('/contact') }}" class="hover:text-accent transition-colors">اتصل بنا</a></li>
+                    <li><a href="{{ url('/') }}" class="hover:text-accent transition-colors">{{ __('footer.home') }}</a></li>
+                    <li><a href="{{ url('/about') }}" class="hover:text-accent transition-colors">{{ __('footer.about') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.medical') }}</a></li>
+                    <li><a href="{{ url('/products') }}" class="hover:text-accent transition-colors">{{ __('footer.store') }}</a></li>
+                    <li><a href="{{ url('/blog') }}" class="hover:text-accent transition-colors">{{ __('footer.blog_link') }}</a></li>
+                    <li><a href="{{ url('/contact') }}" class="hover:text-accent transition-colors">{{ __('footer.contact_link') }}</a></li>
                 </ul>
             </div>
 
             {{-- Column 3: Medical Services --}}
             <div class="space-y-3">
-                <h4 class="text-sm font-bold text-white border-r-3 border-accent pr-2.5">خدماتنا الطبية</h4>
+                <h4 class="text-sm font-bold text-white {{ app()->getLocale()=='en' ? 'border-l-4 pl-2.5' : 'border-r-4 pr-2.5' }} border-accent">{{ __('footer.medical_services') }}</h4>
                 <ul class="space-y-2 text-xs sm:text-sm text-medical-200">
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">التمريض المنزلي</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">الزيارات الطبية المنزلية</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">العلاج الطبيعي التأهيلي</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">سحب العينات والفحوصات</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">الفحوصات الجينية والمخبرية</a></li>
-                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">خدمات الرعاية للشركات</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.nursing') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.home_visits') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.physio') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.sampling') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.genetics') }}</a></li>
+                    <li><a href="{{ url('/services') }}" class="hover:text-accent transition-colors">{{ __('footer.corporate') }}</a></li>
                 </ul>
             </div>
 
             {{-- Column 4: Newsletter & Policies --}}
             <div class="space-y-3">
-                <h4 class="text-sm font-bold text-white border-r-3 border-accent pr-2.5">النشرة والسياسات</h4>
-                <p class="text-[11px] text-medical-200 leading-relaxed">اشترك في النشرة للحصول على إرشادات صحية وعروض حصرية.</p>
+                <h4 class="text-sm font-bold text-white {{ app()->getLocale()=='en' ? 'border-l-4 pl-2.5' : 'border-r-4 pr-2.5' }} border-accent">{{ __('footer.newsletter_title') }}</h4>
+                <p class="text-[11px] text-medical-200 leading-relaxed">{{ __('footer.newsletter_text') }}</p>
                 
                 <form action="#" method="POST" class="space-y-2" @submit.prevent>
                     <div class="relative">
-                        <input type="email" placeholder="أدخل بريدك الإلكتروني" class="w-full bg-white/10 border border-white/20 rounded-xl py-2 px-3 text-xs text-white placeholder-medical-300 focus:outline-none focus:border-accent">
-                        <button type="submit" class="absolute left-1 top-1 bottom-1 px-3 bg-accent text-white rounded-lg text-[11px] font-bold hover:bg-accent-hover transition-colors">اشترك</button>
+                        <input type="email" placeholder="{{ __('footer.newsletter_placeholder') }}" class="w-full bg-white/10 border border-white/20 rounded-xl py-2 px-3 {{ app()->getLocale()=='en' ? 'pr-16' : 'pl-16' }} text-xs text-white placeholder-medical-300 focus:outline-none focus:border-accent">
+                        <button type="submit" class="absolute {{ app()->getLocale()=='en' ? 'right-1' : 'left-1' }} top-1 bottom-1 px-3 bg-accent text-white rounded-lg text-[11px] font-bold hover:bg-accent-hover transition-colors">{{ __('footer.subscribe') }}</button>
                     </div>
                 </form>
 
                 <div class="pt-1">
                     <ul class="space-y-1.5 text-[11px] text-medical-300">
-                        <li><a href="{{ url('/privacy-policy') }}" class="hover:text-accent transition-colors">سياسة الخصوصية</a></li>
-                        <li><a href="{{ url('/terms') }}" class="hover:text-accent transition-colors">الشروط والأحكام</a></li>
-                        <li><a href="{{ url('/patient-rights') }}" class="hover:text-accent transition-colors">حقوق المرضى</a></li>
-                        <li><a href="{{ url('/quality-policy') }}" class="hover:text-accent transition-colors">سياسة الجودة والسلامة</a></li>
+                        <li><a href="{{ url('/privacy-policy') }}" class="hover:text-accent transition-colors">{{ __('footer.privacy') }}</a></li>
+                        <li><a href="{{ url('/terms') }}" class="hover:text-accent transition-colors">{{ __('footer.terms') }}</a></li>
+                        <li><a href="{{ url('/patient-rights') }}" class="hover:text-accent transition-colors">{{ __('footer.patient_rights') }}</a></li>
+                        <li><a href="{{ url('/quality-policy') }}" class="hover:text-accent transition-colors">{{ __('footer.quality') }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -95,15 +95,15 @@
         {{-- Footer Bottom Bar --}}
         <div class="pt-6 flex flex-col items-center justify-center text-center gap-3 text-xs text-medical-300">
             <div>
-                © {{ date('Y') }} <strong>شركة سيما الخليج للخدمات الطبية</strong>. جميع الحقوق محفوظة.
+                © {{ date('Y') }} <strong>{{ $siteSettings['site_title'] ?? 'شركة سيما الخليج للخدمات الطبية' }}</strong>. {{ __('footer.copyright') }}
             </div>
 
             {{-- Social Icons --}}
             <div class="flex items-center gap-2">
-                <a href="https://wa.me/966545880082" target="_blank" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="واتساب"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z"/></svg></a>
-                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="لينكد إن"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="إنستغرام"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="إكس / تويتر"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a href="https://wa.me/966545880082" target="_blank" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="WhatsApp"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z"/></svg></a>
+                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="LinkedIn"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="Instagram"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                <a href="#" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all" title="X / Twitter"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             </div>
         </div>
     </div>

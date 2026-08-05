@@ -1,4 +1,4 @@
-<x-app-layout title="تواصل معنا | سيما الخليج للخدمات الطبية">
+<x-app-layout title="{{ app()->getLocale()=='en' ? 'Contact Us | Sema Al-Khalij' : 'تواصل معنا | سيما الخليج للخدمات الطبية' }}">
 
     {{-- =================== HERO BANNER =================== --}}
     <section class="relative py-16 sm:py-20 bg-gradient-to-br from-[#071f18] via-primary to-[#0a3428] text-white overflow-hidden">
@@ -10,15 +10,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-bold text-medical-100">
                 <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                <span>تواصل معنا على مدار 24 ساعة</span>
+                <span>{{ __('contact.badge') }}</span>
             </div>
 
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                سعداء بتواصلكم <span class="text-accent">ونرحب باستفساراتكم</span>
+                سعداء بتواصلكم <span class="text-accent">{{ __('contact.heading') }}</span>
             </h1>
 
             <p class="text-medical-200 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                فريقنا الطبي والإداري جاهز لخدمتكم والرد على كافة تساؤلاتكم بشأن برامج الرعاية الصحية المنزلية وحجوزات الزيارات.
+                {{ __('contact.text') }}
             </p>
         </div>
     </section>
@@ -34,9 +34,9 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                     </div>
                     <div>
-                        <span class="block text-xs font-bold text-gray-400">رقم الهاتف والخط الساخن</span>
+                        <span class="block text-xs font-bold text-gray-400">{{ __('contact.phone_label') }}</span>
                         <span dir="ltr" class="inline-block text-base font-black text-primary group-hover:text-accent transition-colors">+966 54 588 0082</span>
-                        <span class="block text-[11px] text-accent font-bold">متاح 24/7 طوال الأسبوع</span>
+                        <span class="block text-[11px] text-accent font-bold">{{ __('contact.phone_avail') }}</span>
                     </div>
                 </a>
 
@@ -46,9 +46,9 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <div>
-                        <span class="block text-xs font-bold text-gray-400">البريد الإلكتروني الرسمي</span>
+                        <span class="block text-xs font-bold text-gray-400">{{ __('contact.email_label') }}</span>
                         <span class="block text-base font-black text-primary group-hover:text-accent transition-colors">c.care@s-sema.com</span>
-                        <span class="text-[11px] text-gray-500">استجابة خلال وقت قياسي</span>
+                        <span class="text-[11px] text-gray-500">{{ __('contact.email_avail') }}</span>
                     </div>
                 </a>
 
@@ -58,8 +58,8 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                     </div>
                     <div>
-                        <span class="block text-xs font-bold text-gray-400">العنوان والمقر الرئيسي</span>
-                        <span class="block text-base font-black text-primary">جدة، حي الرويس</span>
+                        <span class="block text-xs font-bold text-gray-400">{{ __('contact.location_label') }}</span>
+                        <span class="block text-base font-black text-primary">{{ __('contact.location_avail') }}</span>
                         <span class="text-[11px] text-gray-500">طريق المدينة المنورة</span>
                     </div>
                 </div>
@@ -78,28 +78,28 @@
                     <div class="space-y-2">
                         <div class="section-badge">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                            <span>تواصل مباشر</span>
+                            <span>{{ __('contact.form_badge') }}</span>
                         </div>
-                        <h2 class="text-2xl font-black text-primary">أرسل لنا استفسارك أو رسالتك</h2>
-                        <p class="text-xs text-gray-500">قم بتعبئة النموذج أدناه وسيقوم ممثل خدمة العملاء بالتواصل معك فوراً.</p>
+                        <h2 class="text-2xl font-black text-primary">{{ __('contact.form_heading') }}</h2>
+                        <p class="text-xs text-gray-500">{!! app()->getLocale()=='en' ? 'Fill in the form below and our representative will contact you right away.' : 'قم بتعبئة النموذج أدناه وسيقوم ممثل خدمة العملاء بالتواصل معك فوراً.' !!}</p>
                     </div>
 
                     <form @submit.prevent="alert('تم استلام رسالتك بنجاح! سيتواصل معك الفريق الطبي فوراً.');" class="space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">الاسم الكريم <span class="text-red-500">*</span></label>
-                                <input type="text" required placeholder="مثال: عبد الله أحمد" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
+                                <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.name_label') }} <span class="text-red-500">*</span></label>
+                                <input type="text" required placeholder="{{ __('contact.name_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">رقم الجوال <span class="text-red-500">*</span></label>
-                                <input type="tel" required placeholder="05xxxxxxxx" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all dir-ltr text-right">
+                                <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.phone_field_label') }} <span class="text-red-500">*</span></label>
+                                <input type="tel" required placeholder="{{ __('contact.phone_field_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all dir-ltr text-right">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">البريد الإلكتروني <span class="text-red-500">*</span></label>
-                                <input type="email" required placeholder="name@example.com" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
+                                <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.email_field_label') }} <span class="text-red-500">*</span></label>
+                                <input type="email" required placeholder="{{ __('contact.email_field_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1.5">الخدمة المطلوبة</label>
@@ -110,19 +110,25 @@
                                     <option value="physio">العلاج الطبيعي والتأهيل</option>
                                     <option value="labs">سحب عينات وفحوصات مخبرية</option>
                                     <option value="genetics">الفحوصات الجينية والوراثية</option>
-                                    <option value="corporate">خدمات الشركات</option>
+                                    <option value="">{{ __('contact.service_placeholder') }}</option>
+                                    <option value="nursing">{{ __('contact.service_nursing') }}</option>
+                                    <option value="doctor">{{ __('contact.service_doctor') }}</option>
+                                    <option value="physio">{{ __('contact.service_physio') }}</option>
+                                    <option value="labs">{{ __('contact.service_labs') }}</option>
+                                    <option value="genetics">{{ __('contact.service_genetics') }}</option>
+                                    <option value="corporate">{{ __('contact.service_corporate') }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1.5">الرسالة أو تفاصيل الاستفسار <span class="text-red-500">*</span></label>
-                            <textarea rows="4" required placeholder="اكتب تفاصيل رسالتك أو استفسارك هنا..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all resize-none"></textarea>
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.message_label') }} <span class="text-red-500">*</span></label>
+                            <textarea rows="4" required placeholder="{{ __('contact.message_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all resize-none"></textarea>
                         </div>
 
                         <div class="pt-2">
                             <button type="submit" class="w-full btn-accent py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                                <span>إرسال الرسالة الآن</span>
+                                <span>{{ __('contact.send_btn') }}</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </button>
                         </div>

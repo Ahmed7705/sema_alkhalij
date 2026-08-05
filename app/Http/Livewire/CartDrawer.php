@@ -40,10 +40,18 @@ class CartDrawer extends Component
         $sessionId = $this->getSessionId();
         $userId = auth()->id();
 
+        if ($userId) {
+            // Merge & claim guest items into user cart on login
+            CartItem::where('session_id', $sessionId)
+                ->whereNull('user_id')
+                ->update(['user_id' => $userId]);
+        }
+
         return CartItem::where(function ($q) use ($sessionId, $userId) {
-            $q->where('session_id', $sessionId);
             if ($userId) {
-                $q->orWhere('user_id', $userId);
+                $q->where('user_id', $userId);
+            } else {
+                $q->where('session_id', $sessionId);
             }
         })->with(['product', 'service'])->get();
     }
@@ -79,12 +87,21 @@ class CartDrawer extends Component
             $product = Product::findOrFail($id);
             $price = $product->discount_price > 0 ? $product->discount_price : $product->price;
 
-            $item = CartItem::where('session_id', $sessionId)
-                ->where('product_id', $id)
-                ->first();
+            $item = CartItem::where(function ($q) use ($sessionId, $userId) {
+                if ($userId) {
+                    $q->where('user_id', $userId);
+                } else {
+                    $q->where('session_id', $sessionId);
+                }
+            })
+            ->where('product_id', $id)
+            ->first();
 
             if ($item) {
                 $item->increment('quantity', $quantity);
+                if ($userId && !$item->user_id) {
+                    $item->update(['user_id' => $userId]);
+                }
             } else {
                 CartItem::create([
                     'user_id' => $userId,
@@ -99,12 +116,21 @@ class CartDrawer extends Component
             $service = Service::findOrFail($id);
             $price = $service->discount_price > 0 ? $service->discount_price : $service->price;
 
-            $item = CartItem::where('session_id', $sessionId)
-                ->where('service_id', $id)
-                ->first();
+            $item = CartItem::where(function ($q) use ($sessionId, $userId) {
+                if ($userId) {
+                    $q->where('user_id', $userId);
+                } else {
+                    $q->where('session_id', $sessionId);
+                }
+            })
+            ->where('service_id', $id)
+            ->first();
 
             if ($item) {
                 $item->increment('quantity', $quantity);
+                if ($userId && !$item->user_id) {
+                    $item->update(['user_id' => $userId]);
+                }
             } else {
                 CartItem::create([
                     'user_id' => $userId,

@@ -1,4 +1,4 @@
-<x-app-layout title="المدونة الطبية والإرشادية | سيما الخليج">
+<x-app-layout title="{{ app()->getLocale()=='en' ? 'Medical Blog & Health Guides | Sema Al-Khalij' : 'المدونة الطبية والإرشادية | سيما الخليج' }}">
 
     {{-- =================== HERO BANNER =================== --}}
     <section class="relative py-16 sm:py-20 bg-gradient-to-br from-[#071f18] via-primary to-[#0a3428] text-white overflow-hidden">
@@ -10,15 +10,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-bold text-medical-100">
                 <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                <span>المعرفة والتوعية الطبية</span>
+                <span>{{ __('blog.badge') }}</span>
             </div>
 
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                المدونة الطبية <span class="text-accent">والإرشادات الصحية</span>
+                المدونة الطبية <span class="text-accent">{{ __('blog.heading') }}</span>
             </h1>
 
             <p class="text-medical-200 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                مقالات موثوقة ونصائح تثقيفية يقدمها نخبة من أطبائنا واستشاريينا للعناية بصحتك وصحة عائلتك في المنزل.
+                {{ __('blog.text') }}
             </p>
         </div>
     </section>
@@ -32,17 +32,17 @@
                 
                 {{-- Category Tabs --}}
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <button @click="activeTab = 'all'" :class="activeTab === 'all' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">جميع المقالات</button>
-                    <button @click="activeTab = 'elderly'" :class="activeTab === 'elderly' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">رعاية كبار السن</button>
-                    <button @click="activeTab = 'prevention'" :class="activeTab === 'prevention' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">وقاية وصحة منزلية</button>
-                    <button @click="activeTab = 'physio'" :class="activeTab === 'physio' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">علاج طبيعي</button>
-                    <button @click="activeTab = 'labs'" :class="activeTab === 'labs' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">فحوصات وجينات</button>
+                    <button @click="activeTab = 'all'" :class="activeTab === 'all' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">{{ __('blog.all') }}</button>
+                    <button @click="activeTab = 'elderly'" :class="activeTab === 'elderly' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">{{ __('blog.elderly') }}</button>
+                    <button @click="activeTab = 'prevention'" :class="activeTab === 'prevention' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">{{ __('blog.prevention') }}</button>
+                    <button @click="activeTab = 'physio'" :class="activeTab === 'physio' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">{{ __('blog.physio') }}</button>
+                    <button @click="activeTab = 'labs'" :class="activeTab === 'labs' ? 'bg-primary text-white shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600'" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">{{ __('blog.labs') }}</button>
                 </div>
 
                 {{-- Search Box --}}
                 <div class="relative w-full md:w-64">
                     <svg class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" x-model="search" placeholder="ابحث في المقالات..." class="w-full pr-10 pl-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white transition-all">
+                    <input type="text" x-model="search" placeholder="{{ __('blog.search_placeholder') }}" class="w-full pr-10 pl-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white transition-all">
                 </div>
 
             </div>

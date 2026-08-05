@@ -27,6 +27,10 @@ use App\Http\Controllers\Admin\UserManagerController;
 */
 
 use App\Http\Controllers\CorporateServicesController;
+use App\Http\Controllers\LanguageController;
+
+// Language Switcher
+Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 
 // Public Marketing Pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
