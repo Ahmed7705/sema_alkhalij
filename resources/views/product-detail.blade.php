@@ -20,16 +20,17 @@
                 {{-- Product Image Showcase --}}
                 @php
                     $imgMap = [
-                        'smart-blood-pressure-monitor' => 'service-care.png',
-                        'glucometer-kit' => 'service-doctor.png',
-                        'foldable-wheelchair' => 'service-nursing.png',
-                        'pulse-oximeter' => 'service-sampling.png',
-                        'nebulizer-compressor' => 'service-lab.png',
-                        'infrared-thermometer' => 'service-telehealth.png',
-                        'sterile-wound-dressing-kit' => 'service-physio.png',
-                        'electric-medical-bed' => 'medical-team.png',
+                        'smart-blood-pressure-monitor' => 'prod-bp.png',
+                        'glucometer-kit' => 'prod-glucometer.png',
+                        'foldable-wheelchair' => 'prod-wheelchair.png',
+                        'pulse-oximeter' => 'prod-oximeter.png',
+                        'nebulizer-compressor' => 'prod-nebulizer.png',
+                        'infrared-thermometer' => 'prod-supplies.png',
+                        'sterile-wound-dressing-kit' => 'prod-firstaid.png',
+                        'electric-medical-bed' => 'prod-bed.png',
                     ];
-                    $imgName = $imgMap[$product->slug] ?? 'hero-doctor.png';
+                    $dbImg = str_replace('products/', '', $product->image ?? '');
+                    $imgName = (!empty($dbImg) && file_exists(public_path('images/' . $dbImg))) ? $dbImg : ($imgMap[$product->slug] ?? 'prod-bp.png');
                 @endphp
 
                 <div class="space-y-4">
@@ -110,7 +111,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {{-- Add to Cart Livewire Button --}}
                             <button type="button" 
-                                    @click="Livewire.emit('addToCart', 'product', {{ $product->id }}, qty)"
+                                    @click="emitLivewire('addToCart', 'product', {{ $product->id }}, qty)"
                                     class="w-full btn-accent py-3.5 px-6 rounded-2xl font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                                 <span>أضف للسلة الآن</span>
@@ -118,7 +119,7 @@
 
                             {{-- Buy Now Button --}}
                             <button type="button" 
-                                    @click="Livewire.emit('addToCart', 'product', {{ $product->id }}, qty); window.location.href='{{ route('checkout') }}'"
+                                    @click="emitLivewire('addToCart', 'product', {{ $product->id }}, qty); window.location.href='{{ route('checkout') }}'"
                                     class="w-full bg-primary hover:bg-[#071f18] text-white py-3.5 px-6 rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 <span>اشترِ الآن مباشرة</span>
@@ -154,7 +155,8 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach($relatedProducts as $rp)
                             @php
-                                $rImgName = $imgMap[$rp->slug] ?? 'hero-doctor.png';
+                                $rDbImg = str_replace('products/', '', $rp->image ?? '');
+                                $rImgName = (!empty($rDbImg) && file_exists(public_path('images/' . $rDbImg))) ? $rDbImg : ($imgMap[$rp->slug] ?? 'prod-bp.png');
                             @endphp
                             <div class="bg-white rounded-2xl border border-gray-100 shadow-soft hover:shadow-card transition-all p-4 space-y-3 text-right">
                                 <div class="h-36 bg-gray-50 rounded-xl overflow-hidden">
@@ -165,15 +167,16 @@
                                         {{ $rp->title }}
                                     </a>
                                 </h4>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-xs font-black text-accent dir-ltr">
-                                        {{ number_format($rp->discount_price ?? $rp->price, 0) }} ر.س
-                                    </div>
+                                <div class="flex items-center justify-between gap-2">
                                     <button type="button" 
-                                            onclick="Livewire.emit('addToCart', 'product', {{ $rp->id }}, 1)"
-                                            class="p-2 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white transition-colors">
+                                            onclick="emitLivewire('addToCart', 'product', {{ $rp->id }}, 1)"
+                                            class="p-2 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white transition-colors"
+                                            title="أضف للسلة">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                                     </button>
+                                    <div class="text-xs font-black text-accent text-left whitespace-nowrap">
+                                        {{ number_format($rp->discount_price ?? $rp->price, 0) }} <span class="text-[10px]">ر.س</span>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

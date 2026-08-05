@@ -2,12 +2,12 @@
 
     {{-- Main Navigation Bar --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-[72px]">
+        <div class="flex items-center justify-between h-[84px]">
 
             {{-- Logo --}}
-            <div class="flex-shrink-0 flex items-center">
+            <div class="flex-shrink-0 flex items-center py-1">
                 <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                    <img src="{{ asset('images/logo.png') }}" alt="سيما الخليج للخدمات الطبية" class="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <img src="{{ asset($siteSettings['site_logo'] ?? 'images/logo.png') }}" alt="{{ $siteSettings['site_title'] ?? 'سيما الخليج للخدمات الطبية' }}" class="h-14 sm:h-16 lg:h-[72px] w-auto object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="hidden items-center gap-2">
                         <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xl">S</div>
                         <div class="flex flex-col">

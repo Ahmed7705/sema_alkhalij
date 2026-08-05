@@ -179,8 +179,8 @@
                                         <h4 class="font-bold text-gray-800 truncate">{{ $title }}</h4>
                                         <span class="text-[10px] text-gray-400 font-bold">الكمية: {{ $item->quantity }}</span>
                                     </div>
-                                    <div class="font-black text-primary dir-ltr">
-                                        {{ number_format($item->price * $item->quantity, 2) }} ر.س
+                                    <div class="font-black text-primary">
+                                        {{ number_format($item->price * $item->quantity, 2) }} <span class="text-xs font-bold">ر.س</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -195,12 +195,12 @@
                     <div class="space-y-2.5 text-xs pt-4 border-t border-gray-100">
                         <div class="flex items-center justify-between text-gray-500">
                             <span>المجموع الفرعي:</span>
-                            <span class="font-bold text-gray-800 dir-ltr">{{ number_format($subtotal, 2) }} ر.س</span>
+                            <span class="font-bold text-gray-800">{{ number_format($subtotal, 2) }} <span class="text-[10px]">ر.س</span></span>
                         </div>
 
                         <div class="flex items-center justify-between text-gray-500">
                             <span>ضريبة القيمة المضافة (15% شاملة):</span>
-                            <span class="font-bold text-gray-800 dir-ltr">{{ number_format($tax, 2) }} ر.س</span>
+                            <span class="font-bold text-gray-800">{{ number_format($tax, 2) }} <span class="text-[10px]">ر.س</span></span>
                         </div>
 
                         <div class="flex items-center justify-between text-gray-500">
@@ -210,7 +210,7 @@
 
                         <div class="flex items-center justify-between pt-3 border-t border-gray-200 text-base font-black text-primary">
                             <span>الإجمالي النهائي المطلوب:</span>
-                            <span class="text-xl font-black text-accent dir-ltr">{{ number_format($total, 2) }} ر.س</span>
+                            <span class="text-xl font-black text-accent">{{ number_format($total, 2) }} <span class="text-xs">ر.س</span></span>
                         </div>
                     </div>
 

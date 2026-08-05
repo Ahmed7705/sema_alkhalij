@@ -92,9 +92,10 @@
                             $imgName = $imgMap[$s->slug] ?? 'hero-doctor.png';
                         @endphp
 
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+                        <div class="bg-white rounded-3xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
                             
-                            <div>
+                            {{-- Clickable Card Container: Image & Information --}}
+                            <a href="{{ route('services.show', $s->slug) }}" class="block text-right">
                                 {{-- Image Banner with Overlay --}}
                                 <div class="relative h-48 overflow-hidden">
                                     <img src="{{ asset('images/' . $imgName) }}" alt="{{ $s->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;">
@@ -114,11 +115,9 @@
                                 </div>
 
                                 {{-- Card Content --}}
-                                <div class="p-5 space-y-3 text-right">
+                                <div class="p-5 space-y-3">
                                     <h3 class="font-black text-primary text-base group-hover:text-accent transition-colors">
-                                        <a href="{{ route('services.show', $s->slug) }}">
-                                            {{ $s->title }}
-                                        </a>
+                                        {{ $s->title }}
                                     </h3>
                                     
                                     <p class="text-xs text-gray-500 leading-relaxed line-clamp-3">
@@ -137,15 +136,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
 
                             {{-- Action Button --}}
-                            <div class="px-5 pb-5 pt-2 border-t border-gray-50 flex items-center gap-2">
-                                <a href="{{ route('services.show', $s->slug) }}" class="p-2.5 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl text-xs font-bold transition-all border border-gray-100" title="تفاصيل الخدمة">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                </a>
-
-                                <button type="button" onclick="Livewire.emit('openBookingModal', {{ $s->id }})" class="w-full btn-accent py-2.5 rounded-xl font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                            <div class="px-5 pb-5 pt-2 border-t border-gray-50 bg-gray-50/50">
+                                <button type="button" onclick="emitLivewire('openBookingModal', {{ $s->id }})" class="w-full btn-accent py-2.5 rounded-xl font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
                                     <span>احجز هذه الخدمة الآن</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </button>

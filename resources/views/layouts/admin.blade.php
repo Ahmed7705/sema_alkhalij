@@ -62,7 +62,7 @@
         <div class="p-5 border-b border-white/10 flex items-center justify-between shrink-0">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shrink-0 shadow-md">
-                    <img src="{{ asset('images/logo.png') }}" alt="سيما الخليج" class="max-h-full max-w-full object-contain">
+                    <img src="{{ asset($siteSettings['site_logo'] ?? 'images/logo.png') }}" alt="{{ $siteSettings['site_title'] ?? 'سيما الخليج' }}" class="max-h-full max-w-full object-contain">
                 </div>
                 <div class="space-y-0.5">
                     <h2 class="font-black text-sm text-white leading-tight">سيما الخليج</h2>

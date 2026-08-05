@@ -70,23 +70,25 @@
                     @foreach($products as $p)
                         @php
                             $imgMap = [
-                                'smart-blood-pressure-monitor' => 'service-care.png',
-                                'glucometer-kit' => 'service-doctor.png',
-                                'foldable-wheelchair' => 'service-nursing.png',
-                                'pulse-oximeter' => 'service-sampling.png',
-                                'nebulizer-compressor' => 'service-lab.png',
-                                'infrared-thermometer' => 'service-telehealth.png',
-                                'sterile-wound-dressing-kit' => 'service-physio.png',
-                                'electric-medical-bed' => 'medical-team.png',
+                                'smart-blood-pressure-monitor' => 'prod-bp.png',
+                                'glucometer-kit' => 'prod-glucometer.png',
+                                'foldable-wheelchair' => 'prod-wheelchair.png',
+                                'pulse-oximeter' => 'prod-oximeter.png',
+                                'nebulizer-compressor' => 'prod-nebulizer.png',
+                                'infrared-thermometer' => 'prod-supplies.png',
+                                'sterile-wound-dressing-kit' => 'prod-firstaid.png',
+                                'electric-medical-bed' => 'prod-bed.png',
                             ];
-                            $imgName = $imgMap[$p->slug] ?? 'hero-doctor.png';
+                            $dbImg = str_replace('products/', '', $p->image ?? '');
+                            $imgName = (!empty($dbImg) && file_exists(public_path('images/' . $dbImg))) ? $dbImg : ($imgMap[$p->slug] ?? 'prod-bp.png');
                         @endphp
 
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+                        <div class="bg-white rounded-3xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
                             
-                            <div>
+                            {{-- Clickable Card Container: Image & Information --}}
+                            <a href="{{ route('products.show', $p->slug) }}" class="block p-4 space-y-3 text-right">
                                 {{-- Product Image Header --}}
-                                <div class="relative h-48 overflow-hidden bg-gray-50 flex items-center justify-center p-4">
+                                <div class="relative h-48 overflow-hidden bg-gray-50 flex items-center justify-center p-3 rounded-2xl">
                                     <img src="{{ asset('images/' . $imgName) }}" alt="{{ $p->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl">
                                     
                                     {{-- Category Badge --}}
@@ -99,14 +101,14 @@
                                         @php
                                             $discountPct = round((($p->price - $p->discount_price) / $p->price) * 100);
                                         @endphp
-                                        <span class="absolute top-3 left-3 px-2 py-0.5 bg-red-500 text-white font-extrabold text-[10px] rounded-md shadow-xs">
+                                        <span class="absolute top-3 left-3 px-2.5 py-1 bg-red-500 text-white font-extrabold text-[10px] rounded-lg shadow-xs">
                                             خصم {{ $discountPct }}%
                                         </span>
                                     @endif
                                 </div>
 
                                 {{-- Details --}}
-                                <div class="p-5 space-y-2.5 text-right">
+                                <div class="space-y-2">
                                     <div class="flex items-center justify-between text-[11px] text-gray-400 font-bold">
                                         <span>رمز المنتج: {{ $p->sku }}</span>
                                         <span class="{{ $p->stock > 0 ? 'text-emerald-600' : 'text-red-500' }}">
@@ -114,46 +116,40 @@
                                         </span>
                                     </div>
 
-                                    <h3 class="font-black text-primary text-sm sm:text-base group-hover:text-accent transition-colors leading-snug">
-                                        <a href="{{ route('products.show', $p->slug) }}">
-                                            {{ $p->title }}
-                                        </a>
+                                    <h3 class="font-black text-primary text-sm sm:text-base group-hover:text-accent transition-colors leading-snug line-clamp-2">
+                                        {{ $p->title }}
                                     </h3>
 
                                     <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">
                                         {{ $p->short_description }}
                                     </p>
                                 </div>
-                            </div>
+                            </a>
 
-                            {{-- Price & Action Button --}}
-                            <div class="px-5 pb-5 pt-3 border-t border-gray-50 flex items-center justify-between gap-2">
-                                <div>
+                            {{-- Price & Cart Action Footer (Button on Right, Price on Left in RTL) --}}
+                            <div class="px-4 pb-4 pt-3 border-t border-gray-50 flex items-center justify-between gap-3 bg-gray-50/50">
+                                {{-- 1. Cart Button on the Right (يمين) --}}
+                                <button type="button" 
+                                        onclick="emitLivewire('addToCart', 'product', {{ $p->id }}, 1)" 
+                                        class="flex-shrink-0 btn-accent text-xs py-2.5 px-3.5 rounded-xl shadow-md hover:shadow-lg transition-all font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                                    <span>أضف للسلة</span>
+                                </button>
+
+                                {{-- 2. Price on the Left (شمال/يسار) with Arabic RTL Alignment --}}
+                                <div class="whitespace-nowrap flex-1 text-left">
                                     @if($p->discount_price && $p->discount_price < $p->price)
-                                        <div class="text-xs text-gray-400 line-through font-bold dir-ltr">
+                                        <div class="text-[11px] text-gray-400 line-through font-bold">
                                             {{ number_format($p->price, 0) }} ر.س
                                         </div>
-                                        <div class="text-base font-black text-accent dir-ltr">
-                                            {{ number_format($p->discount_price, 0) }} ر.س
+                                        <div class="text-base sm:text-lg font-black text-accent">
+                                            {{ number_format($p->discount_price, 0) }} <span class="text-xs font-bold">ر.س</span>
                                         </div>
                                     @else
-                                        <div class="text-base font-black text-primary dir-ltr">
-                                            {{ number_format($p->price, 0) }} ر.س
+                                        <div class="text-base sm:text-lg font-black text-primary">
+                                            {{ number_format($p->price, 0) }} <span class="text-xs font-bold">ر.س</span>
                                         </div>
                                     @endif
-                                </div>
-
-                                <div class="flex items-center gap-1.5">
-                                    <button type="button" 
-                                            onclick="Livewire.emit('addToCart', 'product', {{ $p->id }}, 1)" 
-                                            class="btn-accent text-xs py-2 px-3 rounded-xl shadow-md hover:shadow-lg transition-all font-bold flex items-center gap-1">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                        <span>أضف للسلة</span>
-                                    </button>
-                                    
-                                    <a href="{{ route('products.show', $p->slug) }}" class="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-all text-xs">
-                                        تفاصيل
-                                    </a>
                                 </div>
                             </div>
 

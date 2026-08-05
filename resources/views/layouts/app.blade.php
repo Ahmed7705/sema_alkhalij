@@ -35,6 +35,21 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @livewireStyles
+    <script>
+        window.emitLivewire = function(event, ...args) {
+            if (typeof Livewire !== 'undefined' && Livewire.emit) {
+                Livewire.emit(event, ...args);
+            } else if (window.Livewire && window.Livewire.emit) {
+                window.Livewire.emit(event, ...args);
+            } else {
+                document.addEventListener('livewire:load', function () {
+                    if (typeof Livewire !== 'undefined' && Livewire.emit) {
+                        Livewire.emit(event, ...args);
+                    }
+                }, { once: true });
+            }
+        };
+    </script>
 
     <!-- Structured Data Schema.org -->
     <script type="application/ld+json">

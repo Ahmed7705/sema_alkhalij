@@ -244,55 +244,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Service::create([
-            'category_id' => $catVisits->id,
-            'title' => 'خدمات الرعاية للشركات',
-            'slug' => 'corporate-medical-care',
-            'short_description' => 'تجهيز عيادات موقعية، فحوصات دورية للموظفين، وتغطية الفعاليات والمؤتمرات.',
-            'description' => 'عقود رعاية طبية متكاملة للمؤسسات والشركات تشمل العيادات الداخلية وفحوصات الموظفين وتغطية المؤتمرات.',
-            'price' => 1000.00,
-            'discount_price' => 850.00,
-            'duration_minutes' => 120,
-            'is_featured' => true,
-            'is_active' => true,
-        ]);
-
-        // 6. Create Product Categories
-        $catEquip = Category::firstOrCreate(
-            ['slug' => 'medical-devices'],
-            [
-                'name' => 'الأجهزة الطبية المنزلية',
-                'type' => 'product',
-                'icon' => 'heart-pulse',
-                'description' => 'أجهزة قياس الضغط والسكر والأكسجين والنيبولايزر.',
-            ]
-        );
-
-        $catSupplies = Category::firstOrCreate(
-            ['slug' => 'medical-supplies'],
-            [
-                'name' => 'المستلزمات والرعاية الطبية',
-                'type' => 'product',
-                'icon' => 'package',
-                'description' => 'مستلزمات التعقيم والجروح والكراسي المتحركة.',
-            ]
-        );
-
-        $catMobility = Category::firstOrCreate(
-            ['slug' => 'mobility-beds'],
-            [
-                'name' => 'الكراسي والأسرة الطبية',
-                'type' => 'product',
-                'icon' => 'truck',
-                'description' => 'كراسي متحركة، أسرّة كهربائية، ومساعدات الحركة.',
-            ]
-        );
-
-        // 7. Seed 8 Complete Medical Products
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Product::truncate();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        Product::create([
+            'category_id'        Product::create([
             'category_id' => $catEquip->id,
             'title' => 'جهاز قياس ضغط الدم الرقمي الذكي',
             'slug' => 'smart-blood-pressure-monitor',
@@ -302,7 +254,7 @@ class DatabaseSeeder extends Seeder
             'discount_price' => 175.00,
             'stock' => 45,
             'sku' => 'MED-BP-01',
-            'image' => 'products/bp-monitor.png',
+            'image' => 'prod-bp.png',
             'is_featured' => true,
             'is_active' => true,
         ]);
@@ -317,7 +269,7 @@ class DatabaseSeeder extends Seeder
             'discount_price' => 110.00,
             'stock' => 80,
             'sku' => 'MED-GL-02',
-            'image' => 'products/glucometer.png',
+            'image' => 'prod-glucometer.png',
             'is_featured' => true,
             'is_active' => true,
         ]);
@@ -332,7 +284,7 @@ class DatabaseSeeder extends Seeder
             'discount_price' => 580.00,
             'stock' => 15,
             'sku' => 'MED-WC-03',
-            'image' => 'products/wheelchair.png',
+            'image' => 'prod-wheelchair.png',
             'is_featured' => true,
             'is_active' => true,
         ]);
@@ -347,9 +299,70 @@ class DatabaseSeeder extends Seeder
             'discount_price' => 75.00,
             'stock' => 60,
             'sku' => 'MED-PO-04',
-            'image' => 'products/oximeter.png',
+            'image' => 'prod-oximeter.png',
             'is_featured' => true,
             'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $catEquip->id,
+            'title' => 'جهاز استنشاق البخار الطبي (نيبولايزر) للربو والحساسية',
+            'slug' => 'nebulizer-compressor',
+            'short_description' => 'جهاز جلسات البخار المنزلي الهادئ المخصص للأطفال والكبار.',
+            'description' => 'يحول الدواء السائل إلى رذاذ ناعم جداً لسهولة التنفس، مزود بجميع القناعات الطبية الخاصة بالأطفال والكبار ورأس استنشاق الفم.',
+            'price' => 180.00,
+            'discount_price' => 145.00,
+            'stock' => 30,
+            'sku' => 'MED-NEB-05',
+            'image' => 'prod-nebulizer.png',
+            'is_featured' => true,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $catEquip->id,
+            'title' => 'ميزان حرارة عن بعد بالأشعة تحت الحمراء (بدون تلامس)',
+            'slug' => 'infrared-thermometer',
+            'short_description' => 'قياس الحرارة الفوري للجبهة والأجسام خلال ثانية واحدة.',
+            'description' => 'قياس دقيق بدون تلامس لتفادي نقل العدوى، مع إضاءة خلفية تحذيرية عند ارتفاع درجة الحرارة (حمى).',
+            'price' => 120.00,
+            'discount_price' => 89.00,
+            'stock' => 50,
+            'sku' => 'MED-TH-06',
+            'image' => 'prod-supplies.png',
+            'is_featured' => true,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $catSupplies->id,
+            'title' => 'طقم غيار الجروح المعقم الشامل',
+            'slug' => 'sterile-wound-dressing-kit',
+            'short_description' => 'حقيبة ضمادات ومطهرات معقمة عالية الجودة للجروح وتقرحات الفراش.',
+            'description' => 'تحتوي على ضمادات غير لاصقة، مسحات طبية، شاش معقم، شريط طبي لاصق ضد الماء، ومحلول سالين معقم.',
+            'price' => 85.00,
+            'discount_price' => 65.00,
+            'stock' => 100,
+            'sku' => 'MED-SK-07',
+            'image' => 'prod-firstaid.png',
+            'is_featured' => false,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $catMobility->id,
+            'title' => 'سرير طبي كهربائي 3 حركات للرعاية المنزلية',
+            'slug' => 'electric-medical-bed',
+            'short_description' => 'سرير طبي متطور بريموت كنترول للتحكم بالظهر والأرجل والارتفاع.',
+            'description' => 'مزود بجوانب حماية للأمان، مرتبة طبية مقاوِمة للتقرحات، وعجلات بسلسلة فرامل مركزية لراحة المرضى وكبار السن.',
+            'price' => 2800.00,
+            'discount_price' => 2450.00,
+            'stock' => 5,
+            'sku' => 'MED-BED-08',
+            'image' => 'prod-bed.png',
+            'is_featured' => true,
+            'is_active' => true,
+        ]);s_active' => true,
         ]);
 
         Product::create([

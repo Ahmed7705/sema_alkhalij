@@ -8,7 +8,7 @@
             {{-- Column 1: Brand & Bio (2 cols) --}}
             <div class="lg:col-span-2 space-y-4">
                 <a href="{{ url('/') }}" class="inline-block">
-                    <img src="{{ asset('images/logo.png') }}" alt="سيما الخليج" class="h-14 w-auto bg-white/10 p-2 rounded-xl backdrop-blur-sm object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <img src="{{ asset($siteSettings['site_logo'] ?? 'images/logo.png') }}" alt="{{ $siteSettings['site_title'] ?? 'سيما الخليج' }}" class="h-14 w-auto bg-white/10 p-2 rounded-xl backdrop-blur-sm object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="hidden items-center gap-2">
                         <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-black text-xl">S</div>
                         <div>

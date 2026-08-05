@@ -180,7 +180,7 @@
                             </div>
                         </div>
 
-                        <button type="button" onclick="Livewire.emit('openBookingModal', {{ $service->id }})"
+                        <button type="button" onclick="emitLivewire('openBookingModal', {{ $service->id }})"
                             class="w-full btn-accent py-3.5 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
                             <span>طلب الحجز الآن</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

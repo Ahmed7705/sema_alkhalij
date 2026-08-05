@@ -81,8 +81,8 @@
                                             <button wire:click="updateQuantity({{ $item->id }}, {{ $item->quantity + 1 }})" class="w-6 h-6 flex items-center justify-center text-xs text-gray-600 hover:bg-gray-100 font-bold">+</button>
                                         </div>
 
-                                        <div class="text-xs font-black text-accent dir-ltr">
-                                            {{ number_format($item->price * $item->quantity, 2) }} ر.س
+                                        <div class="text-xs font-black text-accent">
+                                            {{ number_format($item->price * $item->quantity, 2) }} <span class="text-[10px]">ر.س</span>
                                         </div>
                                     </div>
                                 </div>
@@ -107,15 +107,15 @@
                         <div class="space-y-2 text-xs bg-white p-4 rounded-2xl border border-gray-100">
                             <div class="flex items-center justify-between text-gray-500">
                                 <span>المجموع الفرعي:</span>
-                                <span class="font-bold text-gray-800 dir-ltr">{{ number_format($subtotal, 2) }} ر.س</span>
+                                <span class="font-bold text-gray-800">{{ number_format($subtotal, 2) }} <span class="text-[10px]">ر.س</span></span>
                             </div>
                             <div class="flex items-center justify-between text-gray-500">
                                 <span>ضريبة القيمة المضافة (15% شاملة):</span>
-                                <span class="font-bold text-gray-800 dir-ltr">{{ number_format($tax, 2) }} ر.س</span>
+                                <span class="font-bold text-gray-800">{{ number_format($tax, 2) }} <span class="text-[10px]">ر.س</span></span>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-sm font-black text-primary">
                                 <span>الإجمالي النهائي المطلوب:</span>
-                                <span class="text-lg font-black text-accent dir-ltr">{{ number_format($total, 2) }} ر.س</span>
+                                <span class="text-lg font-black text-accent">{{ number_format($total, 2) }} <span class="text-xs">ر.س</span></span>
                             </div>
                         </div>
 
