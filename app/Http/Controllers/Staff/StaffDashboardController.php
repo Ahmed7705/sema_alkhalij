@@ -27,24 +27,44 @@ class StaffDashboardController extends Controller
 
         $staffId = $user->id;
 
-        $assignedVisits = Booking::where('assigned_provider_id', $staffId)
-            ->with(['service', 'user'])
-            ->latest()
-            ->paginate(15);
+        $assignedQuery = Booking::where('assigned_provider_id', $staffId);
+        
+        // If Admin/Super Admin/Manager is testing, fallback to viewing all bookings if none assigned directly
+        if (in_array($user->role, ['admin', 'super_admin', 'manager']) && $assignedQuery->count() === 0) {
+            $assignedVisits = Booking::with(['service', 'user'])->latest()->paginate(15);
+        } else {
+            $assignedVisits = $assignedQuery->with(['service', 'user'])->latest()->paginate(15);
+        }
 
-        $todaysVisits = Booking::where('assigned_provider_id', $staffId)
+        $todaysVisits = Booking::where(function($q) use ($staffId, $user) {
+                if (!in_array($user->role, ['admin', 'super_admin'])) {
+                    $q->where('assigned_provider_id', $staffId);
+                }
+            })
             ->whereDate('booking_date', today())
             ->count();
 
-        $pendingAcceptance = Booking::where('assigned_provider_id', $staffId)
+        $pendingAcceptance = Booking::where(function($q) use ($staffId, $user) {
+                if (!in_array($user->role, ['admin', 'super_admin'])) {
+                    $q->where('assigned_provider_id', $staffId);
+                }
+            })
             ->where('status', 'assigned')
             ->count();
 
-        $inProgress = Booking::where('assigned_provider_id', $staffId)
+        $inProgress = Booking::where(function($q) use ($staffId, $user) {
+                if (!in_array($user->role, ['admin', 'super_admin'])) {
+                    $q->where('assigned_provider_id', $staffId);
+                }
+            })
             ->where('status', 'in_progress')
             ->count();
 
-        $completed = Booking::where('assigned_provider_id', $staffId)
+        $completed = Booking::where(function($q) use ($staffId, $user) {
+                if (!in_array($user->role, ['admin', 'super_admin'])) {
+                    $q->where('assigned_provider_id', $staffId);
+                }
+            })
             ->where('status', 'completed')
             ->count();
 
