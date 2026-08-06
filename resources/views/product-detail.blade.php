@@ -171,9 +171,9 @@
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {{-- Add to Cart Button --}}
+                            {{-- Add to Cart Livewire Button --}}
                             <button type="button" 
-                                    @click="addToCart({ id: {{ $product->id }}, title: '{{ addslashes($displayTitle) }}', price: {{ $product->discount_price ?? $product->price }}, img: '{{ $imgName }}', qty: qty }); emitLivewire('addToCart', 'product', {{ $product->id }}, qty)"
+                                    @click="emitLivewire('addToCart', 'product', {{ $product->id }}, qty)"
                                     class="w-full btn-accent py-3.5 px-6 rounded-2xl font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                                 <span>{{ $isEn ? 'Add to Cart Now' : 'أضف للسلة الآن' }}</span>
@@ -181,7 +181,7 @@
 
                             {{-- Buy Now Button --}}
                             <button type="button" 
-                                    @click="addToCart({ id: {{ $product->id }}, title: '{{ addslashes($displayTitle) }}', price: {{ $product->discount_price ?? $product->price }}, img: '{{ $imgName }}', qty: qty }); emitLivewire('addToCart', 'product', {{ $product->id }}, qty); checkoutOpen = true"
+                                    @click="emitLivewire('addToCart', 'product', {{ $product->id }}, qty); window.location.href='{{ route('checkout') }}'"
                                     class="w-full bg-primary hover:bg-[#071f18] text-white py-3.5 px-6 rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 <span>{{ $isEn ? 'Buy Now Directly' : 'اشترِ الآن مباشرة' }}</span>

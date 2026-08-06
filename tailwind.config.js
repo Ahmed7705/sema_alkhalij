@@ -18,9 +18,9 @@ module.exports = {
           500: '#3CA96B', // Accent
           600: '#2E8B54',
           700: '#1F6B41',
-          800: '#0F4C3A', // Primary
-          900: '#0A3428',
-          950: '#041B15',
+          800: '#006C35', // Primary #006C35 rgb(0, 108, 53)
+          900: '#00572B',
+          950: '#004522',
         },
         accent: {
           DEFAULT: '#3CA96B',
@@ -28,10 +28,10 @@ module.exports = {
           light: '#EAF7F0',
         },
         primary: {
-          DEFAULT: '#0F4C3A',
-          hover: '#0B3A2C',
-          dark: '#07271E',
-          light: '#1B6A53',
+          DEFAULT: '#006C35', // rgb(0, 108, 53)
+          hover: '#00572B',
+          dark: '#004522',
+          light: '#008441',
         },
         surface: {
           DEFAULT: '#F6F9F7',
