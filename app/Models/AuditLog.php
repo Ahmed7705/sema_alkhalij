@@ -25,15 +25,15 @@ class AuditLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function log($action, $model = null, array $oldValues = [], array $newValues = [])
+    public static function log($action, $model = null, $oldValues = [], $newValues = [])
     {
         return self::create([
             'user_id' => auth()->id(),
             'action' => $action,
             'model_type' => $model ? get_class($model) : null,
             'model_id' => $model ? $model->id : null,
-            'old_values' => !empty($oldValues) ? json_encode($oldValues, JSON_UNESCAPED_UNICODE) : null,
-            'new_values' => !empty($newValues) ? json_encode($newValues, JSON_UNESCAPED_UNICODE) : null,
+            'old_values' => is_array($oldValues) ? (!empty($oldValues) ? json_encode($oldValues, JSON_UNESCAPED_UNICODE) : null) : (string)$oldValues,
+            'new_values' => is_array($newValues) ? (!empty($newValues) ? json_encode($newValues, JSON_UNESCAPED_UNICODE) : null) : (string)$newValues,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);

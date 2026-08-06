@@ -84,7 +84,7 @@ class StaffDashboardController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        if ($booking->assigned_provider_id !== Auth::id() && !in_array(Auth::user()->role, ['admin', 'super_admin'])) {
+        if ((int)$booking->assigned_provider_id !== (int)Auth::id() && !in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             abort(403, 'غير مصرح لك بتحديث حالة هذه الزيارة الطبية.');
         }
 

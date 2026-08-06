@@ -81,15 +81,11 @@ class ServiceAssignmentService
 
     protected function logActivity(Booking $booking, string $action, string $oldStatus, string $newStatus): void
     {
-        AuditLog::create([
-            'user_id' => Auth::id(),
-            'event' => 'service_' . $action,
-            'auditable_type' => Booking::class,
-            'auditable_id' => $booking->id,
-            'old_values' => json_encode(['status' => $oldStatus]),
-            'new_values' => json_encode(['status' => $newStatus, 'assigned_provider' => $booking->assigned_provider_id]),
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-        ]);
+        AuditLog::log(
+            'STATUS_CHANGE_' . strtoupper($action),
+            $booking,
+            ['status' => $oldStatus],
+            ['status' => $newStatus, 'assigned_provider' => $booking->assigned_provider_id]
+        );
     }
 }

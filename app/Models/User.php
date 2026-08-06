@@ -93,4 +93,19 @@ class User extends Authenticatable
     {
         return $this->role === 'customer' || $this->role === null;
     }
+
+    public function staffProfile()
+    {
+        return $this->hasOne(StaffProfile::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['doctor', 'nurse', 'physio', 'lab_tech', 'customer_service', 'manager', 'admin', 'super_admin']);
+    }
 }

@@ -13,8 +13,21 @@ class Booking extends Model
     protected $fillable = [
         'uuid',
         'user_id',
+        'company_id',
+        'contract_id',
+        'patient_name',
+        'identification_type',
+        'identification_number',
         'booking_number',
         'service_id',
+        'assigned_provider_id',
+        'assigned_by',
+        'assigned_at',
+        'accepted_at',
+        'started_at',
+        'completed_at',
+        'verified_at',
+        'verified_by',
         'booking_date',
         'booking_time',
         'city',
@@ -57,6 +70,26 @@ class Booking extends Model
     public function assignedProvider()
     {
         return $this->belongsTo(User::class, 'assigned_provider_id');
+    }
+
+    public function assignedBy()
+    {
+        return $this->belongsTo(User::class, 'assigned_by');
+    }
+
+    public function verifiedBy()
+    {
+        return $this->belongsTo(User::class, 'verified_by');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class, 'contract_id');
     }
 
     public function labSample()

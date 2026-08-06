@@ -144,6 +144,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('medical-reports/{report}/download', [MedicalReportController::class, 'download'])->name('medical-reports.download');
 });
 
+use App\Http\Controllers\Admin\StaffManagerController;
+
 // ADMIN CONTROL PANEL ROUTES (Protected by Auth & Admin Middleware)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -161,6 +163,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Audit Activity Logs
     Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit.index');
+
+    // Medical Staff Management
+    Route::get('staff', [StaffManagerController::class, 'index'])->name('staff.index');
+    Route::get('staff/create', [StaffManagerController::class, 'create'])->name('staff.create');
+    Route::post('staff', [StaffManagerController::class, 'store'])->name('staff.store');
+    Route::get('staff/{id}', [StaffManagerController::class, 'show'])->name('staff.show');
+    Route::get('staff/{id}/edit', [StaffManagerController::class, 'edit'])->name('staff.edit');
+    Route::put('staff/{id}', [StaffManagerController::class, 'update'])->name('staff.update');
+    Route::post('staff/{id}/toggle', [StaffManagerController::class, 'toggleStatus'])->name('staff.toggle');
     
     // Services
     Route::resource('services', ServiceManagerController::class);
@@ -168,8 +179,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Products
     Route::resource('products', ProductManagerController::class);
     
-    // Bookings
+    // Bookings & Visit Assignment / Verification
     Route::get('bookings', [BookingManagerController::class, 'index'])->name('bookings.index');
+    Route::get('bookings/{id}', [BookingManagerController::class, 'show'])->name('bookings.show');
+    Route::post('bookings/{id}/assign', [BookingManagerController::class, 'assign'])->name('bookings.assign');
+    Route::post('bookings/{id}/verify', [BookingManagerController::class, 'verify'])->name('bookings.verify');
     Route::post('bookings/{id}/status', [BookingManagerController::class, 'updateStatus'])->name('bookings.status');
     
     // Orders

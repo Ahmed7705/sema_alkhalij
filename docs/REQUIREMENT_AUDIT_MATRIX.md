@@ -1,42 +1,11 @@
-# Requirement Audit Matrix — Sema Al-Khalij Medical Services & Operations
+    # Requirement Audit Matrix — Sema Al-Khalij Medical Services
 
-This document presents the empirical audit matrix for all 25 core operational requirements specified in `sema-alkhalij-crm-medical-operations-prompt.md` and `sema-alkhalij-crm-medical-operations-prompt2.md`.
-
----
-
-| # | Requirement Name | Backend Exists? | DB Exists? | Admin Screen? | Public Screen? | Customer Screen? | Staff Screen? | Company Screen? | Route Exists? | Permission Exists? | Real DB Data? | Tested? | Status |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | **System Audit & Gap Analysis** | Yes | Yes | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Yes | Yes | **Complete** |
-| 2 | **Database & Core Architecture** | Yes | Yes | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Yes | Yes | **Complete** |
-| 3 | **Roles, Permissions & Staff Profiles** | Yes | Yes | Yes | N/A | N/A | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 4 | **Patient Identification (Saudi/Iqama/Border/GCC)** | Yes | Yes | Yes | N/A | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 5 | **CRM & Service Requests** | Yes | Yes | Yes | N/A | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 6 | **Service Assignment & Execution Workflow** | Yes | Yes | Yes | N/A | N/A | Yes | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 7 | **Staff Operations Portal** | Yes | Yes | N/A | N/A | N/A | Yes | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 8 | **Corporate CRM & Contract Requests** | Yes | Yes | Yes | Yes | N/A | N/A | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 9 | **Contracts, Payment Terms & Pricing** | Yes | Yes | Yes | N/A | N/A | N/A | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 10 | **Beneficiaries & Company Portal** | Yes | Yes | N/A | N/A | N/A | N/A | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 11 | **Lab Samples & Unique Visit Codes** | Yes | Yes | Yes | N/A | N/A | Yes | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 12 | **PDF Medical Reports & Secure Storage** | Yes | Yes | Yes | N/A | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 13 | **Advanced Operations Search & Export** | Yes | Yes | Yes | N/A | N/A | N/A | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 14 | **Visit Reports & Analytics Charts** | Yes | Yes | Yes | N/A | N/A | N/A | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 15 | **Events, Notifications & Audit Logging** | Yes | Yes | Yes | N/A | N/A | N/A | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 16 | **Security Review & IDOR Isolation** | Yes | Yes | N/A | N/A | N/A | N/A | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 17 | **Full Integration & Regression Testing** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 18 | **Documentation & Production Readiness** | Yes | Yes | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Yes | Yes | **Complete** |
-| 19 | **Redesigned Public Header & Navigation** | Yes | N/A | N/A | Yes | Yes | N/A | N/A | Yes | Yes | N/A | Yes | **Complete** |
-| 20 | **Public Corporate Solutions & Form** | Yes | Yes | Yes | Yes | N/A | N/A | N/A | Yes | Yes | Yes | Yes | **Complete** |
-| 21 | **Role-Based Header Link Protection** | Yes | N/A | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-| 22 | **Categorized Admin Tree Sidebar** | Yes | N/A | Yes | N/A | N/A | N/A | N/A | Yes | Yes | N/A | Yes | **Complete** |
-| 23 | **Dynamic VAT Rate Integration** | Yes | Yes | Yes | Yes | Yes | N/A | N/A | N/A | N/A | Yes | Yes | **Complete** |
-| 24 | **Concurrently Locked Visit Code Generator** | Yes | Yes | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Yes | Yes | **Complete** |
-| 25 | **Private Medical Report PDF Stream Authorization** | Yes | Yes | Yes | N/A | Yes | Yes | Yes | Yes | Yes | Yes | Yes | **Complete** |
-
----
-
-### Audit Status Legend:
-- **Complete**: Fully built with real MySQL data, active routes, authorization controls, responsive UI, and verified test execution.
-- **Backend Only**: Logic and DB exist but UI screen is missing.
-- **UI Missing**: Screen missing.
-- **Permission Missing**: Authorization policy/middleware missing.
-- **Not Implemented**: Feature not yet built.
+    | Requirement Section | Component / Feature | Allowed Roles | Implementation Status | Automated Tests |
+    | :--- | :--- | :--- | :--- | :--- |
+    | **1. Medical Staff Management** | Staff Directory (`/admin/staff`), Create, Edit, Show, Toggle Active Status | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`admin_can_view_staff_management`, `admin_can_create_and_update_staff_profile`, `admin_can_toggle_staff_active_status_without_deleting_user`) |
+    | **2. Service Requests & Visit Management** | Standalone Visit Details (`/admin/bookings/{id}`), Patient & Service Info | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`admin_can_assign_visit_to_qualified_active_staff`) |
+    | **3. Assignment & Reassignment** | Assign/Reassign active practitioner, log audit trail | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`inactive_staff_cannot_be_assigned_visit`, `reassignment_works_and_is_logged_in_audit_logs`) |
+    | **4. Staff Operations Portal** | Practitioner Dashboard (`/staff/dashboard`) with restricted visit visibility | `doctor`, `nurse`, `physio`, `lab_tech`, `admin`, `manager` | COMPLETE ✅ | Passed (`doctor_sees_only_own_assigned_visits`, `nurse_sees_only_own_assigned_visits`, `staff_cannot_access_or_modify_another_staff_members_visit`) |
+    | **5. Workflow State Machine** | Strict transitions: `requested` → `assigned` → `accepted` → `in_progress` → `completed` → `verified` | Staff (Practitioners for execution), Admin/Supervisor for Verification | COMPLETE ✅ | Passed (`staff_can_accept_assigned_visit`, `staff_can_start_accepted_visit`, `staff_can_complete_in_progress_visit`, `invalid_workflow_transition_is_rejected`) |
+    | **6. Verification Security** | Supervisor Verification (`/admin/bookings/{id}/verify`) | `admin`, `super_admin`, `manager`, `customer_service` | COMPLETE ✅ | Passed (`authorized_supervisor_or_admin_can_verify_completed_visit`, `unauthorized_staff_cannot_verify_completed_visit`) |
+    | **7. Real Audit Trail** | Database logging of assignment, reassignment, status changes, and verification | All authenticated actions | COMPLETE ✅ | Passed (`all_sensitive_transitions_are_logged_in_audit_logs`) |

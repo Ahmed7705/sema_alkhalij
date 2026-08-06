@@ -1,21 +1,20 @@
 # Session Handoff — Sema Al-Khalij Medical Services & Operations
 
-## Current Phase Status: Phase 3 COMPLETE ✅ (Phase 4 NOT STARTED 🛑)
+## Current Phase Status: Phase 4 COMPLETE & VERIFIED ✅ (Phase 5 NOT STARTED 🛑)
 
 ### Completed Phases:
 - **Phase 1**: System Audit & Requirement Matrix ✅
 - **Phase 2**: Public Website + Header + Corporate Entry ✅
 - **Phase 3**: Customer / Patient Portal ✅
+- **Phase 4**: Medical Staff Management & Staff Operations Portal ✅
 
-### Phase 3 Deliverables Summary:
-1. **Customer Dashboard & Profile**: `/profile` tabbed interface for patient overview, bookings, store orders, medical report downloads, lab sample tracking, saved addresses, and wishlist.
-2. **Address Management**: `AddressController` handling store, update, delete, and set-default actions with server-side IDOR checks.
-3. **Detail Views & Workflows**:
-   - Booking detail (`/profile/bookings/{booking}`) with 6-step status workflow and lab sample tracking.
-   - Order detail (`/profile/orders/{order}`) with dynamic VAT calculations via `SettingsService`.
-4. **Secure Medical PDF Downloads**: `/medical-reports/{id}/download` with strict IDOR verification.
-5. **Automated Test Results**: **32 / 32 tests passed (18.49s)**.
+### Phase 4 Deliverables Summary:
+1. **Medical Staff Management**: `Admin\StaffManagerController` handling `/admin/staff` directory, creation, edit, show, and active/inactive status toggles.
+2. **Visit Assignment & Standalone Management**: `Admin\BookingManagerController::show()`, `assign()`, and `verify()` for standalone visit details, active practitioner assignment/reassignment, and supervisor verification.
+3. **Staff Portal & Workflow**: `/staff/dashboard` with role-restricted visit visibility, status transitions (`assigned` → `accepted` → `in_progress` → `completed`), and IDOR protection.
+4. **Audit Trail**: Real database timeline logging for assignment, reassignment, status changes, and verification.
+5. **Automated Test Results**: **55 / 55 tests passed (25.44s)** with 0 failures across the entire suite.
 
-### Handoff Notes for Phase 4:
+### Handoff Notes for Phase 5:
 - Do NOT push to git repository until explicitly requested by the user.
-- Do NOT start Phase 4 until explicit instruction is received.
+- Do NOT start Phase 5 until explicit instruction is received.

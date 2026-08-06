@@ -1,21 +1,10 @@
-# Changelog — Sema Al-Khalij Medical Services & Operations
+# Changelog — Sema Al-Khalij Medical Services
 
-All notable changes and phase releases are documented in this file.
-
-## Phase 3 Final Release — Customer / Patient Portal [2026-08-04]
-
-### Added:
-- **`WishlistController`**: Implemented `index()`, `toggle()`, and `destroy()` methods with server-side IDOR authorization (`user_id === Auth::id()`).
-- **Wishlist Routes**: Registered `GET /wishlist`, `POST /wishlist/toggle`, `DELETE /wishlist/{wishlistItem}` under `auth` middleware.
-- **7-Stage Lab Sample Workflow Tracker**: Added `assigned` step to render all 7 approved lab sample states (`registered` → `assigned` → `sample_collected` → `sent_to_lab` → `received_by_lab` → `processing` → `result_ready`).
-- **Password Security**: Validated current password with `Hash::check()` and updated hash via `Hash::make()`.
-- **Phase 3 Feature Test Suite**: Added 5 new tests in `tests/Feature/Phase3CustomerPortalTest.php` covering Wishlist CRUD & IDOR, Lab Sample 7-stage workflow, Password updates & validation, and Header customer isolation.
-
-### Updated:
-- **`2026_08_03_000010_create_cart_and_wishlist_tables.php`**: Made `session_id` column nullable in `wishlist_items` migration table.
-- **`profile.blade.php`**: Rendered all 7 lab sample workflow steps in visual progress tracker.
-
-### Verified:
-- `php artisan test`: **37 / 37 tests passed cleanly (9.87s)** with 0 failures.
-- `php artisan route:list`: **87 active routes**.
-- Git repository unpushed as instructed.
+## Phase 4 — Medical Staff Management & Staff Operations Portal (2026-08-07)
+- **Added**: `Admin\StaffManagerController` with `/admin/staff` directory, search, role filters, creation (`/admin/staff/create`), edit (`/admin/staff/{id}/edit`), show (`/admin/staff/{id}`), and active status toggle (`/admin/staff/{id}/toggle`).
+- **Added**: Standalone Admin Visit Management (`/admin/bookings/{id}`) displaying patient identification, service details, corporate contract, active practitioner assignment/reassignment form, and real audit timeline.
+- **Added**: Server-Side Workflow State Machine (`requested` → `assigned` → `accepted` → `in_progress` → `completed` → `verified`).
+- **Added**: Supervisor Verification action (`/admin/bookings/{id}/verify`) restricted to admins, managers, and customer service supervisors.
+- **Added**: Admin Sidebar links for Medical Staff (`admin.staff.index`) and Patients/Customers (`admin.users.index`).
+- **Added**: `tests/Feature/Phase4MedicalStaffOperationsTest.php` with 18 feature tests.
+- **Result**: 55 / 55 tests passing cleanly across full test suite.
