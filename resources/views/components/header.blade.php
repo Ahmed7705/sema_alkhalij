@@ -40,9 +40,11 @@
                 </a>
 
                 {{-- Corporate Dropdown --}}
-                <div class="relative" @mouseleave="corporateDropdownOpen = false">
+                <div class="relative"
+                     @mouseenter="corporateDropdownOpen = true"
+                     @mouseleave="corporateDropdownOpen = false"
+                     @click.outside="corporateDropdownOpen = false">
                     <button @click="corporateDropdownOpen = !corporateDropdownOpen"
-                            @mouseenter="corporateDropdownOpen = true"
                             class="px-3 py-2 text-sm font-bold text-gray-700 hover:text-primary rounded-lg hover:bg-medical-50 transition-all flex items-center gap-1 whitespace-nowrap">
                         <span>{{ __('nav.corporate') }}</span>
                         <svg class="w-3.5 h-3.5 transition-transform duration-200"
@@ -59,13 +61,15 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="opacity-100 scale-100"
                          x-transition:leave-end="opacity-0 scale-95"
-                         class="absolute top-full mt-1 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50
-                                {{ app()->getLocale() == 'en' ? 'left-0 text-left' : 'right-0 text-right' }}">
-                        <a href="{{ route('corporate-services') }}" class="block px-4 py-2.5 text-xs font-bold text-gray-700 hover:bg-medical-50 hover:text-primary transition-all">{{ __('nav.corp_solutions') }}</a>
-                        <a href="{{ route('corporate-services') }}" class="block px-4 py-2.5 text-xs font-bold text-gray-700 hover:bg-medical-50 hover:text-primary transition-all">{{ __('nav.corp_medical') }}</a>
-                        <a href="{{ url('/corporate-services#contract-request-form') }}" class="block px-4 py-2.5 text-xs font-bold text-accent hover:bg-accent/10 transition-all">{{ __('nav.corp_new_contract') }}</a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="{{ route('login') }}" class="block px-4 py-2.5 text-xs font-bold text-primary hover:bg-primary/5 transition-all">{{ __('nav.corp_login') }}</a>
+                         class="absolute top-full pt-1.5 w-64 z-50
+                                {{ app()->getLocale() == 'en' ? 'left-0' : 'right-0' }}">
+                        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2 {{ app()->getLocale() == 'en' ? 'text-left' : 'text-right' }}">
+                            <a href="{{ route('corporate-services') }}" class="block px-4 py-2.5 text-xs font-bold text-gray-700 hover:bg-medical-50 hover:text-primary transition-all">{{ __('nav.corp_solutions') }}</a>
+                            <a href="{{ route('corporate-services') }}" class="block px-4 py-2.5 text-xs font-bold text-gray-700 hover:bg-medical-50 hover:text-primary transition-all">{{ __('nav.corp_medical') }}</a>
+                            <a href="{{ url('/corporate-services#contract-request-form') }}" class="block px-4 py-2.5 text-xs font-bold text-accent hover:bg-accent/10 transition-all">{{ __('nav.corp_new_contract') }}</a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="{{ route('login') }}" class="block px-4 py-2.5 text-xs font-bold text-primary hover:bg-primary/5 transition-all">{{ __('nav.corp_login') }}</a>
+                        </div>
                     </div>
                 </div>
 

@@ -14,7 +14,7 @@
             </div>
 
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                سعداء بتواصلكم <span class="text-accent">{{ __('contact.heading') }}</span>
+                {{ __('contact.heading') }}
             </h1>
 
             <p class="text-medical-200 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
@@ -60,7 +60,7 @@
                     <div>
                         <span class="block text-xs font-bold text-gray-400">{{ __('contact.location_label') }}</span>
                         <span class="block text-base font-black text-primary">{{ __('contact.location_avail') }}</span>
-                        <span class="text-[11px] text-gray-500">طريق المدينة المنورة</span>
+                        <span class="text-[11px] text-gray-500">{{ __('contact.location_sub') }}</span>
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                         <p class="text-xs text-gray-500">{!! app()->getLocale()=='en' ? 'Fill in the form below and our representative will contact you right away.' : 'قم بتعبئة النموذج أدناه وسيقوم ممثل خدمة العملاء بالتواصل معك فوراً.' !!}</p>
                     </div>
 
-                    <form @submit.prevent="alert('تم استلام رسالتك بنجاح! سيتواصل معك الفريق الطبي فوراً.');" class="space-y-4">
+                    <form @submit.prevent="alert('{{ app()->getLocale()=='en' ? 'Your message was received successfully! Our team will contact you shortly.' : 'تم استلام رسالتك بنجاح! سيتواصل معك الفريق الطبي فوراً.' }}');" class="space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.name_label') }} <span class="text-red-500">*</span></label>
@@ -92,7 +92,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.phone_field_label') }} <span class="text-red-500">*</span></label>
-                                <input type="tel" required placeholder="{{ __('contact.phone_field_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all dir-ltr text-right">
+                                <input type="tel" required placeholder="{{ __('contact.phone_field_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all {{ app()->getLocale()=='en' ? 'text-left' : 'dir-ltr text-right' }}">
                             </div>
                         </div>
 
@@ -102,14 +102,8 @@
                                 <input type="email" required placeholder="{{ __('contact.email_field_placeholder') }}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">الخدمة المطلوبة</label>
+                                <label class="block text-xs font-bold text-gray-700 mb-1.5">{{ __('contact.service_field_label') }}</label>
                                 <select class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-primary focus:bg-white transition-all cursor-pointer">
-                                    <option value="">اختر الخدمة (اختياري)</option>
-                                    <option value="nursing">التمريض المنزلي</option>
-                                    <option value="doctor">زيارات الأطباء</option>
-                                    <option value="physio">العلاج الطبيعي والتأهيل</option>
-                                    <option value="labs">سحب عينات وفحوصات مخبرية</option>
-                                    <option value="genetics">الفحوصات الجينية والوراثية</option>
                                     <option value="">{{ __('contact.service_placeholder') }}</option>
                                     <option value="nursing">{{ __('contact.service_nursing') }}</option>
                                     <option value="doctor">{{ __('contact.service_doctor') }}</option>
@@ -129,12 +123,12 @@
                         <div class="pt-2">
                             <button type="submit" class="w-full btn-accent py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
                                 <span>{{ __('contact.send_btn') }}</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <svg class="w-4 h-4 {{ app()->getLocale()=='en' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </button>
                         </div>
 
                         <p class="text-[11px] text-gray-400 text-center">
-                            نلتزم بحماية سرية وخصوصية بياناتكم وفقاً لنظام حماية البيانات الشخصية بالمملكة (PDPL).
+                            {{ __('contact.pdpl_note') }}
                         </p>
                     </form>
                 </div>
@@ -149,13 +143,13 @@
                                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z"/></svg>
                             </div>
                             <div>
-                                <h3 class="font-bold text-base">محادثة واتساب فورية</h3>
-                                <p class="text-[11px] text-medical-200">تحدث مع موظف الاستقبال الطبي فوراً</p>
+                                <h3 class="font-bold text-base">{{ __('contact.wa_card_title') }}</h3>
+                                <p class="text-[11px] text-medical-200">{{ __('contact.wa_card_sub') }}</p>
                             </div>
                         </div>
-                        <a href="https://wa.me/966545880082?text={{ urlencode('السلام عليكم، أود الاستفسار عن خدمات سيما الخليج الطبية المنزلية') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white font-bold rounded-xl text-xs hover:opacity-90 transition-all shadow-md">
-                            <span>افتح المحادثة على الواتساب</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <a href="https://wa.me/966545880082?text={{ urlencode(app()->getLocale()=='en' ? 'Hello, I would like to inquire about Sema Al-Khalij home medical services.' : 'السلام عليكم، أود الاستفسار عن خدمات سيما الخليج الطبية المنزلية') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white font-bold rounded-xl text-xs hover:opacity-90 transition-all shadow-md">
+                            <span>{{ __('contact.wa_card_btn') }}</span>
+                            <svg class="w-4 h-4 {{ app()->getLocale()=='en' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     </div>
 

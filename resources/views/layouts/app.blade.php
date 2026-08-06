@@ -64,16 +64,20 @@
     @livewireStyles
     <script>
         window.emitLivewire = function(event, ...args) {
-            if (typeof Livewire !== 'undefined' && Livewire.emit) {
-                Livewire.emit(event, ...args);
-            } else if (window.Livewire && window.Livewire.emit) {
-                window.Livewire.emit(event, ...args);
-            } else {
-                document.addEventListener('livewire:load', function () {
-                    if (typeof Livewire !== 'undefined' && Livewire.emit) {
-                        Livewire.emit(event, ...args);
-                    }
-                }, { once: true });
+            try {
+                if (window.Livewire && typeof window.Livewire.emit === 'function') {
+                    window.Livewire.emit(event, ...args);
+                } else if (typeof Livewire !== 'undefined' && typeof Livewire.emit === 'function') {
+                    Livewire.emit(event, ...args);
+                } else {
+                    document.addEventListener('livewire:load', function () {
+                        if (window.Livewire && typeof window.Livewire.emit === 'function') {
+                            window.Livewire.emit(event, ...args);
+                        }
+                    }, { once: true });
+                }
+            } catch (e) {
+                console.warn('Livewire notice:', e);
             }
         };
     </script>
@@ -178,6 +182,8 @@
     <!-- Cookie Consent Banner -->
     <x-cookie-banner />
 
+    <!-- Livewire Published Static Script (Ensures Livewire class exists on production hosting) -->
+    <script src="{{ asset('vendor/livewire/livewire.js') }}"></script>
     @livewireScripts
     @stack('scripts')
 </body>

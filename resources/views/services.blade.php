@@ -1,5 +1,53 @@
 <x-app-layout title="{{ app()->getLocale()=='en' ? 'Home Medical Services | Sema Al-Khalij' : 'الخدمات الطبية المنزلية | سيما الخليج' }}">
 
+    @php
+        $srvCatMap = [
+            'doctor-visits' => app()->getLocale()=='en' ? 'Doctor Visits' : 'الزيارات الطبية',
+            'home-nursing' => app()->getLocale()=='en' ? 'Home Nursing' : 'التمريض المنزلي',
+            'lab-tests' => app()->getLocale()=='en' ? 'Lab & Diagnostics' : 'الفحوصات والمختبر',
+            'physiotherapy' => app()->getLocale()=='en' ? 'Physiotherapy' : 'العلاج الطبيعي',
+        ];
+
+        $serviceTrans = [
+            'home-health-care' => [
+                'title' => 'Home Health Care Services',
+                'desc' => 'Tailored programs for the elderly and chronically ill patients in a warm, safe home environment.',
+            ],
+            'home-doctor-visits' => [
+                'title' => 'Home Doctor Visits',
+                'desc' => 'Physicians and consultants for clinical examination, accurate diagnosis, and home treatment.',
+            ],
+            'home-nursing-247' => [
+                'title' => '24/7 Continuous Home Nursing',
+                'desc' => 'Round-the-clock nursing care, vital signs monitoring, wound care, and IV therapy.',
+            ],
+            'physiotherapy-rehab' => [
+                'title' => 'Physical Therapy & Rehabilitation',
+                'desc' => 'Customized rehab sessions for post-surgery, stroke recovery, bone, and joint injuries.',
+            ],
+            'home-blood-sampling' => [
+                'title' => 'Home Blood Sample Collection',
+                'desc' => 'Certified lab specialist visits your home with sterile tools and fast electronic results.',
+            ],
+            'comprehensive-lab-tests' => [
+                'title' => 'Comprehensive Home Lab Packages',
+                'desc' => 'Full preventive health packages: liver/kidney functions, vitamins, lipid panel, and blood sugar.',
+            ],
+            'genetic-dna-tests' => [
+                'title' => 'Genetic & DNA Testing',
+                'desc' => 'DNA analysis, genetic profiling, and early disease detection with utmost privacy.',
+            ],
+            'medical-teleconsultation' => [
+                'title' => 'Medical Tele-consultations',
+                'desc' => 'Urgent video and phone consultations with top consultants to monitor your health condition.',
+            ],
+            'corporate-medical-care' => [
+                'title' => 'Corporate Medical Care Solutions',
+                'desc' => 'On-site clinic setup, periodic employee health checks, and event medical coverage.',
+            ],
+        ];
+    @endphp
+
     {{-- =================== HERO BANNER =================== --}}
     <section class="relative py-16 sm:py-20 bg-gradient-to-br from-[#071f18] via-primary to-[#0a3428] text-white overflow-hidden">
         <div class="absolute inset-0 pointer-events-none">
@@ -66,7 +114,7 @@
                     @foreach($categories as $category)
                         <a href="{{ route('services', array_filter(['category' => $category->slug, 'search' => request('search')])) }}" 
                            class="px-5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border shrink-0 {{ request('category') === $category->slug ? 'bg-primary text-white border-primary shadow-sm' : 'bg-gray-50 hover:bg-gray-100 text-gray-600 border-gray-200' }}">
-                            {{ $category->name }}
+                            {{ $srvCatMap[$category->slug] ?? $category->name }}
                         </a>
                     @endforeach
                 </div>
@@ -90,6 +138,10 @@
                                 'corporate-medical-care' => 'medical-team.png',
                             ];
                             $imgName = $imgMap[$s->slug] ?? 'hero-doctor.png';
+
+                            $displayTitle = (app()->getLocale() == 'en' && isset($serviceTrans[$s->slug])) ? $serviceTrans[$s->slug]['title'] : $s->title;
+                            $displayDesc = (app()->getLocale() == 'en' && isset($serviceTrans[$s->slug])) ? $serviceTrans[$s->slug]['desc'] : ($s->short_description ?? $s->description);
+                            $displayCat = isset($srvCatMap[$s->category->slug ?? '']) ? $srvCatMap[$s->category->slug] : ($s->category->name ?? __('services.badge'));
                         @endphp
 
                         <div class="bg-white rounded-3xl border border-gray-100 shadow-soft hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col justify-between group">
@@ -97,14 +149,14 @@
                             {{-- Clickable Card: Image & Info --}}
                             <a href="{{ route('services.show', $s->slug) }}" class="block {{ app()->getLocale()=='en' ? 'text-left' : 'text-right' }}">
                                 <div class="relative h-48 overflow-hidden">
-                                    <img src="{{ asset('images/' . $imgName) }}" alt="{{ $s->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;">
+                                    <img src="{{ asset('images/' . $imgName) }}" alt="{{ $displayTitle }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;">
                                     <div class="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/40 to-transparent"></div>
                                     
                                     <span class="absolute top-3 {{ app()->getLocale()=='en' ? 'left-3' : 'right-3' }} px-3 py-1 bg-white/90 backdrop-blur-md text-primary font-bold text-[10px] rounded-lg shadow-sm">
-                                        {{ $s->category->name ?? __('services.badge') }}
+                                        {{ $displayCat }}
                                     </span>
 
-                                    <span class="absolute bottom-3 {{ app()->getLocale()=='en' ? 'left-3' : 'right-3' }} px-3 py-1 bg-accent text-white font-bold text-[11px] rounded-lg shadow-md border border-white/20 dir-ltr">
+                                    <span class="absolute bottom-3 {{ app()->getLocale()=='en' ? 'right-3' : 'right-3' }} px-3 py-1 bg-accent text-white font-bold text-[11px] rounded-lg shadow-md border border-white/20 dir-ltr">
                                         @if($s->discount_price && $s->discount_price < $s->price)
                                             {{ number_format($s->discount_price, 0) }} {{ __('products.sar') }}
                                         @else
@@ -115,11 +167,11 @@
 
                                 <div class="p-5 space-y-3">
                                     <h3 class="font-black text-primary text-base group-hover:text-accent transition-colors">
-                                        {{ $s->title }}
+                                        {{ $displayTitle }}
                                     </h3>
                                     
                                     <p class="text-xs text-gray-500 leading-relaxed line-clamp-3">
-                                        {{ $s->short_description ?? $s->description }}
+                                        {{ $displayDesc }}
                                     </p>
 
                                     <div class="pt-2 space-y-1.5 border-t border-gray-50">

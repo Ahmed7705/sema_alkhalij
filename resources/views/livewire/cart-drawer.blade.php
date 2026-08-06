@@ -1,10 +1,14 @@
 <div>
+    @php
+        $isEn = app()->getLocale() == 'en';
+    @endphp
+
     {{-- Centered Global Store Luxury Modal --}}
     @if($isOpen)
         <div class="fixed inset-0 z-50 overflow-y-auto bg-primary/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
             
             {{-- Modal Box Container --}}
-            <div class="relative bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-xl w-full text-right overflow-hidden transform transition-all flex flex-col max-h-[85vh]">
+            <div class="relative bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-xl w-full {{ $isEn ? 'text-left' : 'text-right' }} overflow-hidden transform transition-all flex flex-col max-h-[85vh]">
                 
                 {{-- Header --}}
                 <div class="px-6 py-4 bg-gradient-to-br from-[#071f18] via-primary to-[#0a3428] text-white flex items-center justify-between shrink-0">
@@ -13,14 +17,14 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-white">سلة التسوق الطبية</h3>
-                            <p class="text-[11px] text-medical-200">تصفح وراجع العناصر المحفوطة بالسلة</p>
+                            <h3 class="text-base font-black text-white">{{ $isEn ? 'Medical Shopping Cart' : 'سلة التسوق الطبية' }}</h3>
+                            <p class="text-[11px] text-medical-200">{{ $isEn ? 'Review your selected medical products and services' : 'تصفح وراجع العناصر المحفوطة بالسلة' }}</p>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-2">
                         <span class="px-3 py-1 bg-white/10 text-accent font-bold text-xs rounded-full">
-                            {{ $cartCount }} عناصر
+                            {{ $cartCount }} {{ $isEn ? 'items' : 'عناصر' }}
                         </span>
                         <button wire:click="closeDrawer" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors font-bold">
                             ✕
@@ -33,8 +37,8 @@
                     @if($cartItems->count() > 0)
                         @foreach($cartItems as $item)
                             @php
-                                $title = $item->product ? $item->product->title : ($item->service ? $item->service->title : 'عنصر طبي');
-                                $typeLabel = $item->product ? 'منتج طبي' : 'خدمة منزلية';
+                                $title = $item->product ? $item->product->title : ($item->service ? $item->service->title : ($isEn ? 'Medical Item' : 'عنصر طبي'));
+                                $typeLabel = $item->product ? ($isEn ? 'Medical Product' : 'منتج طبي') : ($isEn ? 'Home Service' : 'خدمة منزلية');
                                 $imgSlug = $item->product ? $item->product->slug : ($item->service ? $item->service->slug : '');
                                 
                                 $imgMap = [
@@ -58,14 +62,14 @@
                                 </div>
 
                                 {{-- Details --}}
-                                <div class="flex-1 space-y-1 text-right">
+                                <div class="flex-1 space-y-1 {{ $isEn ? 'text-left' : 'text-right' }}">
                                     <div class="flex items-center justify-between">
                                         <span class="px-2.5 py-0.5 rounded-md bg-primary/10 text-primary font-extrabold text-[10px]">
                                             {{ $typeLabel }}
                                         </span>
                                         
                                         <button wire:click="removeFromCart({{ $item->id }})" class="text-gray-400 hover:text-red-500 text-xs font-bold transition-colors">
-                                            حذف ✕
+                                            {{ $isEn ? 'Remove ✕' : 'حذف ✕' }}
                                         </button>
                                     </div>
 
@@ -82,7 +86,7 @@
                                         </div>
 
                                         <div class="text-xs font-black text-accent">
-                                            {{ number_format($item->price * $item->quantity, 2) }} <span class="text-[10px]">ر.س</span>
+                                            {{ number_format($item->price * $item->quantity, 2) }} <span class="text-[10px]">{{ __('products.sar') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -94,8 +98,8 @@
                             <div class="w-16 h-16 rounded-2xl bg-medical-50 text-primary flex items-center justify-center mx-auto border border-primary/10">
                                 <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                             </div>
-                            <h4 class="text-base font-black text-primary">سلة التسوق فارغة حالياً</h4>
-                            <p class="text-xs text-gray-500 max-w-xs mx-auto">تصفح الخدمات والمنتجات الطبية وأضف ما تحتاجه لسلتك بسهولة.</p>
+                            <h4 class="text-base font-black text-primary">{{ $isEn ? 'Your Shopping Cart is Empty' : 'سلة التسوق فارغة حالياً' }}</h4>
+                            <p class="text-xs text-gray-500 max-w-xs mx-auto">{{ $isEn ? 'Browse our medical products and services to add items easily.' : 'تصفح الخدمات والمنتجات الطبية وأضف ما تحتاجه لسلتك بسهولة.' }}</p>
                         </div>
                     @endif
                 </div>
@@ -106,27 +110,27 @@
                         
                         <div class="space-y-2 text-xs bg-white p-4 rounded-2xl border border-gray-100">
                             <div class="flex items-center justify-between text-gray-500">
-                                <span>المجموع الفرعي:</span>
-                                <span class="font-bold text-gray-800">{{ number_format($subtotal, 2) }} <span class="text-[10px]">ر.س</span></span>
+                                <span>{{ $isEn ? 'Subtotal:' : 'المجموع الفرعي:' }}</span>
+                                <span class="font-bold text-gray-800">{{ number_format($subtotal, 2) }} <span class="text-[10px]">{{ __('products.sar') }}</span></span>
                             </div>
                             <div class="flex items-center justify-between text-gray-500">
-                                <span>ضريبة القيمة المضافة (15% شاملة):</span>
-                                <span class="font-bold text-gray-800">{{ number_format($tax, 2) }} <span class="text-[10px]">ر.س</span></span>
+                                <span>{{ $isEn ? 'VAT (15% Included):' : 'ضريبة القيمة المضافة (15% شاملة):' }}</span>
+                                <span class="font-bold text-gray-800">{{ number_format($tax, 2) }} <span class="text-[10px]">{{ __('products.sar') }}</span></span>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-sm font-black text-primary">
-                                <span>الإجمالي النهائي المطلوب:</span>
-                                <span class="text-lg font-black text-accent">{{ number_format($total, 2) }} <span class="text-xs">ر.س</span></span>
+                                <span>{{ $isEn ? 'Grand Total:' : 'الإجمالي النهائي المطلوب:' }}</span>
+                                <span class="text-lg font-black text-accent">{{ number_format($total, 2) }} <span class="text-xs">{{ __('products.sar') }}</span></span>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <a href="{{ route('checkout') }}" class="btn-accent py-3 px-6 rounded-xl font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                                <span>متابعة الشراء والدفع</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                                <span>{{ $isEn ? 'Proceed to Checkout' : 'متابعة الشراء والدفع' }}</span>
+                                <svg class="w-4 h-4 {{ $isEn ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                             </a>
                             
                             <button wire:click="closeDrawer" class="py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs transition-all">
-                                إغلاق ومتابعة التسوق
+                                {{ $isEn ? 'Close & Continue Shopping' : 'إغلاق ومتابعة التسوق' }}
                             </button>
                         </div>
 
