@@ -136,6 +136,8 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () 
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
     Route::get('portal', [CompanyPortalController::class, 'dashboard'])->name('portal');
     Route::post('requests', [CompanyPortalController::class, 'storeServiceRequest'])->name('requests.store');
+    Route::post('beneficiaries', [CompanyPortalController::class, 'storeBeneficiary'])->name('beneficiaries.store');
+    Route::get('requests/{booking}/print', [CompanyPortalController::class, 'printServiceRequest'])->name('requests.print');
 });
 
 // SECURE MEDICAL REPORT ROUTES (Protected by Auth)
@@ -144,7 +146,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('medical-reports/{report}/download', [MedicalReportController::class, 'download'])->name('medical-reports.download');
 });
 
+use App\Http\Controllers\Admin\CompanyManagerController;
+use App\Http\Controllers\Admin\ContractRequestManagerController;
 use App\Http\Controllers\Admin\StaffManagerController;
+use App\Http\Controllers\Admin\ContractManagerController;
+use App\Http\Controllers\Admin\BeneficiaryManagerController;
 
 // ADMIN CONTROL PANEL ROUTES (Protected by Auth & Admin Middleware)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -163,6 +169,45 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Audit Activity Logs
     Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit.index');
+
+    // Corporate Companies Management
+    Route::get('companies', [CompanyManagerController::class, 'index'])->name('companies.index');
+    Route::get('companies/create', [CompanyManagerController::class, 'create'])->name('companies.create');
+    Route::post('companies', [CompanyManagerController::class, 'store'])->name('companies.store');
+    Route::get('companies/{id}', [CompanyManagerController::class, 'show'])->name('companies.show');
+    Route::get('companies/{id}/edit', [CompanyManagerController::class, 'edit'])->name('companies.edit');
+    Route::put('companies/{id}', [CompanyManagerController::class, 'update'])->name('companies.update');
+    Route::post('companies/{id}/toggle', [CompanyManagerController::class, 'toggleStatus'])->name('companies.toggle');
+    Route::post('companies/{id}/users', [CompanyManagerController::class, 'addUser'])->name('companies.users.add');
+    Route::post('companies/{id}/users/{userId}/detach', [CompanyManagerController::class, 'detachUser'])->name('companies.users.detach');
+    Route::post('companies/{id}/users/{userId}/toggle', [CompanyManagerController::class, 'toggleUserStatus'])->name('companies.users.toggle');
+
+    // Corporate Contract Requests Management
+    Route::get('contract-requests', [ContractRequestManagerController::class, 'index'])->name('contract-requests.index');
+    Route::get('contract-requests/{id}', [ContractRequestManagerController::class, 'show'])->name('contract-requests.show');
+    Route::post('contract-requests/{id}/status', [ContractRequestManagerController::class, 'updateStatus'])->name('contract-requests.status');
+    Route::post('contract-requests/{id}/convert', [ContractRequestManagerController::class, 'convertToCompany'])->name('contract-requests.convert');
+
+    // Corporate Contracts Management
+    Route::get('contracts', [ContractManagerController::class, 'index'])->name('contracts.index');
+    Route::get('contracts/create', [ContractManagerController::class, 'create'])->name('contracts.create');
+    Route::post('contracts', [ContractManagerController::class, 'store'])->name('contracts.store');
+    Route::get('contracts/{id}', [ContractManagerController::class, 'show'])->name('contracts.show');
+    Route::get('contracts/{id}/edit', [ContractManagerController::class, 'edit'])->name('contracts.edit');
+    Route::put('contracts/{id}', [ContractManagerController::class, 'update'])->name('contracts.update');
+    Route::post('contracts/{id}/toggle', [ContractManagerController::class, 'toggleStatus'])->name('contracts.toggle');
+    Route::post('contracts/{id}/services', [ContractManagerController::class, 'addService'])->name('contracts.services.add');
+    Route::post('contracts/{id}/services/{serviceId}/remove', [ContractManagerController::class, 'removeService'])->name('contracts.services.remove');
+    Route::post('contracts/{id}/prices/{priceId}', [ContractManagerController::class, 'updatePrice'])->name('contracts.prices.update');
+
+    // Corporate Beneficiaries Management
+    Route::get('beneficiaries', [BeneficiaryManagerController::class, 'index'])->name('beneficiaries.index');
+    Route::get('beneficiaries/create', [BeneficiaryManagerController::class, 'create'])->name('beneficiaries.create');
+    Route::post('beneficiaries', [BeneficiaryManagerController::class, 'store'])->name('beneficiaries.store');
+    Route::get('beneficiaries/{id}', [BeneficiaryManagerController::class, 'show'])->name('beneficiaries.show');
+    Route::get('beneficiaries/{id}/edit', [BeneficiaryManagerController::class, 'edit'])->name('beneficiaries.edit');
+    Route::put('beneficiaries/{id}', [BeneficiaryManagerController::class, 'update'])->name('beneficiaries.update');
+    Route::post('beneficiaries/{id}/toggle', [BeneficiaryManagerController::class, 'toggleStatus'])->name('beneficiaries.toggle');
 
     // Medical Staff Management
     Route::get('staff', [StaffManagerController::class, 'index'])->name('staff.index');

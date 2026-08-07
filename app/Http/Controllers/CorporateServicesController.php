@@ -37,7 +37,7 @@ class CorporateServicesController extends Controller
             'city' => $validated['city'],
             'requested_services' => $validated['requested_services'],
             'expected_beneficiaries' => $validated['expected_beneficiaries'],
-            'notes' => $validated['notes'],
+            'notes' => $validated['notes'] ?? null,
             'status' => 'new',
         ]);
 

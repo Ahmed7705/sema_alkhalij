@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Contract extends Model
 {
@@ -16,6 +15,7 @@ class Contract extends Model
         'start_date',
         'end_date',
         'payment_terms',
+        'discount_percentage',
         'status',
         'notes',
     ];
@@ -44,8 +44,26 @@ class Contract extends Model
         return $this->hasMany(ContractPrice::class);
     }
 
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'contract_prices', 'contract_id', 'service_id')
+                    ->withPivot('custom_price')
+                    ->withTimestamps();
+    }
+
     public function beneficiaries()
     {
         return $this->hasMany(ContractBeneficiary::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'company_id', 'company_id');
+    }
+
+    public function isActive()
+    {
+        $today = date('Y-m-d');
+        return $this->status === 'active' && $this->start_date <= $today && $this->end_date >= $today;
     }
 }

@@ -117,6 +117,22 @@
                 <span class="px-3 text-[10px] font-black text-accent tracking-wider uppercase block mb-1">
                     {{ $isEn ? 'CRM & STAFF' : 'إدارة العملاء والكادر الطبي' }}
                 </span>
+                <a href="{{ route('admin.companies.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.companies.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <span>{{ $isEn ? 'Companies & Corporate' : 'إدارة ومجتمعات الشركات' }}</span>
+                </a>
+                <a href="{{ route('admin.contract-requests.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.contract-requests.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>{{ $isEn ? 'Contract Requests' : 'طلبات التعاقد الواردة' }}</span>
+                </a>
+                <a href="{{ route('admin.contracts.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.contracts.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>{{ $isEn ? 'Contracts & Pricing' : 'عقود الشركات والتسعير' }}</span>
+                </a>
+                <a href="{{ route('admin.beneficiaries.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.beneficiaries.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>{{ $isEn ? 'Beneficiaries' : 'سجل المستفيدين' }}</span>
+                </a>
                 <a href="{{ route('admin.staff.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.staff.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     <span>{{ $isEn ? 'Medical Staff' : 'الكادر الطبي والمنفذين' }}</span>

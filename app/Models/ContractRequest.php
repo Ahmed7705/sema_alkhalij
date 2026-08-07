@@ -20,5 +20,26 @@ class ContractRequest extends Model
         'expected_beneficiaries',
         'notes',
         'status',
+        'rejection_reason',
+        'reviewed_by',
+        'reviewed_at',
+        'approved_by',
+        'approved_at',
+        'converted_company_id',
     ];
+
+    public function convertedCompany()
+    {
+        return $this->belongsTo(Company::class, 'converted_company_id');
+    }
+
+    public function reviewedBy()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

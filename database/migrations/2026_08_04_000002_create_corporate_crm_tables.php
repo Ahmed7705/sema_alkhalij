@@ -65,7 +65,7 @@ return new class extends Migration
         Schema::create('contract_beneficiaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_id')->constrained('contracts')->onDelete('cascade');
-            $table->foreignId('patient_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('patient_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('employee_id_number')->nullable();
             $table->timestamps();
 

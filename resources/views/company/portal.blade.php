@@ -9,7 +9,7 @@
         <x-slot name="headerTitle">{{ $isEn ? 'Corporate Portal & Beneficiaries Operations' : 'بوابة الشركات والجهات المتعاقدة والمستفيدين' }}</x-slot>
     @endif
 
-    <div class="space-y-8 {{ $isEn ? 'text-left dir-ltr' : 'text-right dir-rtl' }}" x-data="{ openRequestModal: false }">
+    <div class="space-y-8 {{ $isEn ? 'text-left dir-ltr' : 'text-right dir-rtl' }}" x-data="{ openRequestModal: false, openBeneficiaryModal: false, activeTab: '{{ $activeTab ?? 'requests' }}' }">
         
         {{-- Flash Messages --}}
         @if(session('success'))
@@ -50,10 +50,14 @@
                     {{ $isEn ? 'Contact Person:' : 'مسؤول التواصل:' }} {{ $company->contact_person ?? ($isEn ? 'Corporate Admin' : 'مدير التعاقدات') }}
                 </p>
             </div>
-            <div>
+            <div class="flex items-center gap-3">
+                <button @click="openBeneficiaryModal = true" class="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-3.5 rounded-2xl border border-white/20 transition-all flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    <span>{{ $isEn ? '+ Add Beneficiary' : '+ إضافة مستفيد' }}</span>
+                </button>
                 <button @click="openRequestModal = true" class="bg-accent hover:bg-accent-hover text-white font-black text-xs px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                    <span>{{ $isEn ? 'Submit New Service Request for Beneficiary' : 'تقديم طلب خدمة جديد لمستفيد' }}</span>
+                    <span>{{ $isEn ? 'Submit New Service Request' : 'تقديم طلب خدمة جديد لمستفيد' }}</span>
                 </button>
             </div>
         </div>
@@ -77,8 +81,21 @@
             </div>
         </div>
 
-        {{-- Service Requests Table --}}
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+        {{-- Tab Navigation --}}
+        <div class="bg-white rounded-3xl border border-gray-200 p-2 shadow-sm flex items-center gap-2 overflow-x-auto">
+            <button @click="activeTab = 'requests'" :class="activeTab === 'requests' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
+                {{ $isEn ? 'Service Requests & Tracking' : 'طلبات الخدمات والمتابعة التشغيلية' }}
+            </button>
+            <button @click="activeTab = 'contracts'" :class="activeTab === 'contracts' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
+                {{ $isEn ? 'Contracts & Rates' : 'العقود والأسعار المعتمدة' }} ({{ $contractsList->count() }})
+            </button>
+            <button @click="activeTab = 'beneficiaries'" :class="activeTab === 'beneficiaries' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
+                {{ $isEn ? 'Company Beneficiaries' : 'المستفيدين المسجلين' }} ({{ $beneficiaries->count() }})
+            </button>
+        </div>
+
+        {{-- TAB 1: SERVICE REQUESTS --}}
+        <div x-show="activeTab === 'requests'" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
             <h3 class="font-black text-lg text-primary border-b border-gray-100 pb-4">{{ $isEn ? 'Corporate Medical Service Requests & Tracking' : 'طلبات الخدمات والمتابعة التشغيلية للشركة' }}</h3>
 
             <div class="overflow-x-auto">
@@ -92,6 +109,7 @@
                             <th class="p-4">{{ $isEn ? 'Appointment Date' : 'تاريخ الموعد' }}</th>
                             <th class="p-4">{{ $isEn ? 'Contract Rate' : 'التكلفة التعاقدية' }}</th>
                             <th class="p-4">{{ $isEn ? 'Status' : 'الحالة التشغيلية' }}</th>
+                            <th class="p-4 text-center">{{ $isEn ? 'Print / PDF' : 'الطباعة' }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -100,16 +118,21 @@
                                 <td class="p-4 font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $booking->booking_number }}</td>
                                 <td class="p-4 font-bold text-gray-800">{{ $booking->patient_name }}</td>
                                 <td class="p-4 font-bold text-gray-600 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $booking->identification_number }} ({{ $booking->identification_type }})</td>
-                                <td class="p-4 font-bold text-accent">{{ $booking->service->title ?? ($isEn ? 'Medical Service' : 'خدمة طبية') }}</td>
+                                <td class="p-4 font-bold text-accent">{{ $booking->service->name ?? ($isEn ? 'Medical Service' : 'خدمة طبية') }}</td>
                                 <td class="p-4 text-gray-600 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $booking->booking_date }} | {{ $booking->booking_time }}</td>
                                 <td class="p-4 font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ number_format($booking->total_price, 2) }} {{ $isEn ? 'SAR' : 'ر.س' }}</td>
-                                <td class="p-4">
-                                    <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary">{{ $booking->status }}</span>
+                                <td class="p-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary">{{ $booking->status }}</span>
+                                </td>
+                                <td class="p-4 text-center">
+                                    <a href="{{ route('company.requests.print', $booking->id) }}" target="_blank" title="{{ $isEn ? 'Print Official Order' : 'طباعة تعميد الطلب' }}" class="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold inline-block">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="p-8 text-center text-gray-400 font-bold">{{ $isEn ? 'No corporate service requests recorded yet.' : 'لا توجد طلبات خدمات مسجلة للشركة حتى الآن.' }}</td>
+                                <td colspan="8" class="p-8 text-center text-gray-400 font-bold">{{ $isEn ? 'No corporate service requests recorded yet.' : 'لا توجد طلبات خدمات مسجلة للشركة حتى الآن.' }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -118,6 +141,121 @@
 
             <div>
                 {{ $companyBookings->links() }}
+            </div>
+        </div>
+
+        {{-- TAB 2: CONTRACTS & RATES --}}
+        <div x-show="activeTab === 'contracts'" class="space-y-6">
+            @foreach($contractsList as $cnt)
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-gray-400 block">{{ $isEn ? 'Contract Number:' : 'رقم العقد:' }}</span>
+                            <h4 class="text-lg font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $cnt->contract_number }}</h4>
+                        </div>
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-emerald-50 text-emerald-700 font-extrabold text-xs rounded-full border border-emerald-200">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                <span>{{ $cnt->status === 'active' ? ($isEn ? 'Active' : 'نشط وساري') : $cnt->status }}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                        <div>
+                            <span class="text-gray-400 font-bold block">{{ $isEn ? 'Start Date:' : 'تاريخ البداية:' }}</span>
+                            <span class="font-bold text-gray-800 block mt-0.5 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $cnt->start_date }}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400 font-bold block">{{ $isEn ? 'End Date:' : 'تاريخ النهاية:' }}</span>
+                            <span class="font-bold text-gray-800 block mt-0.5 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $cnt->end_date }}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400 font-bold block">{{ $isEn ? 'Payment Terms:' : 'شروط التسوية:' }}</span>
+                            <span class="font-bold text-gray-800 block mt-0.5">{{ $cnt->payment_terms }}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400 font-bold block">{{ $isEn ? 'Covered Services Count:' : 'عدد الخدمات المشمولة:' }}</span>
+                            <span class="font-bold text-accent block mt-0.5">{{ $cnt->contractPrices->count() }} {{ $isEn ? 'services' : 'خدمة' }}</span>
+                        </div>
+                    </div>
+
+                    {{-- Covered Services Table --}}
+                    <div class="pt-2">
+                        <span class="text-xs font-black text-gray-700 block mb-2">{{ $isEn ? 'Approved Medical Services & Custom Contract Rates:' : 'الخدمات الطبية المعتمدة والأسعار التعاقدية للشركة:' }}</span>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }} border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                                        <th class="p-3">{{ $isEn ? 'Service Name' : 'اسم الخدمة الطبية' }}</th>
+                                        <th class="p-3">{{ $isEn ? 'Public Price' : 'السعر العام' }}</th>
+                                        <th class="p-3">{{ $isEn ? 'Corporate Approved Contract Rate' : 'السعر التعاقدي المعتمد للشركة' }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    @forelse($cnt->contractPrices as $cp)
+                                        <tr>
+                                            <td class="p-3 font-bold text-gray-800">{{ $cp->service->name ?? '-' }}</td>
+                                            <td class="p-3 font-bold text-gray-400 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ number_format($cp->service->price ?? 0, 2) }} SAR</td>
+                                            <td class="p-3 font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ number_format($cp->custom_price, 2) }} SAR</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="3" class="p-4 text-center text-gray-400 font-bold">{{ $isEn ? 'Standard corporate pricing applies.' : 'تطبق الأسعار والخصومات القياسية المعتمدة بالعقد.' }}</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- TAB 3: BENEFICIARIES --}}
+        <div x-show="activeTab === 'beneficiaries'" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-black text-lg text-primary">{{ $isEn ? 'Enrolled Company Beneficiaries' : 'قائمة المستفيدين المعتمدين بشركتكم' }}</h3>
+                <button @click="openBeneficiaryModal = true" class="px-4 py-2 bg-[#006C35] text-white font-bold text-xs rounded-xl shadow hover:bg-[#00572B] transition-all">
+                    {{ $isEn ? '+ Register New Beneficiary' : '+ تسجيل مستفيد جديد' }}
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }} border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                            <th class="p-3.5">{{ $isEn ? 'Beneficiary Name' : 'اسم المستفيد' }}</th>
+                            <th class="p-3.5">{{ $isEn ? 'ID Type & Number' : 'نوع ورقم الهوية' }}</th>
+                            <th class="p-3.5">{{ $isEn ? 'Employee ID' : 'الرقم الوظيفي' }}</th>
+                            <th class="p-3.5">{{ $isEn ? 'Phone' : 'الجوال' }}</th>
+                            <th class="p-3.5">{{ $isEn ? 'Contract' : 'العقد المرتبط' }}</th>
+                            <th class="p-3.5">{{ $isEn ? 'Status' : 'حالة الاستحقاق' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        @forelse($beneficiaries as $ben)
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="p-3.5 font-bold text-gray-800">{{ $ben->name }}</td>
+                                <td class="p-3.5 font-bold text-gray-600 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ strtoupper($ben->identification_type) }}: {{ $ben->identification_number }}</td>
+                                <td class="p-3.5 font-bold text-gray-500">{{ $ben->employee_id_number ?? '-' }}</td>
+                                <td class="p-3.5 font-bold text-gray-600 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $ben->phone ?? '-' }}</td>
+                                <td class="p-3.5 font-bold text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $ben->contract->contract_number ?? 'N/A' }}</td>
+                                <td class="p-3.5 whitespace-nowrap">
+                                    @if($ben->status === 'active')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 font-extrabold text-[11px] rounded-full">● {{ $isEn ? 'Active' : 'مستحق ونشط' }}</span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-rose-50 text-rose-700 font-extrabold text-[11px] rounded-full">○ {{ $isEn ? 'Inactive' : 'غير نشط' }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="p-8 text-center text-gray-400 font-bold">{{ $isEn ? 'No beneficiaries registered under your company yet.' : 'لا يوجد مستفيدين مسجلين لشركتكم بعد.' }}</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -138,61 +276,84 @@
                     <form id="corporateRequestForm" action="{{ route('company.requests.store') }}" method="POST" class="space-y-3.5">
                         @csrf
                         <input type="hidden" name="company_id" value="{{ $company->id }}">
+                        <input type="hidden" name="contract_id" value="{{ $activeContract->id ?? '' }}">
+
+                        @if($beneficiaries->isNotEmpty())
+                            <div>
+                                <label class="text-xs font-bold text-primary block mb-1">{{ $isEn ? 'Select Enrolled Beneficiary (Optional)' : 'اختر مستفيداً معتمداً مسجلاً بالنظام (اختياري)' }}</label>
+                                <select id="beneficiarySelect" name="beneficiary_id" onchange="
+                                    let selected = this.options[this.selectedIndex];
+                                    if(selected.value) {
+                                        document.getElementById('patientNameInput').value = selected.dataset.name || '';
+                                        document.getElementById('idTypeInput').value = selected.dataset.type || 'saudi_id';
+                                        document.getElementById('idNumInput').value = selected.dataset.number || '';
+                                        document.getElementById('phoneInput').value = selected.dataset.phone || '';
+                                    }
+                                " class="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                                    <option value="">{{ $isEn ? '-- Manual Input or Select Beneficiary --' : '-- إدخال مباشر أو اختر مستفيد مسجل --' }}</option>
+                                    @foreach($beneficiaries as $ben)
+                                        <option value="{{ $ben->id }}" data-name="{{ $ben->name }}" data-type="{{ $ben->identification_type }}" data-number="{{ $ben->identification_number }}" data-phone="{{ $ben->phone }}">
+                                            {{ $ben->name }} ({{ strtoupper($ben->identification_type) }}: {{ $ben->identification_number }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Full Beneficiary Name' : 'اسم المستفيد الكامل' }}</label>
-                                <input type="text" name="patient_name" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Full Beneficiary Name *' : 'اسم المستفيد الكامل *' }}</label>
+                                <input type="text" id="patientNameInput" name="patient_name" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Identification Type' : 'نوع الهوية' }}</label>
-                                <select name="identification_type" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Identification Type *' : 'نوع الهوية *' }}</label>
+                                <select id="idTypeInput" name="identification_type" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                                     <option value="saudi_id">{{ $isEn ? 'Saudi National ID' : 'هوية وطنية سعودية' }}</option>
                                     <option value="iqama">{{ $isEn ? 'Iqama / Residency' : 'إقامة متقدمة/مقيم' }}</option>
-                                    <option value="border_no">{{ $isEn ? 'Border Number' : 'رقم حد' }}</option>
+                                    <option value="border_number">{{ $isEn ? 'Border Number' : 'رقم حدود' }}</option>
                                     <option value="gcc_id">{{ $isEn ? 'GCC ID' : 'هوية خليجية' }}</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'ID / Iqama Number' : 'رقم الهوية / الإقامة' }}</label>
-                                <input type="text" name="identification_number" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'ID / Iqama Number *' : 'رقم الهوية / الإقامة *' }}</label>
+                                <input type="text" id="idNumInput" name="identification_number" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Contact Phone Number' : 'رقم جوال التواصل' }}</label>
-                                <input type="text" name="phone" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Contact Phone Number *' : 'رقم جوال التواصل *' }}</label>
+                                <input type="text" id="phoneInput" name="phone" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Requested Medical Service' : 'الخدمة الطبية المطلوبة' }}</label>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Requested Medical Service *' : 'الخدمة الطبية المطلوبة *' }}</label>
                                 <select name="service_id" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                                     @foreach($services as $serv)
-                                        <option value="{{ $serv->id }}">{{ $serv->title }} ({{ number_format($serv->price, 0) }} {{ $isEn ? 'SAR' : 'ر.س' }})</option>
+                                        <option value="{{ $serv->id }}">{{ $serv->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Appointment Date' : 'تاريخ الموعد' }}</label>
-                                <input type="date" name="booking_date" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Appointment Date *' : 'تاريخ الموعد *' }}</label>
+                                <input type="date" name="booking_date" value="{{ date('Y-m-d') }}" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Appointment Time' : 'وقت الموعد' }}</label>
-                                <input type="text" name="booking_time" placeholder="{{ $isEn ? 'e.g. 10:00 AM' : 'مثال: 10:00 صباحاً' }}" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Appointment Time *' : 'وقت الموعد *' }}</label>
+                                <input type="text" name="booking_time" value="10:00 AM" placeholder="{{ $isEn ? 'e.g. 10:00 AM' : 'مثال: 10:00 صباحاً' }}" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                             </div>
 
                             <div>
-                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'City' : 'المدينة' }}</label>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'City *' : 'المدينة *' }}</label>
                                 <input type="text" name="city" value="{{ $company->city }}" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                             </div>
                         </div>
 
                         <div>
-                            <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Detailed Visit Address' : 'العنوان التفصيلي للزيارة المنزلية' }}</label>
-                            <input type="text" name="address" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
+                            <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Detailed Visit Address *' : 'العنوان التفصيلي للزيارة المنزلية *' }}</label>
+                            <input type="text" name="address" value="حي العليا، الرياض" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:border-primary">
                         </div>
 
                         <div>
@@ -207,6 +368,51 @@
                     <button type="button" @click="openRequestModal = false" class="px-4 py-2.5 rounded-xl font-bold text-xs text-gray-500 hover:bg-gray-200 transition-colors">{{ $isEn ? 'Cancel' : 'إلغاء' }}</button>
                     <button type="submit" form="corporateRequestForm" class="px-6 py-2.5 bg-[#006C35] hover:bg-[#00572B] text-white rounded-xl font-black text-xs shadow-md transition-all cursor-pointer">{{ $isEn ? 'Confirm & Submit Request' : 'تأكيد وإرسال الطلب' }}</button>
                 </div>
+            </div>
+        </div>
+
+        {{-- Add Beneficiary Modal --}}
+        <div x-show="openBeneficiaryModal" x-cloak class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+            <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 space-y-4 {{ $isEn ? 'text-left' : 'text-right' }}">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <h3 class="font-black text-sm text-primary">{{ $isEn ? 'Register New Beneficiary' : 'تسجيل مستفيد جديد تحت عقد الشركة' }}</h3>
+                    <button @click="openBeneficiaryModal = false" class="text-gray-400 hover:text-gray-600">✕</button>
+                </div>
+                <form action="{{ route('company.beneficiaries.store') }}" method="POST" class="space-y-3">
+                    @csrf
+                    <input type="hidden" name="company_id" value="{{ $company->id }}">
+                    <input type="hidden" name="contract_id" value="{{ $activeContract->id ?? '' }}">
+
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Beneficiary Name *' : 'اسم المستفيد *' }}</label>
+                        <input type="text" name="name" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'ID Type *' : 'نوع الهوية *' }}</label>
+                        <select name="identification_type" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold">
+                            <option value="saudi_id">هوية وطنية (Saudi ID)</option>
+                            <option value="iqama">إقامة (Iqama)</option>
+                            <option value="border_number">رقم حدود (Border #)</option>
+                            <option value="gcc_id">هوية خليجية (GCC ID)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'ID / Iqama Number *' : 'رقم الهوية / الإقامة *' }}</label>
+                        <input type="text" name="identification_number" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Employee ID (Optional)' : 'الرقم الوظيفي (اختياري)' }}</label>
+                        <input type="text" name="employee_id_number" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-1">{{ $isEn ? 'Phone (Optional)' : 'الجوال (اختياري)' }}</label>
+                        <input type="text" name="phone" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold">
+                    </div>
+                    <div class="pt-2 flex justify-end gap-2 border-t border-gray-100">
+                        <button type="button" @click="openBeneficiaryModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded-xl text-xs">إلغاء</button>
+                        <button type="submit" class="px-5 py-2 bg-[#006C35] text-white font-extrabold rounded-xl text-xs">تسجيل المستفيد</button>
+                    </div>
+                </form>
             </div>
         </div>
 

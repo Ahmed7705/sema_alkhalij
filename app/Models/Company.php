@@ -11,13 +11,26 @@ class Company extends Model
 
     protected $fillable = [
         'name',
+        'company_code',
         'cr_number',
+        'contact_person',
         'phone',
         'email',
         'city',
         'address',
         'status',
+        'contract_request_id',
     ];
+
+    public function contractRequest()
+    {
+        return $this->belongsTo(ContractRequest::class, 'contract_request_id');
+    }
+
+    public function activeContract()
+    {
+        return $this->hasOne(Contract::class)->where('status', 'active')->latestOfMany();
+    }
 
     public function contracts()
     {
@@ -32,5 +45,10 @@ class Company extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function beneficiaries()
+    {
+        return $this->hasMany(ContractBeneficiary::class);
     }
 }

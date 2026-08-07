@@ -13,6 +13,7 @@ class Booking extends Model
     protected $fillable = [
         'uuid',
         'user_id',
+        'patient_id',
         'company_id',
         'contract_id',
         'patient_name',
@@ -60,6 +61,11 @@ class Booking extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(User::class, 'patient_id');
     }
 
     public function service()

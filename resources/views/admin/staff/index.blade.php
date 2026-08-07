@@ -126,14 +126,16 @@
                                 <td class="p-4 font-bold text-gray-700 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">
                                     {{ $staff->staffProfile->license_number ?? ($isEn ? 'Pending' : 'قيد التدقيق') }}
                                 </td>
-                                <td class="p-4">
+                                <td class="p-4 whitespace-nowrap">
                                     @if($staff->is_active && ($staff->staffProfile->is_active ?? true))
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            {{ $isEn ? '● Active' : '● نشط ومتاح' }}
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm whitespace-nowrap">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                                            <span>{{ $isEn ? 'Active' : 'نشط ومتاح' }}</span>
                                         </span>
                                     @else
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                                            {{ $isEn ? '○ Inactive' : '○ معطل' }}
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200 shadow-sm whitespace-nowrap">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0"></span>
+                                            <span>{{ $isEn ? 'Inactive' : 'معطل' }}</span>
                                         </span>
                                     @endif
                                 </td>

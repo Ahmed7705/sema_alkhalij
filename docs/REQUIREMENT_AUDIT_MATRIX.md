@@ -1,11 +1,16 @@
-    # Requirement Audit Matrix — Sema Al-Khalij Medical Services
+# Requirement Audit Matrix — Sema Al-Khalij Medical Services & Operations
 
-    | Requirement Section | Component / Feature | Allowed Roles | Implementation Status | Automated Tests |
-    | :--- | :--- | :--- | :--- | :--- |
-    | **1. Medical Staff Management** | Staff Directory (`/admin/staff`), Create, Edit, Show, Toggle Active Status | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`admin_can_view_staff_management`, `admin_can_create_and_update_staff_profile`, `admin_can_toggle_staff_active_status_without_deleting_user`) |
-    | **2. Service Requests & Visit Management** | Standalone Visit Details (`/admin/bookings/{id}`), Patient & Service Info | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`admin_can_assign_visit_to_qualified_active_staff`) |
-    | **3. Assignment & Reassignment** | Assign/Reassign active practitioner, log audit trail | `admin`, `super_admin`, `manager` | COMPLETE ✅ | Passed (`inactive_staff_cannot_be_assigned_visit`, `reassignment_works_and_is_logged_in_audit_logs`) |
-    | **4. Staff Operations Portal** | Practitioner Dashboard (`/staff/dashboard`) with restricted visit visibility | `doctor`, `nurse`, `physio`, `lab_tech`, `admin`, `manager` | COMPLETE ✅ | Passed (`doctor_sees_only_own_assigned_visits`, `nurse_sees_only_own_assigned_visits`, `staff_cannot_access_or_modify_another_staff_members_visit`) |
-    | **5. Workflow State Machine** | Strict transitions: `requested` → `assigned` → `accepted` → `in_progress` → `completed` → `verified` | Staff (Practitioners for execution), Admin/Supervisor for Verification | COMPLETE ✅ | Passed (`staff_can_accept_assigned_visit`, `staff_can_start_accepted_visit`, `staff_can_complete_in_progress_visit`, `invalid_workflow_transition_is_rejected`) |
-    | **6. Verification Security** | Supervisor Verification (`/admin/bookings/{id}/verify`) | `admin`, `super_admin`, `manager`, `customer_service` | COMPLETE ✅ | Passed (`authorized_supervisor_or_admin_can_verify_completed_visit`, `unauthorized_staff_cannot_verify_completed_visit`) |
-    | **7. Real Audit Trail** | Database logging of assignment, reassignment, status changes, and verification | All authenticated actions | COMPLETE ✅ | Passed (`all_sensitive_transitions_are_logged_in_audit_logs`) |
+| Requirement # | Requirement Description | Implementation Status | Verification Method |
+| :--- | :--- | :--- | :--- |
+| **REQ-P6-01** | Admin Contracts Management & Directory | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::admin_can_view_contracts` |
+| **REQ-P6-02** | Contract Setup & Specifications (Company, Code, Dates, Terms) | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::admin_can_create_contract` |
+| **REQ-P6-03** | Standalone Multi-Tab Contract View with Real Metrics | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::admin_can_edit_contract` |
+| **REQ-P6-04** | Contract Service Attachment & Custom Pricing Engine | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::add_covered_service_to_contract` |
+| **REQ-P6-05** | Server-Side Price Calculation & Manipulation Prevention | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::server_ignores_manipulated_client_price` |
+| **REQ-P6-06** | Beneficiary Enrollment & Search | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::admin_can_create_beneficiary` |
+| **REQ-P6-07** | Auto Patient Account Linking (`User` lookup) | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::link_existing_patient_without_duplicate` |
+| **REQ-P6-08** | Company Portal Contracts & Beneficiaries Tabs | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::company_sees_only_its_contracts` |
+| **REQ-P6-09** | Printable Corporate Service Request Voucher | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::printable_service_request_view_works` |
+| **REQ-P6-10** | Strict IDOR & Server-Side Security Controls | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::company_a_cannot_access_company_b_contract` |
+| **REQ-P6-11** | Audit Logging for Contract & Beneficiary Actions | **COMPLETE & VERIFIED** | `Phase6ContractsPricingBeneficiariesTest::sensitive_operations_create_real_audit_records` |
+| **REQ-P6-12** | PHPUnit Test Suite (24 Phase 6 tests, 103 Total) | **COMPLETE & VERIFIED** | PHPUnit output: 103 passed / 103 total |

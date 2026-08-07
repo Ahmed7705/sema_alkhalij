@@ -135,12 +135,13 @@ class Phase2PublicCorporateTest extends TestCase
     {
         $company = Company::create([
             'name' => 'شركة الأعمال المتقدمة',
-            'is_active' => true,
+            'status' => 'active',
         ]);
 
         $companyAdmin = User::factory()->create([
             'role' => 'company_admin',
             'company_id' => $company->id,
+            'is_active' => true,
         ]);
 
         $response = $this->actingAs($companyAdmin)->get('/company/portal');

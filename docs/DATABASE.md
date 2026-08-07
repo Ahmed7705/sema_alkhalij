@@ -1,35 +1,31 @@
-# Database Schema — Sema Al-Khalij Medical Services
+# Database Schema — Sema Al-Khalij Medical Services & Operations
 
-## Key Tables for Medical Staff & Operations:
+## Phase 6 Schema Extensions:
 
-### 1. `staff_profiles`
-- `id` (bigint, primary key)
-- `user_id` (foreignKey -> `users.id`, onDelete cascade)
-- `staff_type` (varchar: `doctor`, `nurse`, `physio`, `lab_tech`, `customer_service`, `manager`)
-- `specialty` (varchar, nullable)
-- `license_number` (varchar, nullable)
-- `job_title` (varchar, nullable)
-- `is_active` (boolean, default true)
-- `timestamps`
+### 1. `contracts` Table Modifications:
+- `discount_percentage` (`decimal(5,2)`, default: `0.00`) — Contract wide percentage discount fallback.
 
-### 2. `bookings` (Assignment & Workflow Columns)
-- `assigned_provider_id` (foreignKey -> `users.id`, nullable)
-- `assigned_by` (foreignKey -> `users.id`, nullable)
-- `assigned_at` (timestamp, nullable)
-- `accepted_at` (timestamp, nullable)
-- `started_at` (timestamp, nullable)
-- `completed_at` (timestamp, nullable)
-- `verified_at` (timestamp, nullable)
-- `verified_by` (foreignKey -> `users.id`, nullable)
-- `status` (varchar: `requested`, `assigned`, `accepted`, `in_progress`, `completed`, `verified`, `cancelled`)
+### 2. `contract_prices` Table Structure:
+- `id` (`bigint unsigned`, PK)
+- `contract_id` (`foreignId` -> `contracts`)
+- `service_id` (`foreignId` -> `services`)
+- `custom_price` (`decimal(10,2)`) — Special negotiated contract price for specific service.
+- `created_at`, `updated_at`
 
-### 3. `audit_logs`
-- `id` (bigint, primary key)
-- `user_id` (foreignKey -> `users.id`, nullable)
-- `action` (varchar)
-- `model_type` (varchar, nullable)
-- `model_id` (bigint, nullable)
-- `old_values` (text, nullable)
-- `new_values` (text, nullable)
-- `ip_address` (varchar)
-- `user_agent` (varchar)
+### 3. `contract_beneficiaries` Table Structure:
+- `id` (`bigint unsigned`, PK)
+- `company_id` (`foreignId` -> `companies`, nullable)
+- `contract_id` (`foreignId` -> `contracts`)
+- `patient_id` (`foreignId` -> `users`, nullable) — Auto-linked patient user account.
+- `name` (`string`)
+- `identification_type` (`string`, default: `'saudi_id'`)
+- `identification_number` (`string`, nullable)
+- `phone` (`string`, nullable)
+- `employee_id_number` (`string`, nullable)
+- `status` (`string`, default: `'active'`)
+- `created_at`, `updated_at`
+
+### 4. `bookings` Table Phase 6 Fields:
+- `contract_id` (`foreignId` -> `contracts`, nullable)
+- `company_id` (`foreignId` -> `companies`, nullable)
+- `patient_id` (`foreignId` -> `users`, nullable)
