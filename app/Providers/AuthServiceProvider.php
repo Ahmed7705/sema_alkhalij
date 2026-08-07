@@ -14,6 +14,9 @@ use App\Policies\ServicePolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\SettingPolicy;
 
+use App\Models\Company;
+use App\Policies\CompanyPolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Order::class => OrderPolicy::class,
         Service::class => ServicePolicy::class,
         Product::class => ProductPolicy::class,
+        Company::class => CompanyPolicy::class,
     ];
 
     /**

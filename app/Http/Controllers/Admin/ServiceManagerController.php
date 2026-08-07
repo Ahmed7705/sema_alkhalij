@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Service;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ServiceManagerController extends Controller
@@ -39,14 +41,18 @@ class ServiceManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/services'), $filename);
-            $validated['image'] = 'images/services/' . $filename;
-        }
+        DB::transaction(function () use ($request, &$validated) {
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/services'), $filename);
+                $validated['image'] = 'images/services/' . $filename;
+            }
 
-        Service::create($validated);
+            $service = Service::create($validated);
+
+            AuditLog::log('CREATE_SERVICE', $service, [], $service->toArray());
+        });
 
         return redirect()->route('admin.services.index')->with('success', 'تم إضافة الخدمة الطبية بنجاح.');
     }
@@ -76,22 +82,28 @@ class ServiceManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->has('remove_image')) {
-            if ($service->image && file_exists(public_path($service->image))) {
-                @unlink(public_path($service->image));
-            }
-            $validated['image'] = null;
-        } elseif ($request->hasFile('image')) {
-            if ($service->image && file_exists(public_path($service->image))) {
-                @unlink(public_path($service->image));
-            }
-            $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/services'), $filename);
-            $validated['image'] = 'images/services/' . $filename;
-        }
+        DB::transaction(function () use ($request, $service, &$validated) {
+            $oldData = $service->toArray();
 
-        $service->update($validated);
+            if ($request->has('remove_image')) {
+                if ($service->image && file_exists(public_path($service->image))) {
+                    @unlink(public_path($service->image));
+                }
+                $validated['image'] = null;
+            } elseif ($request->hasFile('image')) {
+                if ($service->image && file_exists(public_path($service->image))) {
+                    @unlink(public_path($service->image));
+                }
+                $file = $request->file('image');
+                $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/services'), $filename);
+                $validated['image'] = 'images/services/' . $filename;
+            }
+
+            $service->update($validated);
+
+            AuditLog::log('UPDATE_SERVICE', $service, $oldData, $service->toArray());
+        });
 
         return redirect()->route('admin.services.index')->with('success', 'تم تعديل الخدمة الطبية بنجاح.');
     }
@@ -99,11 +111,19 @@ class ServiceManagerController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
-        if ($service->image && file_exists(public_path($service->image))) {
-            @unlink(public_path($service->image));
-        }
-        $service->delete();
+
+        DB::transaction(function () use ($service) {
+            $oldData = $service->toArray();
+
+            if ($service->image && file_exists(public_path($service->image))) {
+                @unlink(public_path($service->image));
+            }
+            $service->delete();
+
+            AuditLog::log('DELETE_SERVICE', $service, $oldData, []);
+        });
 
         return redirect()->route('admin.services.index')->with('success', 'تم حذف الخدمة الطبية بنجاح.');
     }
 }
+

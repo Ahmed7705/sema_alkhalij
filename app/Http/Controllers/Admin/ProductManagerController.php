@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ProductManagerController extends Controller
@@ -40,14 +42,18 @@ class ProductManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/products'), $filename);
-            $validated['image'] = 'images/products/' . $filename;
-        }
+        DB::transaction(function () use ($request, &$validated) {
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/products'), $filename);
+                $validated['image'] = 'images/products/' . $filename;
+            }
 
-        Product::create($validated);
+            $product = Product::create($validated);
+
+            AuditLog::log('CREATE_PRODUCT', $product, [], $product->toArray());
+        });
 
         return redirect()->route('admin.products.index')->with('success', 'تم إضافة المنتج الطبي بنجاح.');
     }
@@ -78,22 +84,28 @@ class ProductManagerController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_active'] = $request->has('is_active');
 
-        if ($request->has('remove_image')) {
-            if ($product->image && file_exists(public_path($product->image))) {
-                @unlink(public_path($product->image));
-            }
-            $validated['image'] = null;
-        } elseif ($request->hasFile('image')) {
-            if ($product->image && file_exists(public_path($product->image))) {
-                @unlink(public_path($product->image));
-            }
-            $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/products'), $filename);
-            $validated['image'] = 'images/products/' . $filename;
-        }
+        DB::transaction(function () use ($request, $product, &$validated) {
+            $oldData = $product->toArray();
 
-        $product->update($validated);
+            if ($request->has('remove_image')) {
+                if ($product->image && file_exists(public_path($product->image))) {
+                    @unlink(public_path($product->image));
+                }
+                $validated['image'] = null;
+            } elseif ($request->hasFile('image')) {
+                if ($product->image && file_exists(public_path($product->image))) {
+                    @unlink(public_path($product->image));
+                }
+                $file = $request->file('image');
+                $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/products'), $filename);
+                $validated['image'] = 'images/products/' . $filename;
+            }
+
+            $product->update($validated);
+
+            AuditLog::log('UPDATE_PRODUCT', $product, $oldData, $product->toArray());
+        });
 
         return redirect()->route('admin.products.index')->with('success', 'تم تحديث المنتج الطبي بنجاح.');
     }
@@ -101,11 +113,19 @@ class ProductManagerController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-        if ($product->image && file_exists(public_path($product->image))) {
-            @unlink(public_path($product->image));
-        }
-        $product->delete();
+
+        DB::transaction(function () use ($product) {
+            $oldData = $product->toArray();
+
+            if ($product->image && file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
+            $product->delete();
+
+            AuditLog::log('DELETE_PRODUCT', $product, $oldData, []);
+        });
 
         return redirect()->route('admin.products.index')->with('success', 'تم حذف المنتج الطبي بنجاح.');
     }
 }
+

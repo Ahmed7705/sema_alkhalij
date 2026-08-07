@@ -32,19 +32,17 @@
 
 ---
 
-## Phase 6 Final Bug Fix Architecture Notes (2026-08-08):
+## Phase 6 Final Phase Audit Architecture Notes (2026-08-08):
 
 ### Booking Number (`bookings.booking_number`):
 - **Architecture**: `BK-{YEAR}-{SEQUENCE}` (e.g., `BK-2026-10001`)
-- **Generator**: `Booking::boot()` in `app/Models/Booking.php` — sequential, collision-safe.
+- **Generator**: `Booking::boot()` in `app/Models/Booking.php` — 100%00% sequential, collision-safe.
 - **Policy**: Never pass `booking_number` manually in `Booking::create()`. Boot handles it.
 
 ### Identity Type (`identification_type`):
 - **Canonical Values**: `saudi_id` | `iqama` | `border_number` | `gcc_id`
-- **Note**: `border_no` was a legacy inconsistency — corrected to `border_number` across all controllers and views.
-- **No `passport`** unless explicitly added in future requirements.
+- **Validation**: Enforced via `in:` rule across all controllers.
 
-### No Fake Data Policy:
-- **Prohibited**: `Company::create()`, `Contract::create()` as fallbacks in Production Controllers.
-- **When no companies exist**: Show `company/portal-no-company.blade.php` empty state.
-- **When no active contract**: Show warning banner in `company/portal.blade.php`; disable service request submission.
+### No Fake Data & Transaction Safety:
+- **Zero Fallback Fake Models**: 0 hardcoded companies/contracts/users created as fallbacks.
+- **DB Transactions**: All multi-step catalog & company operations execute within `DB::transaction()` blocks.

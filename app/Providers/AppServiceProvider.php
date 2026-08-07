@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
                         'site_logo' => SettingsService::get('site_logo', 'images/logo.png'),
                         'address' => SettingsService::get('address', 'طريق المدينة المنورة، حي الرويس، جدة، المملكة العربية السعودية'),
                         'vat_rate' => SettingsService::get('vat_percentage', SettingsService::getVatRate()),
-                        'vat_number' => SettingsService::get('vat_number', '300000000000003'),
+                        'vat_number' => SettingsService::get('vat_number', null),
                         'seo_meta_title' => SettingsService::get('seo_title', SettingsService::get('seo_meta_title', 'سيما الخليج | رعاية صحية منزلية متخصصة ومستلزمات طبية')),
                         'seo_meta_description' => SettingsService::get('seo_description', SettingsService::get('seo_meta_description', 'سيما الخليج للخدمات الطبية توفر أفضل خدمات الرعاية الصحية المنزلية والمستلزمات الطبية المعتمدة في المملكة.')),
                         'working_hours' => SettingsService::get('working_hours', '24/7 طوال أيام الأسبوع'),

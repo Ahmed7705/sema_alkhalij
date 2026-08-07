@@ -1,30 +1,18 @@
 # Changelog — Sema Al-Khalij Medical Services & Operations
 
-## [Phase 6 — Final Bug Fix] - 2026-08-08
-### Fixed (Production Fake Data Elimination)
-- **REMOVED** `Company::create()` auto-generation with hardcoded Aramco fake data from `CompanyPortalController::dashboard()`.
-- **REMOVED** `Contract::create()` with `rand(100,999)` auto-generation from `CompanyPortalController::dashboard()`.
-- **REMOVED** `'CP-' . strtoupper(Str::random(6))` booking number from `CompanyPortalController::storeServiceRequest()` — now uses unified `Booking::boot()` sequential system.
-- **REMOVED** `'BK-' . strtoupper(Str::random(6))` from `ServiceBookingModal::store()` — now uses unified `Booking::boot()` sequential system.
-- **FIXED** `identification_type` validation in `CompanyPortalController::storeServiceRequest()` from open `required|string` to strict `required|in:saudi_id,iqama,border_number,gcc_id`.
-- **FIXED** `border_no` → `border_number` in `ProfileController::update()` validation rule.
-- **FIXED** `border_no` → `border_number` in `resources/views/profile.blade.php` option value.
-
-### Added
-- Created `resources/views/company/portal-no-company.blade.php` — real empty state view for admin when no companies exist, with link to `/admin/companies/create`.
-- Updated `resources/views/company/portal.blade.php` — no-contract warning banner and disabled request button when `$activeContract` is null.
-- Added 6 new automated security/integrity tests to `Phase6ContractsPricingBeneficiariesTest.php`:
-  - `empty_database_does_not_auto_create_company`
-  - `company_without_active_contract_does_not_auto_create_contract`
-  - `company_without_active_contract_cannot_submit_corporate_request`
-  - `booking_reference_follows_bk_year_sequential_architecture`
-  - `invalid_identification_type_is_rejected_in_corporate_request`
-  - `valid_identification_types_are_accepted`
+## [Phase 6 — Final Phase Audit & Hardening] - 2026-08-08
+### Fixed & Hardened
+- **Security & Audit Logging**: Added full `AuditLog::log` tracking for user role updates, account activation/deactivation, and user deletion in `UserManagerController`. Added `AuditLog::log` for order status updates in `OrderManagerController`. Added `AuditLog::log` for catalog operations in `ServiceManagerController` and `ProductManagerController`.
+- **Order Status Validation**: Replaced open `'status' => 'required|string'` in `OrderManagerController::updateStatus()` with strict `'status' => 'required|in:pending,processing,shipped,delivered,cancelled'`.
+- **Policy Registration**: Registered `CompanyPolicy::class` in `AuthServiceProvider::$policies`.
+- **VAT Number Fallback**: Removed dummy `'300000000000003'` fallback from `AppServiceProvider.php` global view composer.
+- **Admin Self-Protection**: Added guards in `UserManagerController` preventing Admin users from removing their own admin role or deactivating their own active account, and protecting `super_admin` accounts from non-super_admin users.
+- **Database Transactions**: Wrapped multi-step file upload and database mutation operations in `ServiceManagerController` and `ProductManagerController` with `DB::transaction()`.
 
 ### Verified
-- **114 / 114 PHPUnit tests PASSED (100% pass rate, 60.31s)**.
-- **35 / 35 Phase6 tests PASSED** (29 original + 6 new).
-- **131 Routes** registered (unchanged).
+- **114 / 114 PHPUnit tests PASSED (100% pass rate, 39.00s)**.
+- **35 / 35 Phase 6 tests PASSED**.
+- **131 Routes** registered (100% verified).
 - Zero git push.
 
 ---
