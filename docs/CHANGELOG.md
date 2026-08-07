@@ -1,19 +1,20 @@
 # Changelog — Sema Al-Khalij Medical Services & Operations
 
-## [Phase 6 — Final Phase Audit & Hardening] - 2026-08-08
-### Fixed & Hardened
-- **Security & Audit Logging**: Added full `AuditLog::log` tracking for user role updates, account activation/deactivation, and user deletion in `UserManagerController`. Added `AuditLog::log` for order status updates in `OrderManagerController`. Added `AuditLog::log` for catalog operations in `ServiceManagerController` and `ProductManagerController`.
-- **Order Status Validation**: Replaced open `'status' => 'required|string'` in `OrderManagerController::updateStatus()` with strict `'status' => 'required|in:pending,processing,shipped,delivered,cancelled'`.
-- **Policy Registration**: Registered `CompanyPolicy::class` in `AuthServiceProvider::$policies`.
-- **VAT Number Fallback**: Removed dummy `'300000000000003'` fallback from `AppServiceProvider.php` global view composer.
-- **Admin Self-Protection**: Added guards in `UserManagerController` preventing Admin users from removing their own admin role or deactivating their own active account, and protecting `super_admin` accounts from non-super_admin users.
-- **Database Transactions**: Wrapped multi-step file upload and database mutation operations in `ServiceManagerController` and `ProductManagerController` with `DB::transaction()`.
+## [Phase 7 — Laboratory Operations, Medical Reports & Diagnostics] - 2026-08-08
+### Added
+- **9-Stage Lab Workflow State Machine**: Implemented `App\Services\LabWorkflowService` supporting `registered` → `assigned` → `sample_collected` → `sent_to_lab` → `received_by_lab` → `processing` → `result_ready` → `report_uploaded` → `delivered`.
+- **Admin Laboratory Management**: Created `LabSampleManagerController` and views (`index`, `create`, `show`) for searching, filtering, staff assignment, stage transitions, and metrics analytics.
+- **Medical PDF Report Management & Versioning**: Private storage in `private/medical_reports`, upload, version replacement (`medical_report_versions`), deletion, and streamed downloads.
+- **Laboratory Staff Portal**: Dedicated Lab Tech workstation (`/staff/lab/dashboard` and `/staff/lab/samples/{id}`) with strict technician sample isolation.
+- **Customer & Corporate Portals**: Real-time 9-stage sample tracking timeline and secure PDF downloads for patients and company clients.
+- **Automated Feature Test Suite**: Added `Phase7LabOperationsMedicalReportsTest.php` with 14 automated feature tests.
 
 ### Verified
-- **114 / 114 PHPUnit tests PASSED (100% pass rate, 39.00s)**.
-- **35 / 35 Phase 6 tests PASSED**.
-- **131 Routes** registered (100% verified).
+- **128 / 128 PHPUnit tests PASSED (100% pass rate, 46.05s)**.
+- **142 Routes** registered (11 new Phase 7 routes).
 - Zero git push.
+
+---
 
 ---
 

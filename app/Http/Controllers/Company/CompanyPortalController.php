@@ -91,6 +91,11 @@ class CompanyPortalController extends Controller
             $services = collect(); // No active contract → no services available for corporate requests
         }
 
+        $companyLabSamples = \App\Models\LabSample::where('company_id', $company->id)
+            ->with(['patient', 'booking.service', 'medicalReport'])
+            ->latest()
+            ->get();
+
         $activeTab = $request->get('tab', 'requests');
 
         return view('company.portal', compact(
@@ -100,11 +105,14 @@ class CompanyPortalController extends Controller
             'beneficiaries',
             'beneficiariesCount',
             'companyBookings',
+            'companyLabSamples',
             'services',
             'allCompanies',
             'activeTab'
         ));
+
     }
+
 
     public function storeServiceRequest(Request $request)
     {

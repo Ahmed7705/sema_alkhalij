@@ -25,6 +25,11 @@ class MedicalReport extends Model
         'verified_at',
     ];
 
+    protected $casts = [
+        'uploaded_at' => 'datetime',
+        'verified_at' => 'datetime',
+    ];
+
     public function labSample()
     {
         return $this->belongsTo(LabSample::class);
@@ -44,4 +49,10 @@ class MedicalReport extends Model
     {
         return $this->belongsTo(User::class, 'verified_by');
     }
+
+    public function versions()
+    {
+        return $this->hasMany(MedicalReportVersion::class)->latest();
+    }
 }
+

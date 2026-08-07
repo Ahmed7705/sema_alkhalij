@@ -297,49 +297,67 @@
             {{-- TAB 5: LAB SAMPLES TRACKING --}}
             <div x-show="activeTab === 'samples'" class="space-y-4">
                 <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                    <h3 class="font-black text-lg text-primary">{{ $isEn ? 'Lab Samples Real-time Tracking' : 'تتبع العينات الفحوصات المخبرية' }}</h3>
+                    <h3 class="font-black text-lg text-primary">{{ $isEn ? 'Lab Samples Real-time Tracking' : 'تتبع العينات والفحوصات المخبرية (9 مراحل)' }}</h3>
                     
                     @forelse($labSamples as $sample)
                         <div class="p-6 rounded-2xl bg-surface border border-gray-100 space-y-4">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-100 pb-3 gap-2">
                                 <div>
                                     <span class="font-bold text-xs text-gray-500">{{ $isEn ? 'Visit & Sample Code:' : 'كود الزيارة والعينة:' }}</span>
                                     <span class="font-black text-sm text-accent dir-ltr inline-block {{ $isEn ? 'ml-2' : 'mr-2' }}">{{ $sample->visit_code }}</span>
                                 </div>
-                                <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
-                                    {{ $isEn ? 'Current Status:' : 'حالة العينة الحالية:' }} {{ __($sample->sample_status) }}
-                                </span>
+                                
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
+                                        {{ $isEn ? 'Current Status:' : 'حالة العينة:' }} {{ $sample->sample_status }}
+                                    </span>
+
+                                    @if($sample->medicalReport && in_array($sample->sample_status, ['result_ready', 'report_uploaded', 'delivered']))
+                                        <a href="{{ route('medical-reports.download', $sample->medicalReport->id) }}" target="_blank" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            <span>{{ $isEn ? 'Download PDF Report' : 'تحميل النتيجة PDF' }}</span>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
 
-                            {{-- Visual Tracking Workflow --}}
+                            {{-- Visual Tracking Workflow (9 Stages) --}}
                             @php
                                 $sampleSteps = $isEn ? [
-                                    'registered' => 'Sample Registered',
-                                    'assigned' => 'Tech Assigned',
-                                    'sample_collected' => 'Sample Collected',
-                                    'sent_to_lab' => 'Sent to Lab',
-                                    'received_by_lab' => 'Received by Lab',
-                                    'processing' => 'Processing',
-                                    'result_ready' => 'Result Ready'
+                                    'registered' => '1. Registered',
+                                    'assigned' => '2. Assigned',
+                                    'sample_collected' => '3. Collected',
+                                    'sent_to_lab' => '4. Sent to Lab',
+                                    'received_by_lab' => '5. Received',
+                                    'processing' => '6. Processing',
+                                    'result_ready' => '7. Result Ready',
+                                    'report_uploaded' => '8. Uploaded',
+                                    'delivered' => '9. Delivered'
                                 ] : [
-                                    'registered' => 'تسجيل العينة',
-                                    'assigned' => 'إسناد الفني',
-                                    'sample_collected' => 'تم سحب العينة',
-                                    'sent_to_lab' => 'إرسال للمختبر',
-                                    'received_by_lab' => 'استلام المختبر',
-                                    'processing' => 'جاري الفحص',
-                                    'result_ready' => 'النتيجة جاهزة'
+                                    'registered' => '1. تسجيل العينة',
+                                    'assigned' => '2. إسناد الفني',
+                                    'sample_collected' => '3. تم سحب العينة',
+                                    'sent_to_lab' => '4. إرسال للمختبر',
+                                    'received_by_lab' => '5. استلام المختبر',
+                                    'processing' => '6. جاري الفحص',
+                                    'result_ready' => '7. النتيجة جاهزة',
+                                    'report_uploaded' => '8. تم الرفع',
+                                    'delivered' => '9. تم التسليم'
                                 ];
-                                $sampleLevels = ['registered' => 1, 'assigned' => 2, 'sample_collected' => 3, 'sent_to_lab' => 4, 'received_by_lab' => 5, 'processing' => 6, 'result_ready' => 7];
+                                $sampleLevels = [
+                                    'registered' => 1, 'assigned' => 2, 'sample_collected' => 3, 
+                                    'sent_to_lab' => 4, 'received_by_lab' => 5, 'processing' => 6, 
+                                    'result_ready' => 7, 'report_uploaded' => 8, 'delivered' => 9
+                                ];
                                 $currSampleLevel = $sampleLevels[$sample->sample_status] ?? 1;
                             @endphp
 
-                            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center pt-2">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1.5 text-center pt-2">
                                 @foreach($sampleSteps as $sKey => $sLabel)
                                     @php $sLvl = $sampleLevels[$sKey]; @endphp
-                                    <div class="p-2.5 rounded-xl border text-[11px] font-bold space-y-1
-                                        @if($sLvl <= $currSampleLevel) bg-blue-50 border-blue-300 text-blue-900 @else bg-gray-50 border-gray-200 text-gray-400 opacity-50 @endif">
-                                        <span class="block">{{ $sLabel }}</span>
+                                    <div class="p-2 rounded-xl border text-[10px] font-bold space-y-1
+                                        @if($sLvl <= $currSampleLevel) bg-emerald-50 border-emerald-300 text-emerald-900 @else bg-gray-50 border-gray-200 text-gray-400 opacity-50 @endif">
+                                        <span class="block leading-tight">{{ $sLabel }}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -349,6 +367,7 @@
                     @endforelse
                 </div>
             </div>
+
 
             {{-- TAB 6: SAVED ADDRESSES --}}
             <div x-show="activeTab === 'addresses'" class="space-y-6">

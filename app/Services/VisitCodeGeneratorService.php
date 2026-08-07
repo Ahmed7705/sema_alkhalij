@@ -34,4 +34,10 @@ class VisitCodeGeneratorService
             return $prefix . str_pad($number, 6, '0', STR_PAD_LEFT);
         });
     }
+
+    public static function generate(): string
+    {
+        return (new static())->generateUniqueVisitCode();
+    }
 }
+

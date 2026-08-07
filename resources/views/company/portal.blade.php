@@ -123,7 +123,11 @@
             <button @click="activeTab = 'beneficiaries'" :class="activeTab === 'beneficiaries' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
                 {{ $isEn ? 'Company Beneficiaries' : 'المستفيدين المسجلين' }} ({{ $beneficiaries->count() }})
             </button>
+            <button @click="activeTab = 'lab_samples'" :class="activeTab === 'lab_samples' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
+                {{ $isEn ? 'Lab Samples & Reports' : 'عينات وتقارير المختبر' }} ({{ $companyLabSamples->count() }})
+            </button>
         </div>
+
 
         {{-- TAB 1: SERVICE REQUESTS --}}
         <div x-show="activeTab === 'requests'" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
@@ -289,6 +293,61 @@
                 </table>
             </div>
         </div>
+
+        {{-- TAB 4: LAB SAMPLES & REPORTS --}}
+        <div x-show="activeTab === 'lab_samples'" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                <div>
+                    <h3 class="font-black text-lg text-primary">{{ $isEn ? 'Company Beneficiaries Lab Samples & Reports' : 'سجل عينات وتقارير مختبر مستفيدي الشركة' }}</h3>
+                    <p class="text-xs text-gray-500">{{ $isEn ? 'Real-time 9-stage tracking and secure PDF report downloads for your company beneficiaries' : 'تتبع العينات والنتائج الخاصة بمستفيدي الشركة والتحميل الآمن للتقارير' }}</p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }} border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                            <th class="p-4">#</th>
+                            <th class="p-4">{{ $isEn ? 'Visit Code' : 'رمز الزيارة' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Beneficiary Patient' : 'المريض / المستفيد' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Workflow Status' : 'حالة العينة' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Medical PDF Report' : 'التقرير الطبي' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Date' : 'تاريخ التسجيل' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($companyLabSamples as $sample)
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="p-4 font-bold text-gray-400">{{ $sample->id }}</td>
+                                <td class="p-4 font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $sample->visit_code }}</td>
+                                <td class="p-4 font-bold text-gray-800">{{ $sample->patient->name ?? '-' }}</td>
+                                <td class="p-4">
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-[11px] font-bold border border-blue-200">
+                                        {{ $sample->getCurrentStageIndex() }}/9. {{ $sample->sample_status }}
+                                    </span>
+                                </td>
+                                <td class="p-4">
+                                    @if($sample->medicalReport && in_array($sample->sample_status, ['result_ready', 'report_uploaded', 'delivered']))
+                                        <a href="{{ route('medical-reports.download', $sample->medicalReport->id) }}" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-all inline-flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            <span>{{ $isEn ? 'Download PDF' : 'تحميل النتيجة PDF' }}</span>
+                                        </a>
+                                    @else
+                                        <span class="text-gray-400 italic text-[11px]">{{ $isEn ? 'Pending Lab Result' : 'بانتظار الفحص والتقرير' }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-4 text-gray-500 font-medium dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $sample->created_at->format('Y-m-d H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="p-8 text-center text-gray-400 font-bold">{{ $isEn ? 'No lab samples registered for your company beneficiaries yet.' : 'لا توجد عينات فحص مسجلة لمستفيدي شركتكم حتى الآن.' }}</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
         {{-- New Service Request Modal --}}
         <div x-show="openRequestModal" x-cloak class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">

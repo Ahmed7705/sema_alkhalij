@@ -1,6 +1,46 @@
 # Database Schema — Sema Al-Khalij Medical Services & Operations
 
-## Phase 6 Schema Extensions:
+## Phase 7 Schema Extensions:
+
+### 1. `lab_samples` Table Structure:
+- `id` (`bigint unsigned`, PK)
+- `visit_code` (`string`, unique) — e.g. `VIS-2026-100001` generated sequentially.
+- `patient_id` (`foreignId` -> `users`)
+- `booking_id` (`foreignId` -> `bookings`, nullable)
+- `company_id` (`foreignId` -> `companies`, nullable)
+- `contract_id` (`foreignId` -> `contracts`, nullable)
+- `assigned_staff_id` (`foreignId` -> `users`, nullable) — Assigned `lab_tech`.
+- `sample_status` (`string`, default: `'registered'`) — 9 Stages: `registered`, `assigned`, `sample_collected`, `sent_to_lab`, `received_by_lab`, `processing`, `result_ready`, `report_uploaded`, `delivered`.
+- Timestamps: `collected_at`, `sent_to_lab_at`, `received_at`, `processing_at`, `result_ready_at`, `report_uploaded_at`, `delivered_at`.
+- `notes` (`text`, nullable)
+- `created_at`, `updated_at`
+
+### 2. `medical_reports` Table Structure:
+- `id` (`bigint unsigned`, PK)
+- `lab_sample_id` (`foreignId` -> `lab_samples`, nullable)
+- `patient_id` (`foreignId` -> `users`)
+- `booking_id` (`foreignId` -> `bookings`, nullable)
+- `company_id` (`foreignId` -> `companies`, nullable)
+- `visit_code` (`string`, nullable)
+- `file_path` (`string`) — Stored in `private/medical_reports/`
+- `file_name` (`string`)
+- `file_size` (`bigint unsigned`)
+- `mime_type` (`string`, default: `'application/pdf'`)
+- `uploaded_by` (`foreignId` -> `users`)
+- `verified_by` (`foreignId` -> `users`, nullable)
+- `uploaded_at`, `verified_at`, `created_at`, `updated_at`
+
+### 3. `medical_report_versions` Table Structure:
+- `id` (`bigint unsigned`, PK)
+- `medical_report_id` (`foreignId` -> `medical_reports`)
+- `file_path` (`string`)
+- `file_name` (`string`)
+- `file_size` (`bigint unsigned`)
+- `mime_type` (`string`, default: `'application/pdf'`)
+- `uploaded_by` (`foreignId` -> `users`)
+- `replaced_by` (`foreignId` -> `users`, nullable)
+- `reason` (`string`, nullable)
+- `created_at`, `updated_at`
 
 ### 1. `contracts` Table Modifications:
 - `discount_percentage` (`decimal(5,2)`, default: `0.00`) — Contract wide percentage discount fallback.

@@ -130,6 +130,11 @@ use App\Http\Controllers\MedicalReportController;
 Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
     Route::get('dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
     Route::post('visits/{booking}/status', [StaffDashboardController::class, 'updateStatus'])->name('visits.update-status');
+
+    // Lab Tech Portal Routes
+    Route::get('lab/dashboard', [\App\Http\Controllers\Staff\LabStaffController::class, 'dashboard'])->name('lab.dashboard');
+    Route::get('lab/samples/{id}', [\App\Http\Controllers\Staff\LabStaffController::class, 'show'])->name('lab.show');
+    Route::post('lab/samples/{id}/status', [\App\Http\Controllers\Staff\LabStaffController::class, 'updateStatus'])->name('lab.status');
 });
 
 // CORPORATE COMPANY PORTAL ROUTES (Protected by Auth)
@@ -143,8 +148,11 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
 // SECURE MEDICAL REPORT ROUTES (Protected by Auth)
 Route::middleware(['auth'])->group(function () {
     Route::post('medical-reports/upload', [MedicalReportController::class, 'store'])->name('medical-reports.upload');
+    Route::post('medical-reports/{id}/replace', [MedicalReportController::class, 'replace'])->name('medical-reports.replace');
+    Route::delete('medical-reports/{id}', [MedicalReportController::class, 'destroy'])->name('medical-reports.destroy');
     Route::get('medical-reports/{report}/download', [MedicalReportController::class, 'download'])->name('medical-reports.download');
 });
+
 
 use App\Http\Controllers\Admin\CompanyManagerController;
 use App\Http\Controllers\Admin\ContractRequestManagerController;
@@ -209,7 +217,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('beneficiaries/{id}', [BeneficiaryManagerController::class, 'update'])->name('beneficiaries.update');
     Route::post('beneficiaries/{id}/toggle', [BeneficiaryManagerController::class, 'toggleStatus'])->name('beneficiaries.toggle');
 
+    // Laboratory Samples Management
+    Route::get('lab-samples', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'index'])->name('lab-samples.index');
+    Route::get('lab-samples/create', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'create'])->name('lab-samples.create');
+    Route::post('lab-samples', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'store'])->name('lab-samples.store');
+    Route::get('lab-samples/{id}', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'show'])->name('lab-samples.show');
+    Route::post('lab-samples/{id}/status', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'updateStatus'])->name('lab-samples.status');
+    Route::post('lab-samples/{id}/assign', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'assignStaff'])->name('lab-samples.assign');
+
     // Medical Staff Management
+
     Route::get('staff', [StaffManagerController::class, 'index'])->name('staff.index');
     Route::get('staff/create', [StaffManagerController::class, 'create'])->name('staff.create');
     Route::post('staff', [StaffManagerController::class, 'store'])->name('staff.store');

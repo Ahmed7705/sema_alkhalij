@@ -1,8 +1,21 @@
 # Registered Routes Matrix — Sema Al-Khalij Medical Services & Operations
 
-Total Routes Registered: **131 Routes** (100% Active & Protected)
+Total Routes Registered: **142 Routes** (100% Active & Protected)
 
-## Corporate Contracts Routes (Admin):
+## Laboratory Operations & Medical Reports Routes (Phase 7):
+- `GET /admin/lab-samples` (`admin.lab-samples.index`) — Admin Lab Samples Directory & Analytics
+- `GET /admin/lab-samples/create` (`admin.lab-samples.create`) — Manual Sample Registration Form
+- `POST /admin/lab-samples` (`admin.lab-samples.store`) — Save New Lab Sample
+- `GET /admin/lab-samples/{id}` (`admin.lab-samples.show`) — 9-Stage Timeline & Sample Detail View
+- `POST /admin/lab-samples/{id}/status` (`admin.lab-samples.status`) — Workflow Stage Transition
+- `POST /admin/lab-samples/{id}/assign` (`admin.lab-samples.assign`) — Assign Lab Technician
+- `GET /staff/lab/dashboard` (`staff.lab.dashboard`) — Lab Technician Portal Dashboard (Assigned Samples)
+- `GET /staff/lab/samples/{id}` (`staff.lab.show`) — Lab Technician Sample View & Report Upload
+- `POST /staff/lab/samples/{id}/status` (`staff.lab.status`) — Lab Technician Status Update
+- `POST /medical-reports/upload` (`medical-reports.upload`) — Upload Medical PDF Report
+- `POST /medical-reports/{id}/replace` (`medical-reports.replace`) — Replace PDF Report & Save Version Audit
+- `DELETE /medical-reports/{id}` (`medical-reports.destroy`) — Delete PDF Report
+- `GET /medical-reports/{report}/download` (`medical-reports.download`) — Stream Private Medical PDF (IDOR Protected & Audit Logged)
 - `GET /admin/contracts` (`admin.contracts.index`) — Admin Contracts Directory
 - `GET /admin/contracts/create` (`admin.contracts.create`) — New Contract Setup Form
 - `POST /admin/contracts` (`admin.contracts.store`) — Save New Contract
