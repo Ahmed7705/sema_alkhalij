@@ -883,4 +883,204 @@ class Phase6ContractsPricingBeneficiariesTest extends TestCase
             'service_id' => $this->service1->id,
         ]);
     }
+
+    // ====================================================================
+    // FINAL BUG FIX — Production Fake Data Elimination Tests
+    // ====================================================================
+
+    /** @test */
+    public function empty_database_does_not_auto_create_company()
+    {
+        // Ensure DB has no companies
+        \App\Models\Contract::query()->delete();
+        \App\Models\ContractBeneficiary::query()->delete();
+        \App\Models\ContractPrice::query()->delete();
+        \App\Models\Company::query()->delete();
+
+        $adminUser = User::factory()->create(['role' => 'admin', 'is_active' => true, 'company_id' => null]);
+
+        $response = $this->actingAs($adminUser)->get('/company/portal');
+
+        // Should NOT auto-create a company — DB must remain empty
+        $this->assertDatabaseCount('companies', 0);
+
+        // Should return a view (portal-no-company), NOT redirect to error
+        $response->assertSuccessful();
+    }
+
+    /** @test */
+    public function company_without_active_contract_does_not_auto_create_contract()
+    {
+        // Company exists but has no active contracts
+        $company = Company::create([
+            'name' => 'Test Corp No Contract',
+            'company_code' => 'COMP-TEST-NC',
+            'contact_person' => 'Test Admin',
+            'phone' => '0500000099',
+            'email' => 'nc@test.com',
+            'city' => 'Riyadh',
+            'status' => 'active',
+        ]);
+
+        $adminUser = User::factory()->create([
+            'role' => 'admin',
+            'is_active' => true,
+            'company_id' => null,
+        ]);
+
+        $initialContractCount = \App\Models\Contract::count();
+
+        $response = $this->actingAs($adminUser)->get('/company/portal?company_id=' . $company->id);
+
+        // Must NOT auto-create any contracts
+        $this->assertEquals($initialContractCount, \App\Models\Contract::count());
+
+        // Should still return a successful view (with no-contract warning)
+        $response->assertSuccessful();
+    }
+
+    /** @test */
+    public function company_without_active_contract_cannot_submit_corporate_request()
+    {
+        // Company exists, contract is expired (not active)
+        $company = $this->companyA;
+        $expiredContract = Contract::create([
+            'company_id' => $company->id,
+            'contract_number' => 'CNT-EXPIRED-001',
+            'start_date' => '2024-01-01',
+            'end_date' => '2024-12-31',
+            'status' => 'expired',
+        ]);
+
+        $response = $this->actingAs($this->companyUserA)->post('/company/requests', [
+            'patient_name' => 'مريض اختبار',
+            'identification_type' => 'saudi_id',
+            'identification_number' => '1234567890',
+            'phone' => '0501234567',
+            'service_id' => $this->service1->id,
+            'booking_date' => now()->addDays(3)->format('Y-m-d'),
+            'booking_time' => '10:00',
+            'city' => 'Riyadh',
+            'address' => 'Test Address',
+        ]);
+
+        // Must be rejected — no active contract
+        $response->assertRedirect();
+        $this->assertDatabaseCount('bookings', 0);
+    }
+
+    /** @test */
+    public function booking_reference_follows_bk_year_sequential_architecture()
+    {
+        // Create a valid active contract with contract price
+        $contract = Contract::create([
+            'company_id' => $this->companyA->id,
+            'contract_number' => 'CNT-TEST-BK-2026',
+            'start_date' => now()->subDays(30)->format('Y-m-d'),
+            'end_date' => now()->addDays(365)->format('Y-m-d'),
+            'status' => 'active',
+        ]);
+
+        ContractPrice::create([
+            'contract_id' => $contract->id,
+            'service_id' => $this->service1->id,
+            'custom_price' => 200.00,
+        ]);
+
+        $response = $this->actingAs($this->companyUserA)->post('/company/requests', [
+            'patient_name' => 'اختبار رقم الحجز',
+            'identification_type' => 'saudi_id',
+            'identification_number' => '1234567890',
+            'phone' => '0501234567',
+            'service_id' => $this->service1->id,
+            'booking_date' => now()->addDays(3)->format('Y-m-d'),
+            'booking_time' => '10:00',
+            'city' => 'Riyadh',
+            'address' => 'Test Address',
+            'contract_id' => $contract->id,
+        ]);
+
+        $response->assertRedirect();
+
+        $booking = \App\Models\Booking::latest()->first();
+        $this->assertNotNull($booking);
+
+        // Must follow BK-YYYY-NNNNN format, NOT CP- or BK- + random
+        $this->assertMatchesRegularExpression('/^BK-\d{4}-\d+$/', $booking->booking_number,
+            "Booking number '{$booking->booking_number}' does not match BK-YYYY-NNNNN architecture");
+
+        // Must NOT start with CP-
+        $this->assertStringStartsNotWith('CP-', $booking->booking_number);
+    }
+
+    /** @test */
+    public function invalid_identification_type_is_rejected_in_corporate_request()
+    {
+        $contract = Contract::create([
+            'company_id' => $this->companyA->id,
+            'contract_number' => 'CNT-IDTYPE-TEST',
+            'start_date' => now()->subDays(30)->format('Y-m-d'),
+            'end_date' => now()->addDays(365)->format('Y-m-d'),
+            'status' => 'active',
+        ]);
+
+        // Try submitting with invalid identification_type (border_no is old/wrong value)
+        $response = $this->actingAs($this->companyUserA)->post('/company/requests', [
+            'patient_name' => 'اختبار نوع هوية خاطئ',
+            'identification_type' => 'border_no', // INVALID — correct is border_number
+            'identification_number' => '1234567890',
+            'phone' => '0501234567',
+            'service_id' => $this->service1->id,
+            'booking_date' => now()->addDays(3)->format('Y-m-d'),
+            'booking_time' => '10:00',
+            'city' => 'Riyadh',
+            'address' => 'Test Address',
+            'contract_id' => $contract->id,
+        ]);
+
+        // Must be rejected — 'border_no' not in allowed values
+        $response->assertSessionHasErrors('identification_type');
+        $this->assertDatabaseCount('bookings', 0);
+    }
+
+    /** @test */
+    public function valid_identification_types_are_accepted()
+    {
+        $contract = Contract::create([
+            'company_id' => $this->companyA->id,
+            'contract_number' => 'CNT-VALID-IDTYPE',
+            'start_date' => now()->subDays(30)->format('Y-m-d'),
+            'end_date' => now()->addDays(365)->format('Y-m-d'),
+            'status' => 'active',
+        ]);
+
+        ContractPrice::create([
+            'contract_id' => $contract->id,
+            'service_id' => $this->service1->id,
+            'custom_price' => 150.00,
+        ]);
+
+        $validTypes = ['saudi_id', 'iqama', 'border_number', 'gcc_id'];
+
+        foreach ($validTypes as $i => $type) {
+            $response = $this->actingAs($this->companyUserA)->post('/company/requests', [
+                'patient_name' => "مريض {$type}",
+                'identification_type' => $type,
+                'identification_number' => "ID{$i}999999{$i}",
+                'phone' => '050123456' . $i,
+                'service_id' => $this->service1->id,
+                'booking_date' => now()->addDays($i + 1)->format('Y-m-d'),
+                'booking_time' => '10:00',
+                'city' => 'Riyadh',
+                'address' => "Test Address {$i}",
+                'contract_id' => $contract->id,
+            ]);
+
+            $response->assertSessionDoesntHaveErrors('identification_type',
+                "identification_type '{$type}' should be valid but was rejected");
+        }
+
+        // All 4 booking types created successfully
+        $this->assertDatabaseCount('bookings', 4);
+    }
 }

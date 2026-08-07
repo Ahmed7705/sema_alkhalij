@@ -45,20 +45,12 @@ class CompanyPortalController extends Controller
                 $companyId = $request->query('company_id');
             } else {
                 $firstCompany = Company::first();
-                if ($firstCompany) {
-                    $companyId = $firstCompany->id;
-                } else {
-                    $company = Company::create([
-                        'name' => 'شركة أرامكو السعودية للخدمات الطبية',
-                        'company_code' => 'COMP-ARAMCO',
-                        'contact_person' => 'مدير التعاقدات والخدمات الطبية',
-                        'phone' => '0590000001',
-                        'email' => 'corporate@sema-alkhalij.com',
-                        'city' => 'جدة',
-                        'status' => 'active',
-                    ]);
-                    $companyId = $company->id;
+                if (!$firstCompany) {
+                    // No companies exist at all — show admin empty state (do NOT auto-create fake data)
+                    $isEn = app()->getLocale() === 'en';
+                    return view('company.portal-no-company', compact('isEn'));
                 }
+                $companyId = $firstCompany->id;
             }
         }
 
@@ -69,17 +61,9 @@ class CompanyPortalController extends Controller
             abort(403, 'حساب الشركة معطل حالياً من قِبل إدارة النظام.');
         }
         
+        // Load active contract — do NOT auto-create if missing
         $activeContract = $company->contracts()->where('status', 'active')->latest()->first();
-        if (!$activeContract) {
-            $activeContract = Contract::create([
-                'company_id' => $company->id,
-                'contract_number' => 'CNT-' . date('Y') . '-' . rand(100, 999),
-                'start_date' => date('Y-01-01'),
-                'end_date' => date('Y-12-31'),
-                'payment_terms' => 'Net 30 Days (آجل 30 يوم)',
-                'status' => 'active',
-            ]);
-        }
+        // $activeContract may be null — views must handle this gracefully
 
         $contractsList = $company->contracts()->with(['contractPrices.service', 'beneficiaries'])->latest()->get();
         $beneficiaries = ContractBeneficiary::where('company_id', $company->id)
@@ -96,12 +80,16 @@ class CompanyPortalController extends Controller
 
         $allCompanies = $isAdmin ? Company::all() : collect([$company]);
         
-        // Covered services in active contract
-        $coveredServiceIds = ContractPrice::where('contract_id', $activeContract->id)->pluck('service_id');
-        $services = Service::where('is_active', true)
-                           ->when($coveredServiceIds->isNotEmpty(), function($q) use ($coveredServiceIds) {
-                               $q->whereIn('id', $coveredServiceIds);
-                           })->get();
+        // Covered services: only if active contract exists
+        if ($activeContract) {
+            $coveredServiceIds = ContractPrice::where('contract_id', $activeContract->id)->pluck('service_id');
+            $services = Service::where('is_active', true)
+                               ->when($coveredServiceIds->isNotEmpty(), function($q) use ($coveredServiceIds) {
+                                   $q->whereIn('id', $coveredServiceIds);
+                               })->get();
+        } else {
+            $services = collect(); // No active contract → no services available for corporate requests
+        }
 
         $activeTab = $request->get('tab', 'requests');
 
@@ -152,18 +140,18 @@ class CompanyPortalController extends Controller
         }
 
         $request->validate([
-            'patient_name' => 'required|string|max:255',
-            'identification_type' => 'required|string',
-            'identification_number' => 'required|string',
-            'phone' => 'required|string',
-            'service_id' => 'required|exists:services,id',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required|string',
-            'city' => 'required|string',
-            'address' => 'required|string',
-            'beneficiary_id' => 'nullable|exists:contract_beneficiaries,id',
-            'contract_id' => 'nullable|exists:contracts,id',
-            'notes' => 'nullable|string',
+            'patient_name'          => 'required|string|max:255',
+            'identification_type'   => 'required|in:saudi_id,iqama,border_number,gcc_id',
+            'identification_number' => 'required|string|max:50',
+            'phone'                 => 'required|string|max:20',
+            'service_id'            => 'required|exists:services,id',
+            'booking_date'          => 'required|date',
+            'booking_time'          => 'required|string',
+            'city'                  => 'required|string|max:100',
+            'address'               => 'required|string|max:500',
+            'beneficiary_id'        => 'nullable|exists:contract_beneficiaries,id',
+            'contract_id'           => 'nullable|exists:contracts,id',
+            'notes'                 => 'nullable|string|max:1000',
         ]);
 
         // Find Contract
@@ -215,24 +203,24 @@ class CompanyPortalController extends Controller
             $finalPrice = $service->price;
         }
 
+        // booking_number is intentionally omitted — Booking::boot() generates BK-YYYY-NNNNN automatically
         $booking = Booking::create([
-            'user_id' => Auth::id(),
-            'company_id' => $company->id,
-            'contract_id' => $contract->id,
-            'patient_id' => $beneficiary ? $beneficiary->patient_id : null,
-            'booking_number' => 'CP-' . strtoupper(Str::random(6)),
-            'patient_name' => $request->patient_name,
-            'identification_type' => $request->identification_type,
+            'user_id'               => Auth::id(),
+            'company_id'            => $company->id,
+            'contract_id'           => $contract->id,
+            'patient_id'            => $beneficiary ? $beneficiary->patient_id : null,
+            'patient_name'          => $request->patient_name,
+            'identification_type'   => $request->identification_type,
             'identification_number' => $request->identification_number,
-            'service_id' => $service->id,
-            'booking_date' => $request->booking_date,
-            'booking_time' => $request->booking_time,
-            'city' => $request->city,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'total_price' => $finalPrice,
-            'status' => 'requested',
-            'notes' => $request->notes,
+            'service_id'            => $service->id,
+            'booking_date'          => $request->booking_date,
+            'booking_time'          => $request->booking_time,
+            'city'                  => $request->city,
+            'address'               => $request->address,
+            'phone'                 => $request->phone,
+            'total_price'           => $finalPrice,
+            'status'                => 'requested',
+            'notes'                 => $request->notes,
         ]);
 
         AuditLog::log('CREATE_CORPORATE_SERVICE_REQUEST', $booking, [], $booking->toArray());

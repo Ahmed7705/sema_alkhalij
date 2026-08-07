@@ -483,7 +483,7 @@
                                 <select name="identification_type" class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold">
                                     <option value="saudi_id" {{ $user->identification_type === 'saudi_id' ? 'selected' : '' }}>{{ $isEn ? 'Saudi National ID' : 'هوية وطنية سعودية' }}</option>
                                     <option value="iqama" {{ $user->identification_type === 'iqama' ? 'selected' : '' }}>{{ $isEn ? 'Resident Iqama' : 'إقامة مقيم' }}</option>
-                                    <option value="border_no" {{ $user->identification_type === 'border_no' ? 'selected' : '' }}>{{ $isEn ? 'Border Number' : 'رقم حدود' }}</option>
+                                    <option value="border_number" {{ $user->identification_type === 'border_number' ? 'selected' : '' }}>{{ $isEn ? 'Border Number' : 'رقم حدود' }}</option>
                                     <option value="gcc_id" {{ $user->identification_type === 'gcc_id' ? 'selected' : '' }}>{{ $isEn ? 'GCC National ID' : 'هوية مواطن خليجي' }}</option>
                                 </select>
                             </div>

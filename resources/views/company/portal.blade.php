@@ -55,12 +55,43 @@
                     <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     <span>{{ $isEn ? '+ Add Beneficiary' : '+ إضافة مستفيد' }}</span>
                 </button>
-                <button @click="openRequestModal = true" class="bg-accent hover:bg-accent-hover text-white font-black text-xs px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                    <span>{{ $isEn ? 'Submit New Service Request' : 'تقديم طلب خدمة جديد لمستفيد' }}</span>
-                </button>
+                @if($activeContract)
+                    <button @click="openRequestModal = true" class="bg-accent hover:bg-accent-hover text-white font-black text-xs px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        <span>{{ $isEn ? 'Submit New Service Request' : 'تقديم طلب خدمة جديد لمستفيد' }}</span>
+                    </button>
+                @else
+                    <div class="bg-white/10 text-white/60 font-bold text-xs px-6 py-3.5 rounded-2xl border border-white/20 flex items-center gap-2 cursor-not-allowed" title="{{ $isEn ? 'No active contract — contact admin' : 'لا يوجد عقد نشط — تواصل مع الإدارة' }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+                        <span>{{ $isEn ? 'No Active Contract' : 'لا يوجد عقد نشط' }}</span>
+                    </div>
+                @endif
             </div>
         </div>
+
+        {{-- No Active Contract Warning Banner --}}
+        @if(!$activeContract)
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3" dir="{{ $isEn ? 'ltr' : 'rtl' }}">
+                <svg class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+                </svg>
+                <div class="space-y-1">
+                    <p class="text-sm font-black text-amber-800">
+                        {{ $isEn ? 'No Active Contract Found' : 'لا يوجد عقد نشط لهذه الشركة' }}
+                    </p>
+                    <p class="text-xs text-amber-700 font-medium">
+                        {{ $isEn
+                            ? 'Corporate service requests cannot be submitted without a valid active contract. Please contact the system administrator to create or activate a contract.'
+                            : 'لا يمكن تقديم طلبات خدمة تعاقدية بدون عقد صالح ونشط. يرجى التواصل مع إدارة النظام لإنشاء أو تفعيل العقد.' }}
+                    </p>
+                    @if($isAdmin)
+                        <a href="{{ route('admin.contracts.create') }}?company_id={{ $company->id }}" class="inline-flex items-center gap-1 text-xs font-extrabold text-amber-800 hover:text-amber-900 underline mt-1">
+                            {{ $isEn ? 'Create Contract Now →' : 'إنشاء عقد الآن ←' }}
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endif
 
         {{-- Contract & Metric Summary --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

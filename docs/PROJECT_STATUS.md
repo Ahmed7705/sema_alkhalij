@@ -6,19 +6,19 @@
 - **Phase 3 (Customer / Patient Portal)**: COMPLETE & VERIFIED ✅
 - **Phase 4 (Medical Staff Management & Staff Operations Portal)**: COMPLETE & VERIFIED ✅
 - **Phase 5 (Corporate CRM & Contract Requests)**: COMPLETE & VERIFIED ✅
-- **Phase 6 (Contracts, Pricing & Beneficiaries)**: COMPLETE & VERIFIED (Final Verification Done) ✅
-- **Phase 7**: NOT STARTED STOP 🛑
+- **Phase 6 (Contracts, Pricing & Beneficiaries)**: COMPLETE & VERIFIED (Final Bug Fix Done) ✅
+- **Phase 7**: NOT STARTED 🛑
 
 ---
 
-## Phase 6 Final Verification Metrics:
-1. **Identity Architecture**: Unified strictly on `identification_type` and `identification_number`. Redundant `users.national_id` removed.
-2. **Beneficiary Auto-Linking**: Strict primary matching via `identification_number` with safe fallback to `phone` only when identification number is unprovided.
-3. **Custom Pricing Engine**: Primary rule is `ContractPrice.custom_price` per service under active contract. Server-side price calculation enforced. Non-covered services blocked when contract has custom service coverage list defined.
-4. **Printable Corporate Voucher**: Clean document layout rendered from real database fields. Zero fake barcode placeholders, zero arbitrary decorative stamp images.
-5. **Security & Authorization**: Server-side IDOR protection, role-based access control, active status enforcement, and full audit logging.
+## Phase 6 Final Bug Fix Metrics (2026-08-08):
+1. **Production Fake Data Eliminated**: Removed all `Company::create()` and `Contract::create()` fallbacks with fake/hardcoded data from Production Controllers.
+2. **Empty State Views**: Admin now sees a real empty state with link to `/admin/companies/create` when no companies exist. Company without active contract shows warning banner with link to create contract.
+3. **Booking Number Architecture Unified**: All bookings now use `Booking::boot()` sequential `BK-YYYY-NNNNN` format. Removed `'CP-' . Str::random(6)` from `CompanyPortalController` and `'BK-' . Str::random(6)` from `ServiceBookingModal`.
+4. **Identity Type Unified**: Canonical values are `saudi_id, iqama, border_number, gcc_id` across all controllers and views. Fixed `border_no` → `border_number` in `ProfileController` and `profile.blade.php`.
+5. **Identification Type Validation Enforced**: `storeServiceRequest()` now validates `identification_type` with strict `in:` rule instead of open `required|string`.
 6. **Automated Test Suite**:
-   - `tests/Feature/Phase6ContractsPricingBeneficiariesTest.php`: **29 / 29 PASSED** ✅
-   - Total System Test Suite: **108 / 108 PASSED (100% success rate, 108.71s)** ✅
+   - `Phase6ContractsPricingBeneficiariesTest.php`: **35 / 35 PASSED** (29 original + 6 new) ✅
+   - Total System Test Suite: **114 / 114 PASSED (100% success rate, 60.31s)** ✅
    - Total Registered Routes: **131 Routes** ✅
 7. **Git Push Policy**: ZERO PUSH (0 pushes made).

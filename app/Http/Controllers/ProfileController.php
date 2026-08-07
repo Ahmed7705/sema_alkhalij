@@ -88,7 +88,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'identification_type' => 'nullable|string|in:saudi_id,iqama,border_no,gcc_id',
+            'identification_type' => 'nullable|string|in:saudi_id,iqama,border_number,gcc_id',
             'identification_number' => 'nullable|string|max:50',
         ], [
             'name.required' => 'الاسم مطلوب.',

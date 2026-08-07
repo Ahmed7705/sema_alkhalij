@@ -1,17 +1,33 @@
 # Session Handoff — Sema Al-Khalij Medical Services & Operations
 
-## Summary of Accomplishments (Phase 6):
-1. **Phase 6 Contracts, Contract Pricing & Beneficiaries Completed & Fully Verified**:
-   - Implemented real MySQL contract lifecycle management (Contracts Directory, Setup Form, Edit Form, Standalone Tabbed Detail View).
-   - Implemented custom contract pricing engine with server-side price enforcement (custom price override, percentage discount fallback, public price fallback).
-   - Implemented beneficiary enrollment directory with auto patient account linking (`User` lookup by `identification_number` / `phone`).
-   - Enhanced Company Portal with dedicated Contracts tab, Beneficiaries tab, beneficiary selection modal, and printable corporate voucher.
-   - Built 24 automated feature tests in `tests/Feature/Phase6ContractsPricingBeneficiariesTest.php`.
-   - Executed full PHPUnit test suite: **103 / 103 tests passed (100% success rate, 207.74s)**.
-   - Kept zero git push policy strictly.
+## Summary of Accomplishments (Phase 6 — Final Bug Fix, 2026-08-08):
+
+### Production Fake Data Eliminated:
+- Removed `Company::create()` auto-generation (hardcoded Aramco data) from `CompanyPortalController::dashboard()`.
+- Removed `Contract::create()` with `rand(100,999)` from `CompanyPortalController::dashboard()`.
+- Admin now sees real empty state (`company/portal-no-company.blade.php`) when no companies exist.
+- Company without active contract shows warning banner — no auto-generated contracts.
+
+### Booking Number Architecture Unified:
+- All bookings now use `Booking::boot()` sequential `BK-YYYY-NNNNN` format only.
+- Removed `'CP-' . Str::random(6)` from `CompanyPortalController`.
+- Removed `'BK-' . Str::random(6)` from `ServiceBookingModal`.
+
+### Identity Type Architecture Unified:
+- Canonical values: `saudi_id, iqama, border_number, gcc_id` across all controllers and views.
+- Fixed `border_no` → `border_number` in `ProfileController` and `profile.blade.php`.
+- Added strict `in:` validation for `identification_type` in `storeServiceRequest()`.
+
+### Tests:
+- Added 6 new automated tests covering fake data elimination, booking number format, and identity validation.
+- **114 / 114 total tests PASSED (100% success rate, 60.31s)**.
+- **35 / 35 Phase 6 tests PASSED**.
+- **131 Routes** registered (unchanged).
 
 ## Consolidated Handoff File:
-- Single file review document updated at: `docs/Implementation Plan/Phase-06-Final-Handoff.md`.
+- Updated at: `docs/Implementation Plan/Phase-06-Final-Handoff.md`.
 
-## Next Steps for Phase 7 (When Instructed):
-- Do not start Phase 7 until explicitly requested by the user.
+## Next Steps:
+- Phase 6 is now fully closed (Final Bug Fix complete).
+- **Phase 7**: NOT STARTED. Do not start Phase 7 until explicitly requested.
+- **Git Push Policy**: ZERO PUSH.

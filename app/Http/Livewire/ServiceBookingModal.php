@@ -146,23 +146,22 @@ class ServiceBookingModal extends Component
 
         $service = Service::findOrFail($this->service_id);
         $totalPrice = $service->discount_price ?? $service->price;
-        $bookingNumber = 'BK-' . strtoupper(Str::random(6));
+        // booking_number intentionally omitted — Booking::boot() generates BK-YYYY-NNNNN automatically
 
         $booking = Booking::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => auth()->check() ? auth()->id() : null,
-            'booking_number' => $bookingNumber,
-            'service_id' => $service->id,
-            'booking_date' => $this->booking_date,
-            'booking_time' => $this->booking_time,
-            'city' => $this->city,
-            'address' => $this->address . ' (اسم المريض: ' . $this->patient_name . ')',
-            'phone' => $this->phone,
-            'total_price' => $totalPrice,
-            'status' => 'pending',
+            'uuid'           => (string) Str::uuid(),
+            'user_id'        => auth()->check() ? auth()->id() : null,
+            'service_id'     => $service->id,
+            'booking_date'   => $this->booking_date,
+            'booking_time'   => $this->booking_time,
+            'city'           => $this->city,
+            'address'        => $this->address . ' (اسم المريض: ' . $this->patient_name . ')',
+            'phone'          => $this->phone,
+            'total_price'    => $totalPrice,
+            'status'         => 'pending',
             'payment_status' => 'unpaid',
             'payment_method' => $this->payment_method,
-            'notes' => $this->notes,
+            'notes'          => $this->notes,
         ]);
 
         try {
@@ -171,7 +170,7 @@ class ServiceBookingModal extends Component
             // Ignore if email listener fails
         }
 
-        $this->completedBookingNumber = $bookingNumber;
+        $this->completedBookingNumber = $booking->booking_number; // Uses Booking::boot() generated number
         $this->isCompleted = true;
     }
 

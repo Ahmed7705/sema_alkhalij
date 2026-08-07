@@ -18,7 +18,7 @@
 - `contract_id` (`foreignId` -> `contracts`)
 - `patient_id` (`foreignId` -> `users`, nullable) — Auto-linked patient user account.
 - `name` (`string`)
-- `identification_type` (`string`, default: `'saudi_id'`)
+- `identification_type` (`string`, default: `'saudi_id'`) — Values: `saudi_id, iqama, border_number, gcc_id`
 - `identification_number` (`string`, nullable)
 - `phone` (`string`, nullable)
 - `employee_id_number` (`string`, nullable)
@@ -29,3 +29,22 @@
 - `contract_id` (`foreignId` -> `contracts`, nullable)
 - `company_id` (`foreignId` -> `companies`, nullable)
 - `patient_id` (`foreignId` -> `users`, nullable)
+
+---
+
+## Phase 6 Final Bug Fix Architecture Notes (2026-08-08):
+
+### Booking Number (`bookings.booking_number`):
+- **Architecture**: `BK-{YEAR}-{SEQUENCE}` (e.g., `BK-2026-10001`)
+- **Generator**: `Booking::boot()` in `app/Models/Booking.php` — sequential, collision-safe.
+- **Policy**: Never pass `booking_number` manually in `Booking::create()`. Boot handles it.
+
+### Identity Type (`identification_type`):
+- **Canonical Values**: `saudi_id` | `iqama` | `border_number` | `gcc_id`
+- **Note**: `border_no` was a legacy inconsistency — corrected to `border_number` across all controllers and views.
+- **No `passport`** unless explicitly added in future requirements.
+
+### No Fake Data Policy:
+- **Prohibited**: `Company::create()`, `Contract::create()` as fallbacks in Production Controllers.
+- **When no companies exist**: Show `company/portal-no-company.blade.php` empty state.
+- **When no active contract**: Show warning banner in `company/portal.blade.php`; disable service request submission.
