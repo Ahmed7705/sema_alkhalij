@@ -7,19 +7,20 @@
 - **Phase 4 (Medical Staff Management & Staff Operations Portal)**: COMPLETE & VERIFIED ✅
 - **Phase 5 (Corporate CRM & Contract Requests)**: COMPLETE & VERIFIED ✅
 - **Phase 6 (Contracts, Pricing & Beneficiaries)**: COMPLETE & VERIFIED ✅
-- **Phase 7 (Laboratory Operations, Medical Reports & Diagnostics)**: COMPLETE & VERIFIED (Final Phase Audit Passed 100%) ✅
-- **Phase 8**: NOT STARTED 🛑
+- **Phase 7 (Laboratory Operations, Medical Reports & Diagnostics)**: COMPLETE & VERIFIED ✅
+- **Phase 8 (Payments, Invoicing, Financial Operations & ZATCA)**: COMPLETE & VERIFIED ✅
+- **Phase 9 (Inventory, Pharmacy, Purchasing & Stock Operations)**: COMPLETE & VERIFIED (Final Phase Audit Passed 100%) ✅
 
 ---
 
-## Phase 7 Metrics & Audit Status (2026-08-08):
-1. **9-Stage Lab Workflow State Machine**: Implemented & verified (`registered` → `assigned` → `sample_collected` → `sent_to_lab` → `received_by_lab` → `processing` → `result_ready` → `report_uploaded` → `delivered`). Strict server-side transition checks reject illegal stage hops.
-2. **Medical Reports Management & Private PDF Storage**: PDF reports stored securely in `private/medical_reports` with version history tracking (`medical_report_versions`), upload, replacement, deletion, and IDOR-protected streamed downloads.
-3. **Laboratory Staff Portal**: Dedicated Lab Tech workstation showing ONLY assigned samples, status updater, and PDF report manager with complete technician isolation.
-4. **Customer & Corporate Portals**: Real-time 9-stage sample tracking timeline and direct PDF report download for patients and corporate clients with strict data isolation.
-5. **Real MySQL Analytics & Dashboard**: Total Samples, Registered, In Processing, Result Ready, Delivered metrics.
+## Phase 9 Metrics & Audit Status (2026-08-08):
+1. **Multi-Warehouse Management**: Central Warehouses, Fleet Stores, and Pharmacy locations with real-time stock balances and movement tracking.
+2. **Supplier Relations & Procurement**: Supplier profiles, CR/VAT numbers, purchase orders (`PO-YYYY-NNNN`), and automated receiving goods workflow with batch generation.
+3. **Batch Expiry & FEFO Dispensing**: FEFO (First Expired, First Out) algorithm automatically selects batches with earliest expiry dates for medication dispensing linked to patient visits and doctor prescriptions.
+4. **Stock Adjustment & Audit Logs**: Manual stock adjustments, inter-warehouse transfers, and full audit logs (`STOCK_IN`, `STOCK_TRANSFER`, `STOCK_ADJUSTMENT`, `DISPENSE_MEDICATION`, `RECEIVE_PO`).
+5. **Admin Inventory Dashboard**: Live metrics for Total Stock Valuation, Low Stock Alerts, Expiring Batches within 60 Days, Pending POs, and Medication Dispensing Logs.
 6. **Automated Test Suite**:
-   - `Phase7LabOperationsMedicalReportsTest.php`: **14 / 14 PASSED** ✅
-   - Total System Test Suite: **128 / 128 PASSED (100% pass rate, 46.05s)** ✅
-   - Total Registered Routes: **142 Routes** ✅
+   - `Phase9InventoryPharmacyPurchasingTest.php`: **8 / 8 PASSED** ✅
+   - Total System Test Suite: **148 / 148 PASSED (100% pass rate)** ✅
+   - Total Registered Routes: **168 Routes** ✅
 7. **Git Push Policy**: ZERO PUSH (0 pushes made).

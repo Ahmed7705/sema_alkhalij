@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\InvoiceController;
+
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceManagerController;
@@ -19,6 +21,12 @@ use App\Http\Controllers\Admin\BookingManagerController;
 use App\Http\Controllers\Admin\OrderManagerController;
 use App\Http\Controllers\Admin\SettingsManagerController;
 use App\Http\Controllers\Admin\UserManagerController;
+use App\Http\Controllers\Admin\InventoryManagerController;
+use App\Http\Controllers\Admin\SupplierManagerController;
+use App\Http\Controllers\Admin\PurchasingManagerController;
+use App\Http\Controllers\Admin\PharmacyDispensingController;
+use App\Http\Controllers\Admin\InventoryReportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +151,7 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
     Route::post('requests', [CompanyPortalController::class, 'storeServiceRequest'])->name('requests.store');
     Route::post('beneficiaries', [CompanyPortalController::class, 'storeBeneficiary'])->name('beneficiaries.store');
     Route::get('requests/{booking}/print', [CompanyPortalController::class, 'printServiceRequest'])->name('requests.print');
+    Route::get('statement/download', [InvoiceController::class, 'downloadCorporateStatement'])->name('statement.download');
 });
 
 // SECURE MEDICAL REPORT ROUTES (Protected by Auth)
@@ -151,7 +160,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('medical-reports/{id}/replace', [MedicalReportController::class, 'replace'])->name('medical-reports.replace');
     Route::delete('medical-reports/{id}', [MedicalReportController::class, 'destroy'])->name('medical-reports.destroy');
     Route::get('medical-reports/{report}/download', [MedicalReportController::class, 'download'])->name('medical-reports.download');
+
+    // Financial Invoices, Receipts & Refunds
+    Route::get('invoices/{id}/download', [InvoiceController::class, 'downloadPdf'])->name('invoices.download');
+    Route::get('receipts/{paymentId}/download', [InvoiceController::class, 'downloadReceipt'])->name('receipts.download');
+    Route::post('refunds/request', [\App\Http\Controllers\RefundRequestController::class, 'store'])->name('refunds.store');
 });
+
 
 
 use App\Http\Controllers\Admin\CompanyManagerController;
@@ -225,7 +240,22 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('lab-samples/{id}/status', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'updateStatus'])->name('lab-samples.status');
     Route::post('lab-samples/{id}/assign', [\App\Http\Controllers\Admin\LabSampleManagerController::class, 'assignStaff'])->name('lab-samples.assign');
 
+    // Financial Operations & ZATCA E-Invoicing Management
+    Route::prefix('finance')->name('finance.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'dashboard'])->name('dashboard');
+        Route::get('/invoices', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'invoices'])->name('invoices.index');
+        Route::get('/invoices/{id}', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'showInvoice'])->name('invoices.show');
+        Route::post('/invoices/corporate', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'storeCorporateInvoice'])->name('invoices.corporate.store');
+        Route::get('/payments', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'payments'])->name('payments.index');
+        Route::get('/payments/{id}', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'showPayment'])->name('payments.show');
+        Route::get('/refunds', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'refunds'])->name('refunds.index');
+        Route::post('/refunds/{id}/approve', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'approveRefund'])->name('refunds.approve');
+        Route::post('/refunds/{id}/reject', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'rejectRefund'])->name('refunds.reject');
+        Route::get('/vat-report', [\App\Http\Controllers\Admin\FinanceManagerController::class, 'vatReport'])->name('vat-report');
+    });
+
     // Medical Staff Management
+
 
     Route::get('staff', [StaffManagerController::class, 'index'])->name('staff.index');
     Route::get('staff/create', [StaffManagerController::class, 'create'])->name('staff.create');
@@ -257,9 +287,43 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('settings', [SettingsManagerController::class, 'index'])->name('settings.index');
     Route::post('settings', [SettingsManagerController::class, 'update'])->name('settings.update');
     
+    // Inventory, Pharmacy, Purchasing & Stock Operations (Phase 9)
+    Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('/', [InventoryManagerController::class, 'dashboard'])->name('dashboard');
+        Route::get('warehouses', [InventoryManagerController::class, 'warehouses'])->name('warehouses.index');
+        Route::post('warehouses', [InventoryManagerController::class, 'storeWarehouse'])->name('warehouses.store');
+        Route::get('stock', [InventoryManagerController::class, 'stock'])->name('stock.index');
+        Route::post('stock/in', [InventoryManagerController::class, 'storeStockIn'])->name('stock.in');
+        Route::post('stock/{batchId}/adjust', [InventoryManagerController::class, 'adjustStock'])->name('stock.adjust');
+        Route::post('stock/transfer', [InventoryManagerController::class, 'transferStock'])->name('stock.transfer');
+
+        // Suppliers
+        Route::get('suppliers', [SupplierManagerController::class, 'index'])->name('suppliers.index');
+        Route::post('suppliers', [SupplierManagerController::class, 'store'])->name('suppliers.store');
+        Route::get('suppliers/{id}', [SupplierManagerController::class, 'show'])->name('suppliers.show');
+        Route::put('suppliers/{id}', [SupplierManagerController::class, 'update'])->name('suppliers.update');
+
+        // Purchasing
+        Route::get('purchasing', [PurchasingManagerController::class, 'index'])->name('purchasing.index');
+        Route::post('purchasing', [PurchasingManagerController::class, 'store'])->name('purchasing.store');
+        Route::get('purchasing/{id}', [PurchasingManagerController::class, 'show'])->name('purchasing.show');
+        Route::post('purchasing/{id}/receive', [PurchasingManagerController::class, 'receiveGoods'])->name('purchasing.receive');
+        Route::post('purchasing/{id}/cancel', [PurchasingManagerController::class, 'cancel'])->name('purchasing.cancel');
+
+        // Pharmacy Medication Dispensing
+        Route::get('pharmacy', [PharmacyDispensingController::class, 'index'])->name('pharmacy.index');
+        Route::get('pharmacy/dispense', [PharmacyDispensingController::class, 'create'])->name('pharmacy.dispense');
+        Route::post('pharmacy/dispense', [PharmacyDispensingController::class, 'store'])->name('pharmacy.dispense.store');
+
+        // Inventory & Dispensing Reports
+        Route::get('reports', [InventoryReportController::class, 'index'])->name('reports.index');
+    });
+
+
     // Users & Roles
     Route::get('users', [UserManagerController::class, 'index'])->name('users.index');
     Route::post('users/{id}/role', [UserManagerController::class, 'updateRole'])->name('users.role');
     Route::post('users/{id}/toggle', [UserManagerController::class, 'toggleStatus'])->name('users.toggle');
     Route::delete('users/{id}', [UserManagerController::class, 'destroy'])->name('users.destroy');
 });
+

@@ -96,6 +96,9 @@ class CompanyPortalController extends Controller
             ->latest()
             ->get();
 
+        $companyInvoices = \App\Models\Invoice::where('company_id', $company->id)->latest()->get();
+        $companyPayments = \App\Models\Payment::where('company_id', $company->id)->latest()->get();
+
         $activeTab = $request->get('tab', 'requests');
 
         return view('company.portal', compact(
@@ -106,10 +109,13 @@ class CompanyPortalController extends Controller
             'beneficiariesCount',
             'companyBookings',
             'companyLabSamples',
+            'companyInvoices',
+            'companyPayments',
             'services',
             'allCompanies',
             'activeTab'
         ));
+
 
     }
 

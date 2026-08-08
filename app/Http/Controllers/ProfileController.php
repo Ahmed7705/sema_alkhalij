@@ -60,6 +60,9 @@ class ProfileController extends Controller
 
         $wishlistItems = WishlistItem::where('user_id', $userId)->with('product')->get();
 
+        $userInvoices = \App\Models\Invoice::where('user_id', $userId)->latest()->get();
+        $userPayments = \App\Models\Payment::where('user_id', $userId)->with(['invoice', 'refundRequests'])->latest()->get();
+
         $vatRate = SettingsService::getVatRate();
 
         return view('profile', compact(
@@ -70,9 +73,12 @@ class ProfileController extends Controller
             'medicalReports',
             'labSamples',
             'wishlistItems',
+            'userInvoices',
+            'userPayments',
             'vatRate'
         ));
     }
+
 
     /**
      * Update User Profile Details.

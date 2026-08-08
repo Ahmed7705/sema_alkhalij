@@ -135,6 +135,12 @@
                     <span>{{ $isEn ? 'Wishlist (' . $wishlistItems->count() . ')' : 'المفضلة (' . $wishlistItems->count() . ')' }}</span>
                 </button>
 
+                <button @click="activeTab = 'billing'" :class="activeTab === 'billing' ? 'bg-primary text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'" class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>{{ $isEn ? 'Invoices & Payments (' . $userInvoices->count() . ')' : 'الفواتير والمدفوعات (' . $userInvoices->count() . ')' }}</span>
+                </button>
+
+
                 <button @click="activeTab = 'info'" :class="activeTab === 'info' ? 'bg-primary text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'" class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>{{ $isEn ? 'Profile Settings' : 'الملف الشخصي' }}</span>
@@ -472,8 +478,137 @@
                 </div>
             </div>
 
+            {{-- TAB: INVOICES & PAYMENTS --}}
+            <div x-show="activeTab === 'billing'" class="space-y-6" x-data="{ openRefundModal: false, selectedPaymentId: null, selectedAmount: 0 }">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <h3 class="font-black text-lg text-primary">{{ $isEn ? 'My Tax Invoices & ZATCA Receipts' : 'فواتيري الضريبية وسندات الدفع المعتمدة' }}</h3>
+                    </div>
+
+                    {{-- Invoices Table --}}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }}">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">{{ $isEn ? 'Invoice #' : 'رقم الفاتورة' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Date' : 'التاريخ' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Payment Status' : 'حالة الدفع' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Total (SAR)' : 'المجموع' }}</th>
+                                    <th class="p-3 text-center">{{ $isEn ? 'Download' : 'تحميل PDF' }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @forelse($userInvoices as $inv)
+                                    <tr>
+                                        <td class="p-3 font-bold text-gray-400">{{ $inv->id }}</td>
+                                        <td class="p-3 font-black text-primary dir-ltr">{{ $inv->invoice_number }}</td>
+                                        <td class="p-3 font-medium text-gray-600 dir-ltr">{{ $inv->issue_date->format('Y-m-d') }}</td>
+                                        <td class="p-3 font-bold">
+                                            @if($inv->payment_status === 'paid')
+                                                <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-full text-[10px]">مسددة</span>
+                                            @else
+                                                <span class="px-2.5 py-0.5 bg-amber-50 text-amber-700 rounded-full text-[10px]">غير مسددة</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-3 font-black text-gray-900 dir-ltr">{{ number_format($inv->total_amount, 2) }} ر.س</td>
+                                        <td class="p-3 text-center">
+                                            <a href="{{ route('invoices.download', $inv->id) }}" target="_blank" class="px-3 py-1 bg-emerald-600 text-white font-bold rounded-xl text-[10px]">
+                                                تحميل الفاتورة PDF
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="p-6 text-center text-gray-400 font-bold">{{ $isEn ? 'No invoices issued yet.' : 'لا توجد فواتير صادرة لحسابك حتى الآن.' }}</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {{-- Payments & Refund Form --}}
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                    <h3 class="font-black text-base text-primary border-b border-gray-100 pb-3">{{ $isEn ? 'Payments History & Refund Requests' : 'سجل المدفوعات وطلبات الاسترجاع' }}</h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }}">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">{{ $isEn ? 'Payment Number' : 'رقم عملية الدفع' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Method' : 'طريقة الدفع' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Amount' : 'المبلغ' }}</th>
+                                    <th class="p-3">{{ $isEn ? 'Status' : 'الحالة' }}</th>
+                                    <th class="p-3 text-center">{{ $isEn ? 'Receipt & Refund' : 'سند القبض والطلب' }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @forelse($userPayments as $pay)
+                                    <tr>
+                                        <td class="p-3 font-bold text-gray-400">{{ $pay->id }}</td>
+                                        <td class="p-3 font-black text-primary dir-ltr">{{ $pay->payment_number }}</td>
+                                        <td class="p-3 font-bold text-gray-700">{{ \App\Services\PaymentGatewayService::SUPPORTED_METHODS[$pay->payment_method] ?? $pay->payment_method }}</td>
+                                        <td class="p-3 font-black text-gray-900 dir-ltr">{{ number_format($pay->amount, 2) }} ر.س</td>
+                                        <td class="p-3 font-bold">
+                                            @if($pay->status === 'completed')
+                                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px]">مكتملة</span>
+                                            @else
+                                                <span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded-full text-[10px]">{{ $pay->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-3 flex items-center justify-center gap-2">
+                                            <a href="{{ route('receipts.download', $pay->id) }}" target="_blank" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-[10px]">
+                                                سند القبض
+                                            </a>
+                                            @if($pay->status === 'completed')
+                                                <button @click="openRefundModal = true; selectedPaymentId = {{ $pay->id }}; selectedAmount = {{ $pay->amount }}" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-[10px]">
+                                                    طلب استرجاع
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="p-6 text-center text-gray-400 font-bold">{{ $isEn ? 'No payment transactions found.' : 'لا توجد عمليات دفع سابقة.' }}</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {{-- Refund Request Modal --}}
+                <div x-show="openRefundModal" x-cloak class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+                    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 space-y-4 text-right">
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <h3 class="font-black text-sm text-primary">{{ $isEn ? 'Submit Refund Request' : 'تقديم طلب استرجاع مالي' }}</h3>
+                            <button @click="openRefundModal = false" class="text-gray-400 hover:text-gray-600">✕</button>
+                        </div>
+                        <form action="{{ route('refunds.store') }}" method="POST" class="space-y-3">
+                            @csrf
+                            <input type="hidden" name="payment_id" :value="selectedPaymentId">
+                            <div>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">المبلغ المطلوب استرجاعه (ر.س)</label>
+                                <input type="text" readonly :value="selectedAmount + ' ر.س'" class="w-full bg-gray-100 border border-gray-200 rounded-xl p-2.5 text-xs font-black dir-ltr">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">سبب الاسترجاع والتفاصيل *</label>
+                                <textarea name="reason" rows="3" required placeholder="اذكر سبب طلب الاسترجاع والتفاصيل..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-bold resize-none"></textarea>
+                            </div>
+                            <div class="pt-2 flex justify-end gap-2 border-t border-gray-100">
+                                <button type="button" @click="openRefundModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded-xl text-xs">إلغاء</button>
+                                <button type="submit" class="px-5 py-2 bg-amber-600 text-white font-extrabold rounded-xl text-xs">تأكيد إرسال الطلب</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             {{-- TAB 8: EDIT PROFILE & PASSWORD --}}
             <div x-show="activeTab === 'info'" class="space-y-6">
+
                 
                 {{-- Profile Info Form --}}
                 <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-5">

@@ -137,6 +137,11 @@
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.605 15.13a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                     <span>{{ $isEn ? 'Lab Samples & Diagnostics' : 'عينات وقسم المختبر' }}</span>
                 </a>
+                <a href="{{ route('admin.finance.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.finance.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>{{ $isEn ? 'Financial & ZATCA' : 'المالية والفواتير (ZATCA)' }}</span>
+                </a>
+
                 <a href="{{ route('admin.staff.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.staff.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
 
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -156,11 +161,15 @@
                 </a>
             </div>
 
-            {{-- Section 4: Store & Invoicing --}}
+            {{-- Section 4: Store, Inventory & Pharmacy --}}
             <div class="space-y-1 pt-2 border-t border-white/10">
                 <span class="px-3 text-[10px] font-black text-accent tracking-wider uppercase block mb-1">
-                    {{ $isEn ? 'STORE & INVOICING' : 'المتجر والفوترة' }}
+                    {{ $isEn ? 'STORE, INVENTORY & PHARMACY' : 'المتجر والمخزون والصيدلية' }}
                 </span>
+                <a href="{{ route('admin.inventory.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.inventory.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <span>{{ $isEn ? 'Inventory & Pharmacy' : 'المخزون والصيدلية والمشتريات' }}</span>
+                </a>
                 <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->routeIs('admin.products.*') ? 'bg-accent text-white shadow-md' : 'text-medical-200 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                     <span>{{ $isEn ? 'Products & Devices' : 'إدارة المنتجات والأجهزة' }}</span>
@@ -170,6 +179,7 @@
                     <span>{{ $isEn ? 'Orders & Invoices' : 'طلبات الشراء والفوترة' }}</span>
                 </a>
             </div>
+
 
             {{-- Section 5: Content & System --}}
             <div class="space-y-1 pt-2 border-t border-white/10">
@@ -261,8 +271,9 @@
 
         {{-- INDEPENDENT SCROLL CONTENT BODY --}}
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-6 sm:space-y-8">
-            {{ $slot }}
+            {!! $slot ?? $__env->yieldContent('content') !!}
         </main>
+
     </div>
 
 </body>

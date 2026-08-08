@@ -126,7 +126,11 @@
             <button @click="activeTab = 'lab_samples'" :class="activeTab === 'lab_samples' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
                 {{ $isEn ? 'Lab Samples & Reports' : 'عينات وتقارير المختبر' }} ({{ $companyLabSamples->count() }})
             </button>
+            <button @click="activeTab = 'billing'" :class="activeTab === 'billing' ? 'bg-primary text-white font-black' : 'text-gray-600 font-bold hover:bg-gray-100'" class="px-5 py-2.5 rounded-2xl text-xs transition-all whitespace-nowrap">
+                {{ $isEn ? 'Financial Billing & Invoices' : 'الفواتير والمالية' }} ({{ $companyInvoices->count() }})
+            </button>
         </div>
+
 
 
         {{-- TAB 1: SERVICE REQUESTS --}}
@@ -346,7 +350,64 @@
                     </tbody>
                 </table>
             </div>
+        {{-- TAB 5: FINANCIAL BILLING & INVOICES --}}
+        <div x-show="activeTab === 'billing'" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+                <div>
+                    <h3 class="font-black text-lg text-primary">{{ $isEn ? 'Corporate Invoices & Financial Account Statement' : 'سجل الفواتير والمطالبات وكشف الحساب المالي للشركة' }}</h3>
+                    <p class="text-xs text-gray-500">{{ $isEn ? 'View corporate contract invoices, payment statuses, and download official account statements' : 'متابعة المطالبات والفتورة للشركة مع إمكانية طباعة كشف الحساب الرسمي' }}</p>
+                </div>
+
+                <a href="{{ route('company.statement.download', $company->id) }}" target="_blank" class="px-5 py-2.5 bg-[#006C35] hover:bg-[#00572B] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>{{ $isEn ? 'Download Statement of Account' : 'تحميل كشف الحساب المالي' }}</span>
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs {{ $isEn ? 'text-left' : 'text-right' }} border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-500 font-extrabold border-b border-gray-100">
+                            <th class="p-4">#</th>
+                            <th class="p-4">{{ $isEn ? 'Invoice #' : 'رقم الفاتورة' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Issue Date' : 'تاريخ الإصدار' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Due Date' : 'تاريخ الاستحقاق' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Status' : 'حالة السداد' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Total (SAR)' : 'المجموع الشامل' }}</th>
+                            <th class="p-4">{{ $isEn ? 'Download PDF' : 'التحميل' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($companyInvoices as $inv)
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="p-4 font-bold text-gray-400">{{ $inv->id }}</td>
+                                <td class="p-4 font-black text-primary dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $inv->invoice_number }}</td>
+                                <td class="p-4 text-gray-600 font-medium dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $inv->issue_date->format('Y-m-d') }}</td>
+                                <td class="p-4 text-gray-600 font-medium dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ $inv->due_date ? $inv->due_date->format('Y-m-d') : '-' }}</td>
+                                <td class="p-4 font-bold">
+                                    @if($inv->payment_status === 'paid')
+                                        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-[11px]">مسددة بالكامل</span>
+                                    @else
+                                        <span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-[11px]">غير مسددة</span>
+                                    @endif
+                                </td>
+                                <td class="p-4 font-black text-gray-900 dir-ltr {{ $isEn ? 'text-left' : 'text-right' }}">{{ number_format($inv->total_amount, 2) }} ر.س</td>
+                                <td class="p-4">
+                                    <a href="{{ route('invoices.download', $inv->id) }}" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-all inline-flex items-center gap-1">
+                                        <span>PDF</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="p-8 text-center text-gray-400 font-bold">{{ $isEn ? 'No corporate invoices issued yet.' : 'لا توجد فواتير أو مطالبات مالية مسجلة للشركة بعد.' }}</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
+
 
 
         {{-- New Service Request Modal --}}
