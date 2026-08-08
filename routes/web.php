@@ -26,6 +26,10 @@ use App\Http\Controllers\Admin\SupplierManagerController;
 use App\Http\Controllers\Admin\PurchasingManagerController;
 use App\Http\Controllers\Admin\PharmacyDispensingController;
 use App\Http\Controllers\Admin\InventoryReportController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ActivityFeedController;
+use App\Http\Controllers\Admin\SystemHealthController;
+
 
 
 /*
@@ -319,6 +323,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('reports', [InventoryReportController::class, 'index'])->name('reports.index');
     });
 
+    // System Health, Queues & Webhooks (Phase 10)
+    Route::prefix('system')->name('system.')->group(function () {
+        Route::get('health', [SystemHealthController::class, 'index'])->name('health');
+        Route::get('queues', [SystemHealthController::class, 'queues'])->name('queues');
+        Route::get('webhooks', [SystemHealthController::class, 'webhooks'])->name('webhooks');
+        Route::post('webhooks', [SystemHealthController::class, 'storeWebhook'])->name('webhooks.store');
+        Route::post('queues/{id}/retry', [SystemHealthController::class, 'retryFailedJob'])->name('queues.retry');
+    });
 
     // Users & Roles
     Route::get('users', [UserManagerController::class, 'index'])->name('users.index');
@@ -327,3 +339,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('users/{id}', [UserManagerController::class, 'destroy'])->name('users.destroy');
 });
 
+// USER NOTIFICATION CENTER & ACTIVITY FEED (Protected by Auth)
+Route::middleware(['auth'])->group(function () {
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::delete('notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::get('notifications/preferences', [NotificationController::class, 'preferences'])->name('notifications.preferences');
+    Route::post('notifications/preferences', [NotificationController::class, 'updatePreferences'])->name('notifications.preferences.update');
+    Route::post('notifications/device-token', [NotificationController::class, 'registerDeviceToken'])->name('notifications.device-token');
+
+    Route::get('profile/activity', [ActivityFeedController::class, 'index'])->name('profile.activity');
+});

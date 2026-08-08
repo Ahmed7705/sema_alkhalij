@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// INCOMING WEBHOOKS API ENDPOINT (Phase 10)
+Route::post('v1/webhooks/incoming', [\App\Http\Controllers\Api\WebhookController::class, 'handleIncoming'])->name('api.webhooks.incoming');
+

@@ -243,9 +243,9 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        Service::create([
-            'category_id'        Product::create([
+        Product::create([
             'category_id' => $catEquip->id,
+
             'title' => 'جهاز قياس ضغط الدم الرقمي الذكي',
             'slug' => 'smart-blood-pressure-monitor',
             'short_description' => 'جهاز ناطق ذكي مع شاشة LED وكاشف لعدم انتظام ضربات القلب.',
@@ -360,10 +360,9 @@ class DatabaseSeeder extends Seeder
             'stock' => 5,
             'sku' => 'MED-BED-08',
             'image' => 'prod-bed.png',
-            'is_featured' => true,
             'is_active' => true,
-        ]);s_active' => true,
         ]);
+
 
         Product::create([
             'category_id' => $catEquip->id,

@@ -108,4 +108,25 @@ class User extends Authenticatable
     {
         return in_array($this->role, ['doctor', 'nurse', 'physio', 'lab_tech', 'customer_service', 'manager', 'admin', 'super_admin']);
     }
+
+    public function deviceTokens()
+    {
+        return $this->hasMany(UserDeviceToken::class);
+    }
+
+    public function notificationPreferences()
+    {
+        return $this->hasMany(NotificationPreference::class);
+    }
+
+    public function communicationLogs()
+    {
+        return $this->hasMany(CommunicationLog::class);
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
 }
+

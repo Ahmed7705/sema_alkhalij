@@ -158,8 +158,9 @@
 
     <!-- Main Content -->
     <main class="flex-grow">
-        {{ $slot }}
+        {!! $slot ?? $__env->yieldContent('content') !!}
     </main>
+
 
     <!-- Shopping Cart Drawer & Checkout Component -->
     @include('components.cart-drawer')
